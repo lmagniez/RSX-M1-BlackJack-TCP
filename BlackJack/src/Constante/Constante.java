@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 public interface Constante {
 
 	public Image fond=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond.png");
+	public Image fondListe=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond_liste.png");
+
 	
 	public Image fondPlateau=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/table.png");
 	
