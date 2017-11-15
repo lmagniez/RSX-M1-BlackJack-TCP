@@ -1,0 +1,16 @@
+#include "Network_Toolbox.h"
+#include "ServeurUDP.h"
+#define MAX_LENGTH 1024
+#define MAX_MSG 100
+#define BUFF_SIZE 20
+#define MAX_BACKLOG 9
+
+void startServeurUDP(){
+int udp_sock = socket_UDP();
+	int port = atoi(argv[1]);
+	UDP_bind_server(udp_sock,port);
+	for(;;)
+		recv_UDP(udp_sock,port);
+	close_UDP(udp_sock);
+
+}
