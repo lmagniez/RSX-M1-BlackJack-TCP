@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Panel.Connect.Identification;
+import Reseau.Connection;
 
 public class FrameJeuMenu extends JFrame{
 
@@ -36,8 +37,8 @@ public class FrameJeuMenu extends JFrame{
 	}
 
 	public void choosePort() {
-		// TODO Auto-generated method stu
 		ident=new Identification(1,this);
+		Connection.share.creationBroadcast(ident);
 		swapEcran(ident);
 	}
 }

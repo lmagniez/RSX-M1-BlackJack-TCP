@@ -49,7 +49,6 @@ public class Menu extends JPanel implements ActionListener,Constante{
 		if (e.getActionCommand().equals("Quitter")) 
 			frame.dispose();
 		else if (e.getActionCommand().equals("Jouer")) {
-			Connection.creationBroadcast();
 			frame.choosePort();
 		}		
 	}

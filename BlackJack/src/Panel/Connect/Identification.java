@@ -49,4 +49,8 @@ public class Identification extends JPanel implements Constante {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("verdana", Font.BOLD, 15));
 	}
+
+	public ListeServeur getListeServeur() {
+		return listeServeur;
+	}
 }

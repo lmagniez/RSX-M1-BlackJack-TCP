@@ -20,6 +20,7 @@ import Model.Server;
 import Panel.Jeu.BoutonPlateau;
 import Panel.JeuClient.FrameJeu;
 import Panel.Menu.FrameJeuMenu;
+import Reseau.Connection;
 
 public class ListeServeur extends JPanel implements Constante{
 
@@ -30,20 +31,21 @@ public class ListeServeur extends JPanel implements Constante{
 	
 	public ListeServeur(FrameJeuMenu f) {
 		this.jeu = f;
-		
-		listeServer.add(new Server("127.0.0.1","80",4));
-		listeServer.add(new Server("127.0.0.2","80",1));
-		listeServer.add(new Server("127.0.0.3","80",2));
-		listeServer.add(new Server("127.0.0.4","80",8));
-		listeServer.add(new Server("127.0.0.5","80",4));
-		listeServer.add(new Server("127.0.0.6","80",4));
-		listeServer.add(new Server("127.0.0.7","80",7));
 		this.setOpaque(false);
-		createVue();
 		this.setLayout(null);
+		createVue();
+	}
+	
+	public void add(String hostName, int port, String msg) {
+		listeServer.add(new Server(hostName,Integer.toString(port),10));
+		System.out.println("COUOCUOCUUCU");
+		createVue();
+		this.repaint();
 	}
 	
 	private void createVue() {
+		this.removeAll();
+		list.removeAll();
 		for(int i = 0 ; i< listeServer.size();i++) {
 			list.add(new labelServer(listeServer.get(i).getAdr(),listeServer.get(i).getPort(),listeServer.get(i).getNbJoueur(),list.getComponentCount(),jeu));			
 		}
@@ -92,7 +94,7 @@ public class ListeServeur extends JPanel implements Constante{
 			this.setPreferredSize(new Dimension(340, 75));
 			this.setBounds( 0 , 10*incrementY , 300, 75);
 
-			boutonConnect.setBounds(200,15,120,40);
+			boutonConnect.setBounds(220,15,100,40);
 			
 			this.add(boutonConnect);
 			this.setBackground(transparent);
@@ -115,6 +117,8 @@ public class ListeServeur extends JPanel implements Constante{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Join")) {
+				Connection.share.ferme();
+				
 				String[] tab = { this.addresse, this.port };
 				creerclient(tab);
 				repaint();
@@ -131,6 +135,7 @@ public class ListeServeur extends JPanel implements Constante{
 		 * @param tab
 		 */
 		private void creerclient(String[] tab) {
+			
 			/*
 			 try {
 				if (tab.length > 1 && !tab[0].equals("") && !tab[1].equals("")) {
