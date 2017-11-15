@@ -1,3 +1,6 @@
+#ifndef TAS_H
+#define TAS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -23,3 +26,5 @@ void generer_tas(tas* t);
 void melanger_tas(tas* t);
 void afficher_tas(tas* t);
 carte get_next_carte(tas *t);
+
+#endif

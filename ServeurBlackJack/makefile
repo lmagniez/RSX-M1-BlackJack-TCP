@@ -2,7 +2,7 @@ EXEC=./
 BINDIR=bin/
 SRCDIR=src/
 
-OBJET=$(BINDIR)carte.o $(BINDIR)tas.o $(BINDIR)jeu.o 
+OBJET=$(BINDIR)carte.o $(BINDIR)tas.o $(BINDIR)jeu.o $(BINDIR)joueur.o $(BINDIR)plateau.o 
 CC=gcc
 CFLAGS=-Wall -g
 
@@ -18,6 +18,11 @@ $(BINDIR)tas.o: $(SRCDIR)tas.c
 $(BINDIR)jeu.o: $(SRCDIR)jeu.c
 	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)jeu.c
 
+$(BINDIR)joueur.o: $(SRCDIR)joueur.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)joueur.c
+
+$(BINDIR)plateau.o: $(SRCDIR)plateau.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)plateau.c
 
 
 clean:

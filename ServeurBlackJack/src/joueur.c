@@ -14,14 +14,51 @@ typedef struct{
 } joueur;
 */
 
-void generer_joueur(joueur *j, int id_joueur, int credit){
+void generer_joueur(joueur *j, int id_joueur){
 	j->id_joueur = id_joueur;
-	j->credit = credit;
+	j->credit = -1;
 	j->mise_actuelle = -1;
+	j->mise_totale = -1;
+	j->e = OFF;
+	j->nb_jeux = -1;
+	j->jeux = malloc(sizeof(jeu)*MAX_JEUX);
+	for(int i=0; i<MAX_JEUX; i++){
+		generer_jeu(&(j->jeux[i]));
+	}
+}
+
+void destroy_joueur(joueur *j){
+	for(int i=0; i<MAX_JEUX; i++){
+		destroy_jeu(&(j->jeux[0]));
+	}
+	free(j->jeux);
+}
+
+void start_joueur(joueur *j, int credit){
+	j->credit = credit;
+	j->mise_actuelle = 0;
+	j->mise_totale = 0;
 	j->e = WAITING;
 	j->nb_jeux = 1;
-	jeux->jeux = malloc(sizeof(jeu)*MAX_JEUX);
-	generer_jeu(j->jeux[0]);
+	start_jeu(&(j->jeux[0]));
+}
+
+void stop_joueur(joueur *j){
+	j->credit = -1;
+	j->mise_actuelle = -1;
+	j->e = OFF;
+	j->nb_jeux = -1;
+}
+
+
+
+void afficher_joueur(joueur *j){
+	printf("--Joueur %d-- Credit: %d Mise actuelle: %d Etat: %d\n", 
+		j->id_joueur, j->credit, j->mise_actuelle, j->e);
+	for(int i=0; i<j->nb_jeux; i++){
+		printf("Jeu %d\n",i);
+		afficher_jeu(&(j->jeux[i]));
+	}
 }
 
 //si la mise est possible, passe le joueur en état PLAYING
@@ -29,7 +66,6 @@ void generer_joueur(joueur *j, int id_joueur, int credit){
 int proposer_mise(joueur *j, int mise){
 	if(j->credit>mise){
 		j->credit += -mise; 
-		j->e = PLAYING;
 		return 1;
 	}
 	return -1;
@@ -41,9 +77,9 @@ int peut_splitter(joueur *j){
 	if(j->nb_jeux==3)
 		return -1;
 	for(int i=0; i<j->nb_jeux; i++){
-		if(j->jeux[i]->nb_carte==2){
-			int val1 = getValueFromCarte(j->jeux[i]->cartes[0]);
-			int val2 = getValueFromCarte(j->jeux[i]->cartes[0]);
+		if(j->jeux[i].nb_carte==2){
+			int val1 = getValueFromCarte(j->jeux[i].cartes[0]);
+			int val2 = getValueFromCarte(j->jeux[i].cartes[1]);
 			if(val1 == val2)
 				return i;
 		}
@@ -51,15 +87,23 @@ int peut_splitter(joueur *j){
 	return -1;
 }
 
-//DOIT VERIFIER SI LE SPLIT EST POSSIBLE
+//VERIFIER SI LE SPLIT EST POSSIBLE
 //splitte le jeu
-void splitter_jeu(joueur *j, int id_jeu){
+int splitter_jeu(joueur *j){
+	int id_jeux=peut_splitter(j);
+	
+	if(id_jeux!=-1){
+		j->nb_jeux++;
+		j->jeux[j->nb_jeux-1].e_jeu = JOUE;
+		carte c = remove_carte(&(j->jeux[id_jeux]));
+		add_carte(&(j->jeux[j->nb_jeux-1]),c);
+		return j->nb_jeux;
+	}
+	return -1;
 	
 }
-void modifier_credit(joueur *j, int credit);
 
-void demander_split(joueur *j, plateau *p);
-void demander_tirer(joueur *j, plateau *p);
-void demander_rester(joueur *j, plateau *p);
-void demander_double(joueur *j, plateau *p);
-void demander_abandon(joueur *j, plateau *p);
+int modifier_credit(joueur *j, int credit){
+	j->credit = j->credit + credit;
+	return j->credit;
+}

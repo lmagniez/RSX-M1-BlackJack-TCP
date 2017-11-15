@@ -4,9 +4,10 @@
 
 #include "../lib/tas.h"
 #include "../lib/jeu.h"
+#include "../lib/joueur.h"
+#include "../lib/plateau.h"
 
-
-int main(){
+void test_carte(){
 	
 	carte c = AS;
 	int res = getValueFromCarte(c);
@@ -31,5 +32,104 @@ int main(){
 	
 	free(t.cartes);
 	free(j.cartes);
+	
+}
+
+void test_double(){
+	plateau p;
+	init_plateau(&p);
+	rejoindre_partie(&p, 500);
+	rejoindre_partie(&p, 1000);
+	
+	demander_mise(&p, 0, 200);
+	demander_mise(&p, 1, 500);
+	
+	demander_tirer(&p,0);
+	demander_tirer(&p,1);
+	demander_double(&p,0);
+	demander_tirer(&p,1);
+	demander_tirer(&p,1);
+	
+	
+	
+	/*
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	*/
+	
+	afficher_plateau(&p);
+}
+
+
+void test_split(){
+	plateau p;
+	init_plateau(&p);
+	rejoindre_partie(&p, 500);
+	
+	demander_mise(&p, 0, 500);
+	
+	p.joueurs[0].jeux[0].cartes[0] = ROI;
+	p.joueurs[0].jeux[0].cartes[1] = ROI;
+	p.joueurs[0].jeux[0].nb_carte = 2;
+	update_valeur_totale(&(p.joueurs[0].jeux[0]));
+	
+	demander_split(&p, 0);
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	
+	
+	/*
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	*/
+	
+	afficher_plateau(&p);
+}
+
+void test_general(){
+	plateau p;
+	init_plateau(&p);
+	rejoindre_partie(&p, 500);
+	rejoindre_partie(&p, 500);
+	rejoindre_partie(&p, 500);
+	rejoindre_partie(&p, 500);
+	rejoindre_partie(&p, 500);
+	quitter_partie(&p, 1);
+	quitter_partie(&p, 3);
+	rejoindre_partie(&p, 1000);
+	
+	demander_mise(&p, 0, 100);
+	demander_mise(&p, 1, 1200);
+	demander_mise(&p, 2, 200);
+	demander_mise(&p, 4, 500);
+	
+	
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	demander_tirer(&p,1);
+	demander_tirer(&p,2);
+	demander_tirer(&p,3);
+	demander_tirer(&p,4);
+	demander_tirer(&p,5);
+	demander_tirer(&p,0);
+	demander_tirer(&p,1);
+	
+	
+	afficher_plateau(&p);
+
+}
+
+int main(){
+	
+
+	
+	//test_general();
+	//test_split();
+	test_double();
+
 
 }
