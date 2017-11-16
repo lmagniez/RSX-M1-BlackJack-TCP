@@ -15,6 +15,7 @@ int main(){
 		perror("pthread_join");
 		exit(0);
     }
+    
 	return 0;
 }
 

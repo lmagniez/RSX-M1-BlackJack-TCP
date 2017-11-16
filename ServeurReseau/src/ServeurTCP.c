@@ -7,7 +7,7 @@
 int receiveTCP = 1;
 
 void * threadServeurTCP(void * arg){
-	printf("TCP THREAD \n");
+	
 	while(receiveTCP){
 
 	}

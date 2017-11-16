@@ -5,14 +5,12 @@
 #define MAX_BACKLOG 9
 
 #define COMEHERE "COME HERE TO HAVE FUN"
-#define sizeParam 5
+#define sizeParam 4
 
 int receiveUDP = 1;
 
-char * verificationPartie(){
-	char buffer[sizeParam-3];
-	int nbJoueur = 5;
-
+char * messageRetour(int nbJoueur){
+	char buffer[2];
 	sprintf(buffer, "%d", nbJoueur);
 
 	char * come = malloc(sizeof(COMEHERE)+sizeParam+1);
@@ -21,13 +19,19 @@ char * verificationPartie(){
 
 	param = strcat(param,"{");
 	param = strcat(param,buffer);
-	param = strcat(param,buffer);
+	param = strcat(param,"}");
 
 	strcpy(come,COMEHERE);
 	strcat(come,param);
-
 	come[sizeof(COMEHERE)+sizeParam+1] = '\0';
+
 	return come;
+}
+
+
+char * verificationPartie(){
+	int nbJoueur = 5;
+	return messageRetour(nbJoueur);
 }
 
 void sendBackBroadcast(struct client c){
