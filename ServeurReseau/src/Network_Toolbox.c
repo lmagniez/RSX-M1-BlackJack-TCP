@@ -14,7 +14,6 @@ int socket_UDP(){
 		exit(-1);
 	}
 	return fd;
-
 }
 
 //receive from

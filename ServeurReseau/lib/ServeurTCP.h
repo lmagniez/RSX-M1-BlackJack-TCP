@@ -7,5 +7,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include <pthread.h>
 
-void startServeurUDP();
+void * threadServeurTCP(void * arg);
+pthread_t startServeurTCP();

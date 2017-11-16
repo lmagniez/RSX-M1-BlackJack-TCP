@@ -3,15 +3,18 @@ SRCDIR = ./src/
 CC = gcc 
 CFLAGS = -Wall -Wextra -g -O2
 
-OBJET = $(BINDIR)ServeurUDP.o $(BINDIR)Network_Toolbox.o $(BINDIR)startServeur.o
+OBJET = $(BINDIR)ServeurUDP.o $(BINDIR)Network_Toolbox.o $(BINDIR)startServeur.o $(BINDIR)ServeurTCP.o
 
 all: server
 
 server : $(OBJET)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ -lpthread
+
+$(BINDIR)ServeurTCP.o : $(SRCDIR)ServeurTCP.c
+	$(CC) $(CFLAGS) -c -o $@ $(SRCDIR)ServeurTCP.c -lpthread  
 
 $(BINDIR)ServeurUDP.o : $(SRCDIR)ServeurUDP.c
-	$(CC) $(CFLAGS) -c -o $@ $(SRCDIR)ServeurUDP.c
+	$(CC) $(CFLAGS) -c -o $@ $(SRCDIR)ServeurUDP.c -lpthread  
 
 $(BINDIR)startServeur.o : $(SRCDIR)startServeur.c
 	$(CC) $(CFLAGS) -c -o $@ $(SRCDIR)startServeur.c
