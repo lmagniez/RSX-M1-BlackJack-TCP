@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Scanner;
+
 public class Server {
 
 	private String adr;
@@ -34,6 +36,16 @@ public class Server {
 
 	public void setPort(String port) {
 		this.port = port;
+	}
+
+	public static Server creationServeur(String hostName, int port, String msg) {
+		Server server = new Server(hostName,Integer.toString(port),lireNombrePersonne(msg));		
+		return server;
+	}
+
+	private static int lireNombrePersonne(String msg) {
+		int number = Integer.parseInt(msg.replaceAll("[\\D]", ""));
+		return number;
 	}
 	
 	

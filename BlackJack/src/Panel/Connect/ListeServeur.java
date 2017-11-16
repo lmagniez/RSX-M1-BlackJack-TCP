@@ -37,8 +37,7 @@ public class ListeServeur extends JPanel implements Constante{
 	}
 	
 	public void add(String hostName, int port, String msg) {
-		listeServer.add(new Server(hostName,Integer.toString(port),10));
-		System.out.println("COUOCUOCUUCU");
+		listeServer.add(Server.creationServeur(hostName,port,msg));
 		createVue();
 		this.repaint();
 	}
@@ -94,9 +93,11 @@ public class ListeServeur extends JPanel implements Constante{
 			this.setPreferredSize(new Dimension(340, 75));
 			this.setBounds( 0 , 10*incrementY , 300, 75);
 
-			boutonConnect.setBounds(220,15,100,40);
 			
-			this.add(boutonConnect);
+			boutonConnect.setBounds(220,30,100,30);
+			
+			if(nbJoueur<=8)this.add(boutonConnect);
+			
 			this.setBackground(transparent);
 			this.setLayout(null);
 		}
@@ -117,6 +118,8 @@ public class ListeServeur extends JPanel implements Constante{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Join")) {
+				
+				// On ferme le broadast 
 				Connection.share.ferme();
 				
 				String[] tab = { this.addresse, this.port };

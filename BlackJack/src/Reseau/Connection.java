@@ -40,7 +40,6 @@ public class Connection {
     	      	        try {
 							dsocket.receive(packet);
 							String msg = new String(buffer, 0, packet.getLength());
-		    	      	      
 							
 		    	      	        ident.getListeServeur().add(packet.getAddress().getHostName(),port,msg);
 
