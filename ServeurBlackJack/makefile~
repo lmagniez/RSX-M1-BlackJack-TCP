@@ -1,0 +1,37 @@
+EXEC=./
+BINDIR=bin/
+SRCDIR=src/
+
+OBJET=$(BINDIR)carte.o $(BINDIR)tas.o $(BINDIR)jeu.o $(BINDIR)joueur.o $(BINDIR)plateau.o $(BINDIR)Network_Toolbox.o $(BINDIR)connexion_BJ.o 
+CC=gcc
+CFLAGS=-Wall -g
+
+serveur : $(OBJET)
+	@$(CC) -o $(EXEC)main $(BINDIR)*.o $(SRCDIR)main.c
+
+$(BINDIR)Network_Toolbox.o : $(SRCDIR)Network_Toolbox.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)Network_Toolbox.c
+
+$(BINDIR)connexion_BJ.o :$(SRCDIR)connexion_BJ.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)connexion_BJ.c
+
+$(BINDIR)carte.o: $(SRCDIR)carte.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)carte.c
+
+$(BINDIR)tas.o: $(SRCDIR)tas.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)tas.c
+
+$(BINDIR)jeu.o: $(SRCDIR)jeu.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)jeu.c
+
+$(BINDIR)joueur.o: $(SRCDIR)joueur.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)joueur.c
+
+$(BINDIR)plateau.o: $(SRCDIR)plateau.c
+	@$(CC) $(CFLAGS) -c  -o $@ $(SRCDIR)plateau.c
+
+
+clean:
+	@rm -rf $(BINDIR)*.o
+	@rm -rf ./serveur
+	@echo "Cleaning done :)"
