@@ -7,9 +7,9 @@
 int receiveTCP = 1;
 
 void * threadServeurTCP(void * arg){
-
+	printf("TCP THREAD \n");
 	while(receiveTCP){
-		printf("TCP\n");
+
 	}
 	
 	(void) arg;
@@ -19,16 +19,9 @@ void * threadServeurTCP(void * arg){
 
 pthread_t startServeurTCP(){
 	pthread_t threadServeur;
-	printf("coucou \n");
 	if(pthread_create(&threadServeur, NULL, threadServeurTCP, NULL) == -1) {
 		perror("pthread_create()\n");
 		exit(0);
     }
-
-    if (pthread_join(threadServeur, NULL)) {
-		perror("pthread_join");
-		exit(0);
-    }
-    
     return threadServeur;
 }
