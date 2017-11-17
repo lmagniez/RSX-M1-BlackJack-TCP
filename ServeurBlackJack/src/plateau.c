@@ -101,10 +101,13 @@ int change_tour(plateau *p){
 	int old_tour_id_jeu = p->tour_id_jeu;
 	
 	if(p->tour_id_jeu < p->joueurs[p->tour_id_joueur].nb_jeux-1){
-		//tant que le prochain jeu n'es
+		//tant que le prochain jeu est PERDU
 		p->tour_id_jeu = (p->tour_id_jeu + 1)%p->joueurs[p->tour_id_joueur].nb_jeux;
 		while(p->joueurs[p->tour_id_joueur].jeux[p->tour_id_jeu].e_jeu==PERDU
 		||p->joueurs[p->tour_id_joueur].jeux[p->tour_id_jeu].e_jeu==SATISFAIT){
+			if(p->tour_id_jeu==old_tour_id_jeu){
+				break;
+			}
 			p->tour_id_jeu = (p->tour_id_jeu + 1)%p->joueurs[p->tour_id_joueur].nb_jeux;
 		}
 		//cherche pas de joueurs si encore des jeux
@@ -143,10 +146,13 @@ void destroy_plateau(plateau *p){
 	}
 }
 
+// Le joueur doit avoir deux paires pour splitter
 int demander_split(plateau *p, int id_joueur){
-	if(p->joueurs[id_joueur].e==PLAYING){
-		if(splitter_jeu(&(p->joueurs[id_joueur]))!=-1){;
-			printf("change tour\n");
+	if(p->tour_id_joueur==id_joueur&&
+		p->joueurs[id_joueur].e==PLAYING){
+		int id_jeu;
+		if((id_jeu=splitter_jeu(&(p->joueurs[id_joueur])))!=-1){;
+			printf("JOUEUR %d SPLITTE SON JEU %d\n",id_joueur, p->tour_id_jeu);
 			change_tour(p);
 			return 0;
 		}
@@ -154,21 +160,38 @@ int demander_split(plateau *p, int id_joueur){
 	return -1;
 }
 
+// Le joueur doit avoir une mise > 0 pour tirer
 int demander_tirer(plateau *p, int id_joueur){
-	if(p->tour_id_joueur==id_joueur){
+	if(p->tour_id_joueur==id_joueur
+		&&p->joueurs[id_joueur].mise_totale>0
+		&&p->joueurs[id_joueur].e==PLAYING){
 		carte c = get_next_carte(&(p->pioche));
-		add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c);
+		if(add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c)==PERDU){
+			
+			printf("JOUEUR %d PERD SON JEU %d\n",id_joueur, p->tour_id_jeu);
+			check_joueur_actif(p, id_joueur);
+			
+			int montant_perdu = (p->joueurs[id_joueur].mise_totale/p->joueurs[id_joueur].nb_jeux);
+			p->joueurs[id_joueur].mise_actuelle = p->joueurs[id_joueur].mise_actuelle 
+				- montant_perdu;
+		}
 		change_tour(p);
 		return c;
 	}
+	
+	
 	return -1;
 }
 
 // passe le jeu a satisfait verifie si le joueur a fini de jouer ses paquets
 int demander_rester(plateau *p, int id_joueur){
-	if(p->tour_id_joueur==id_joueur){
+	if(p->tour_id_joueur==id_joueur
+		&&p->joueurs[id_joueur].e==PLAYING){
 		p->joueurs[id_joueur].jeux[p->tour_id_jeu].e_jeu=SATISFAIT;
+ 
+		printf("JOUEUR %d EST SATISFAIT DE SON JEU %d\n",id_joueur, p->tour_id_jeu);
 		check_joueur_actif(p, id_joueur);
+		
 		change_tour(p);
 		return 1;
 	}
@@ -178,18 +201,31 @@ int demander_rester(plateau *p, int id_joueur){
 // double la mise si possible, passe en satisfait le jeu et vérifie si le joueur a fini de jouer tous ses paquets
 int demander_double(plateau *p, int id_joueur){
 	
-	if(p->tour_id_joueur==id_joueur){
+	if(p->tour_id_joueur==id_joueur
+		&&p->joueurs[id_joueur].e==PLAYING){
 		if(p->joueurs[id_joueur].credit > p->joueurs[id_joueur].mise_totale){
 			int mise = p->joueurs[id_joueur].mise_totale;
 			p->joueurs[id_joueur].mise_actuelle += mise; 
 			p->joueurs[id_joueur].mise_totale += mise;
 			p->joueurs[id_joueur].credit += -mise;
 			carte c = get_next_carte(&(p->pioche));
+			
+			printf("JOUEUR %d EST SATISFAIT DE SON JEU ET DOUBLE %d\n",id_joueur, p->tour_id_jeu);
 			add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c);
+			if(add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c)==PERDU){
 			
+				printf("MAIS JOUEUR %d PERD SON JEU %d\n",id_joueur, p->tour_id_jeu);
 			
-			p->joueurs[id_joueur].jeux[p->tour_id_jeu].e_jeu=SATISFAIT;
+				int montant_perdu = (p->joueurs[id_joueur].mise_totale/p->joueurs[id_joueur].nb_jeux);
+				p->joueurs[id_joueur].mise_actuelle = p->joueurs[id_joueur].mise_actuelle 
+					- montant_perdu;
+			}
+			else{
+				p->joueurs[id_joueur].jeux[p->tour_id_jeu].e_jeu=SATISFAIT;
+			}
+			
 			check_joueur_actif(p, id_joueur);
+			
 			change_tour(p);
 			return c;
 			
@@ -203,11 +239,17 @@ int demander_double(plateau *p, int id_joueur){
 int demander_abandon(plateau *p, int id_joueur){
 	if(p->tour_id_joueur==id_joueur){
 		int num_jeu = p->tour_id_jeu;
+		
+		printf("JOUEUR %d ABANDONNE SON JEU %d\n",id_joueur, p->tour_id_jeu);
 		p->joueurs[id_joueur].jeux[num_jeu].e_jeu = PERDU;
 		check_joueur_actif(p, id_joueur);
 		
+		int montant_perdu = (p->joueurs[id_joueur].mise_totale/p->joueurs[id_joueur].nb_jeux);
+		
 		p->joueurs[id_joueur].mise_actuelle = p->joueurs[id_joueur].mise_actuelle 
-			- (p->joueurs[id_joueur].mise_totale/p->joueurs[id_joueur].nb_jeux);
+			- montant_perdu;
+		//le joueur ne perd que la moitié de la somme
+		p->joueurs[id_joueur].credit += montant_perdu / 2;
 		
 		change_tour(p);
 		
@@ -238,6 +280,8 @@ int check_joueur_actif(plateau *p, int id_joueur){
 			return 0;
 		}
 	}
+	
+	printf("JOUEUR %d A FINI DE JOUER \n",id_joueur);
 	p->joueurs[id_joueur].e = FINISHED;
 	return 1;
 }

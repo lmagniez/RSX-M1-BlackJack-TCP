@@ -14,6 +14,28 @@ typedef struct{
 } joueur;
 */
 
+char * str_from_etat(etat e){
+	switch(e){
+		case OFF:
+			return "OFF";
+			break;
+		case WAITING:
+			return "WAITING";
+			break;
+		case PLAYING:
+			return "PLAYING";
+			break;
+		case FINISHED:
+			return "FINISHED";
+			break;
+		case LOSE:
+			return "LOSE";
+			break;
+			
+	}
+	return NULL;
+}
+
 void generer_joueur(joueur *j, int id_joueur){
 	j->id_joueur = id_joueur;
 	j->credit = -1;
@@ -53,8 +75,8 @@ void stop_joueur(joueur *j){
 
 
 void afficher_joueur(joueur *j){
-	printf("--Joueur %d-- Credit: %d Mise actuelle: %d Etat: %d\n", 
-		j->id_joueur, j->credit, j->mise_actuelle, j->e);
+	printf("--Joueur %d-- Credit: %d Mise: %d (reel: %d) Etat: %s\n", 
+		j->id_joueur, j->credit, j->mise_totale, j->mise_actuelle, str_from_etat(j->e));
 	for(int i=0; i<j->nb_jeux; i++){
 		printf("Jeu %d\n",i);
 		afficher_jeu(&(j->jeux[i]));

@@ -8,6 +8,22 @@ typedef struct{
 } jeu;
 */
 
+
+char * str_from_etat_jeu(etat_jeu e){
+	switch(e){
+		case JOUE:
+			return "JOUE";
+			break;
+		case SATISFAIT:
+			return "SATISFAIT";
+			break;
+		case PERDU:
+			return "PERDU";
+			break;
+	}
+	return NULL;
+}
+
 void generer_jeu(jeu *j){
 	j->cartes = malloc(sizeof(carte)*MAX_CARTE);
 	j->nb_carte = 0;
@@ -28,11 +44,15 @@ void stop_jeu(jeu *j){
 }
 
 
-void add_carte(jeu *j, carte new){
-	printf("ok\n");
+//renvoie l'etat du jeu après l'ajout de carte (detecte les PERDU)
+etat_jeu add_carte(jeu *j, carte new){
 	j->cartes[j->nb_carte++]=new;
-	printf("ok\n");
 	update_valeur_totale(j);
+	if(j->valeur>21){
+		j->e_jeu = PERDU;
+	}
+	return j->e_jeu;
+	
 }
 
 carte remove_carte(jeu *j){
@@ -81,5 +101,5 @@ void afficher_jeu(jeu *j){
 		printf("carte %d-> %s val: %d\n", i, title, val);
 		
 	}
-	printf("Etat: %d Score total: %d\n",j->e_jeu, j->valeur);
+	printf("Etat: %s Score total: %d\n",str_from_etat_jeu(j->e_jeu), j->valeur);
 }

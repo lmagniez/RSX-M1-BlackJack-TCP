@@ -20,7 +20,7 @@ typedef struct{
 } jeu;
 
 void generer_jeu(jeu *j);
-void add_carte(jeu *j, carte new);
+etat_jeu add_carte(jeu *j, carte new);
 carte remove_carte(jeu *j);
 void update_valeur_totale(jeu *j);
 int get_valeur_totale(jeu *j);
