@@ -14,6 +14,7 @@ void generer_tas(tas* t){
 			}
 		}
 	}
+	melanger_tas(t);
 }
 
 void swap(tas *t, int i, int j){

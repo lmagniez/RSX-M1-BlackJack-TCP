@@ -26,6 +26,8 @@ void update_valeur_totale(jeu *j);
 int get_valeur_totale(jeu *j);
 int has_blackjack(jeu *j);
 void afficher_jeu(jeu *j);
+void add_carte_croupier(jeu *j, carte new);
+void reinit_jeu(jeu *j);
 
 void start_jeu(jeu *j);
 void stop_jeu(jeu *j);

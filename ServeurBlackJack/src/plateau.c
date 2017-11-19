@@ -119,7 +119,10 @@ int change_tour(plateau *p){
 	p->tour_id_joueur= (p->tour_id_joueur+1)%NB_JOUEUR_MAX;
 	while(p->joueurs[p->tour_id_joueur].e!=PLAYING){
 		if(p->tour_id_joueur == old_tour_id_joueur){
-			printf("PLUS DE JOUEURS !!! \n\n");
+			printf("PLUS DE JOUEURS !!! \n");
+			p->tour_id_joueur = -1;
+			p->tour_id_jeu = -1;
+			tour_croupier(p);
 			return 0;
 		}
 		p->tour_id_joueur= (p->tour_id_joueur+1)%NB_JOUEUR_MAX;
@@ -144,6 +147,75 @@ void destroy_plateau(plateau *p){
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 		destroy_joueur(&(p->joueurs[i]));
 	}
+}
+
+void tour_croupier(plateau *p){
+	if(p->tour_id_jeu!=-1||p->tour_id_joueur!=-1){
+		perror("IL Y A ENCORE DES JOUEURS QUI DOIVENT JOUER\n");
+		return;
+	}
+	
+	while (p->jeu_croupier.valeur<17){
+		printf("LE CROUPIER TIRE UNE CARTE\n");
+		carte c = get_next_carte(&(p->pioche));
+		add_carte_croupier(&(p->jeu_croupier), c);
+	}
+	if(p->jeu_croupier.valeur>21){
+		p->jeu_croupier.e_jeu=PERDU;	
+	}
+	else{
+		p->jeu_croupier.e_jeu=SATISFAIT;
+	}
+	
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		
+		//que les joueurs qui ont joués
+		if(p->joueurs[i].e==FINISHED){
+			int mise_par_jeu = p->joueurs[i].mise_totale/p->joueurs[i].nb_jeux;
+			for(int j=0; j<p->joueurs[i].nb_jeux; j++){
+				//joueur gagne: Gagne la mise *1.5 (Blackjack: 2)
+				if(p->joueurs[i].jeux[j].e_jeu==SATISFAIT&&p->jeu_croupier.e_jeu==PERDU){
+					if(has_blackjack(&(p->joueurs[i].jeux[j]))){
+						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, mise_par_jeu*2);
+						p->joueurs[i].credit += mise_par_jeu * 2;
+					}
+					else{
+						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, mise_par_jeu*1.5);
+						p->joueurs[i].credit += mise_par_jeu * 1.5;
+					}
+				}
+				//test qui a la plus petite valeur + Blackjack 
+				if(p->joueurs[i].jeux[j].e_jeu==SATISFAIT&&p->jeu_croupier.e_jeu==SATISFAIT){
+					if(has_blackjack(&(p->jeu_croupier))){
+						printf("BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+					}
+					else if(has_blackjack(&(p->joueurs[i].jeux[j]))){
+						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, (mise_par_jeu*2));
+						p->joueurs[i].credit += mise_par_jeu * 2;
+					}
+					else if(p->joueurs[i].jeux[j].valeur > p->jeu_croupier.valeur){
+						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, (mise_par_jeu*1.5));
+						p->joueurs[i].credit += mise_par_jeu * 1.5;
+					}
+					else{
+						printf("VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+					}
+					
+				}
+				reinit_jeu(&(p->joueurs[i].jeux[j]));
+			}
+			p->joueurs[i].mise_actuelle = 0;
+			p->joueurs[i].mise_totale = 0;
+			if(p->joueurs[i].credit <= 0){
+				printf("JOUEUR %d N'A PLUS DE CREDIT! HORS-JEU \n",i);
+				p->joueurs[i].e = LOSE;
+			}
+			else{
+				p->joueurs[i].e = PLAYING;
+			}
+		}
+	} 
+	
 }
 
 // Le joueur doit avoir deux paires pour splitter
@@ -267,6 +339,7 @@ int demander_mise(plateau *p, int id_joueur, int mise){
 		p->joueurs[id_joueur].mise_actuelle = mise;
 		p->joueurs[id_joueur].mise_totale = mise;
 		p->joueurs[id_joueur].credit += -mise;
+		printf("JOUEUR %d mise %d\n", id_joueur, mise);
 		return 0;
 	}
 	return -1;

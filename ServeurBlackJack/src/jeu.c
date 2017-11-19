@@ -31,6 +31,13 @@ void generer_jeu(jeu *j){
 	j->e_jeu = JOUE;
 }
 
+void reinit_jeu(jeu *j){
+	j->nb_carte = 0;
+	j->valeur = 0;
+	j->e_jeu = JOUE;
+}
+
+
 void start_jeu(jeu *j){
 	j->nb_carte = 0;
 	j->valeur = 0;
@@ -52,6 +59,12 @@ etat_jeu add_carte(jeu *j, carte new){
 		j->e_jeu = PERDU;
 	}
 	return j->e_jeu;
+	
+}
+
+void add_carte_croupier(jeu *j, carte new){
+	j->cartes[j->nb_carte++]=new;
+	update_valeur_totale(j);
 	
 }
 
