@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
+
 public interface Constante {
 
 	public Image fond=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond.png");
 	public Image fondListe=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond_liste.png");
-
+	
+	public ImageIcon loading = new ImageIcon( "./src/Ressource/Image/loading.gif" );
 	
 	public Image fondPlateau=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/table.png");
 	

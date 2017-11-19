@@ -23,7 +23,7 @@ public class BoutonPlateau extends JButton{
 		setOpaque(true);
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setOpaque(true);
-		this.setFont(new Font("verdana",Font.BOLD,20));
+		this.setFont(new Font("verdana",Font.BOLD,15));
 		this.setText(Commande);
 		this.setBackground(new Color(136,36,33));
 		this.setForeground(new Color(240,183,74));

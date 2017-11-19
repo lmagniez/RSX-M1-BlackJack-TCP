@@ -45,6 +45,7 @@ public class Connection {
 
 		    	      	        packet.setLength(buffer.length);
 					} catch (IOException e) {
+							System.out.println("RECEIV UDP");
 							e.printStackTrace();
 					}
     	      	     }
@@ -58,7 +59,7 @@ public class Connection {
 			share.broadcast("I WANT TO PLAY BLACKJACK", InetAddress.getByName("255.255.255.255"));
 	        share.ecouteUDP(ident);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("SEND UDP BRODCAST");
 		} 
     }
 

@@ -20,31 +20,16 @@ public class ListeJoueur extends JPanel implements Constante{
 	Jeu jeu;
 	private JPanel list = new JPanel();
 	
-	ArrayList<Joueur> listeJoueur = new ArrayList();
+	public ArrayList<Joueur> listeJoueur = new ArrayList();
 	
 	public ListeJoueur(Jeu jeu) {
 		this.jeu = jeu;
-		
-		listeJoueur.add(new Joueur(0,"YOU",12000));
-		listeJoueur.add(new Joueur(1,12000));
-		listeJoueur.add(new Joueur(2,12000));
-		listeJoueur.add(new Joueur(3,12000));
-		listeJoueur.add(new Joueur(4,12000));
-		listeJoueur.add(new Joueur(5,12000));
-		listeJoueur.add(new Joueur(6,12000));
-		
 		createVue();
 		this.setLayout(null);
 	}
 	
 	private void createVue() {
-		for(int i = 0 ; i< listeJoueur.size();i++) {
-			list.add(new labelJouer(listeJoueur.get(i).getid(),listeJoueur.get(i).getnom(),listeJoueur.get(i).getsomme(),list.getComponentCount()));			
-		}
 		list.setOpaque(false);
-		list.setPreferredSize(new Dimension(280, (list.getComponentCount()+1)*50));
-		list.setBounds(10,80,280, (list.getComponentCount()+1)*50);
-		
 		this.add(this.scrollPaneVertical(list));
 	}
 
@@ -104,5 +89,12 @@ public class ListeJoueur extends JPanel implements Constante{
 			
 			g.drawRect(0, 0, 275, 40);
 		}
+	}
+
+
+	public void addJoueur(Joueur joueur) {
+		list.add(new labelJouer(joueur.getid(),joueur.getnom(),joueur.getsomme(),list.getComponentCount()));
+		list.setPreferredSize(new Dimension(280, (list.getComponentCount()+1)*50));
+		list.setBounds(10,80,280, (list.getComponentCount()+1)*50);
 	}
 }
