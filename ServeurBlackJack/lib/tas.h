@@ -13,7 +13,7 @@
 #define NB_JEUX 6
 #define NB_TOTAL_CARTE TAILLE_JEU*NB_JEUX
 
-#define TAUX_MELANGE 500
+#define TAUX_MELANGE 1000
 
 typedef struct{
 	carte *cartes;

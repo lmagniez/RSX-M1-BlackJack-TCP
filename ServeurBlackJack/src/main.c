@@ -224,6 +224,10 @@ void test_reste(){
 	
 	demander_rester(&p, 1);
 	
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	demander_tirer(&p,0);
+	
 	afficher_plateau(&p);
 	
 }
@@ -239,5 +243,5 @@ int main(){
 	//test_double();
 	//test_abandon();
 	//test_abandon2();
-	//test_reste();
+	test_reste();
 }

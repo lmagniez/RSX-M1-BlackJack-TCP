@@ -30,6 +30,8 @@ int quitter_partie(plateau *p, int id_joueur);
 int peut_commencer_tour(plateau *p);
 int action_croupier(plateau *p);
 
+void tour_croupier(plateau *p);
+
 int demander_mise(plateau *p, int id_joueur, int mise);
 int demander_split(plateau *p, int id_joueur);
 int demander_tirer(plateau *p, int id_joueur);
