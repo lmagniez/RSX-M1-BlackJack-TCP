@@ -4,10 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
+
 
 #include "carte.h"
 
 #define MAX_CARTE 10
+#define MAX_BUF_JEU 200
+
 
 typedef enum {JOUE, SATISFAIT, PERDU} etat_jeu;
 
@@ -33,5 +37,6 @@ void start_jeu(jeu *j);
 void stop_jeu(jeu *j);
 void destroy_jeu(jeu *j);
 
+char * jeu_to_json(jeu *j);
 
 #endif

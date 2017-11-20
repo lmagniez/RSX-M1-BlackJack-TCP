@@ -239,9 +239,9 @@ int main(){
 	
 	//test_general();
 	//test_split();
-	//test_split2();
+	test_split2();
 	//test_double();
 	//test_abandon();
 	//test_abandon2();
-	test_reste();
+	//test_reste();
 }

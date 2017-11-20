@@ -56,6 +56,7 @@ void afficher_plateau(plateau *p){
 		printf("\n");
 		afficher_joueur(&(p->joueurs[i]));
 	}
+	printf("JSON: \n%s\n",plateau_to_json(p));
 }
 
 
@@ -357,6 +358,46 @@ int check_joueur_actif(plateau *p, int id_joueur){
 	printf("JOUEUR %d A FINI DE JOUER \n",id_joueur);
 	p->joueurs[id_joueur].e = FINISHED;
 	return 1;
+}
+
+char * plateau_to_json(plateau *p){
+	
+	char *buf = malloc(sizeof(char)*MAX_BUF_PLATEAU);
+	char str[12];
+	int cur_size = 0;
+	buf[cur_size++] = '{';
+	buf[cur_size++] = '\n';
+	strcat(buf,"\"nb_joueur\": ");
+	sprintf(str, "\"%d\",\n", p->nb_joueur);
+	strcat(buf,str);
+	strcat(buf,"\"tour_id_joueur\": ");
+	sprintf(str, "\"%d\",\n", p->tour_id_joueur);
+	strcat(buf,str);
+	strcat(buf,"\"tour_id_jeu\": ");
+	sprintf(str, "\"%d\",\n", p->tour_id_jeu);
+	strcat(buf,str);
+	
+	strcat(buf,"\"jeu_croupier\": ");
+	strcat(buf,jeu_to_json(&(p->jeu_croupier)));
+	strcat(buf,",\n");
+	strcat(buf,"\"joueurs\": \n[\n");
+	
+	int cpt = 0;
+	for(int i=0; i< NB_JOUEUR_MAX; i++){
+		if(p->joueurs[i].e!=OFF){
+			if(cpt>0){
+				strcat(buf, ",\n");
+			}
+			strcat(buf, joueur_to_json(&(p->joueurs[i])));
+			cpt++;
+		}
+	}
+	strcat(buf,"\n]\n");
+	
+	strcat(buf,"\n}");
+	
+	return buf;
+	
 }
 
 

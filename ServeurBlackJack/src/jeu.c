@@ -115,4 +115,34 @@ void afficher_jeu(jeu *j){
 		
 	}
 	printf("Etat: %s Score total: %d\n",str_from_etat_jeu(j->e_jeu), j->valeur);
+	//printf("JSON: \n%s \n", jeu_to_json(j));
+	
 }
+
+char * jeu_to_json(jeu *j){
+	char *buf = malloc(sizeof(char)*MAX_BUF_JEU);
+	char str[12];
+	int cur_size = 0;
+	buf[cur_size++] = '{';
+	buf[cur_size++] = '\n';
+	buf[cur_size] = '\0';
+	strcat(buf,"\"cartes\": [");
+	for(int i=0; i< j->nb_carte; i++){
+		if(i>0){
+			strcat(buf, ",");
+		}
+		strcat(buf, "\"");
+		strcat(buf, getTextFromCarte(j->cartes[i]));
+		strcat(buf, "\"");
+	}
+	strcat(buf,"],\n");
+	strcat(buf,"\"value\": \"");
+	sprintf(str, "%d", j->valeur);
+	strcat(buf, str);
+	strcat(buf,"\"\n}");
+	
+	return buf;
+	
+}
+
+
