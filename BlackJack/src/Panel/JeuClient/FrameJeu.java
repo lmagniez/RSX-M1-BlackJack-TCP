@@ -21,7 +21,7 @@ public class FrameJeu extends JFrame{
 	 */
 	public FrameJeu(BlackJackClient newJ){
 		this.setTitle("BlackJack");
-		this.setSize(1000,500);
+		this.setSize(1200,500);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -34,15 +34,12 @@ public class FrameJeu extends JFrame{
 	 * Creer le jeu 
 	 * @param newJ
 	 */
-	private void creerJeu(BlackJackClient newJ) {
+	private void creerJeu(BlackJackClient joueur) {
 		modelJeux = new ModelJeu();
-		controllerJeu = new ControllerJeu(newJ);
+		controllerJeu = new ControllerJeu(joueur,modelJeux);
 		j = new Jeu(this,controllerJeu);
-		
-		modelJeux.addObserverGrille(j);
-		
+		modelJeux.addObserverGrille(j);		
 		j.init();
-		
 		swapEcran(j);
 	}
 

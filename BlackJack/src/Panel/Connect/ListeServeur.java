@@ -10,6 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -26,6 +27,9 @@ public class ListeServeur extends JPanel implements Constante{
 
 	FrameJeuMenu jeu;
 	private JPanel list = new JPanel();
+	private JLabel loadingLabel = new JLabel(loading) ;
+	private JScrollPane scroll;
+	private String erreur = "Manque d'argent";
 	
 	ArrayList<Server> listeServer = new ArrayList();
 	
@@ -33,18 +37,31 @@ public class ListeServeur extends JPanel implements Constante{
 		this.jeu = f;
 		this.setOpaque(false);
 		this.setLayout(null);
+		
 		createVue();
+		if(listeServer.isEmpty()) {
+			loadingLabel.setBounds(75, 80, 200, 200);
+			this.add(loadingLabel);
+		}
 	}
 	
 	public void add(String hostName, int port, String msg) {
-		listeServer.add(Server.creationServeur(hostName,port,msg));
-		createVue();
+		Server server = Server.creationServeur(hostName,port,msg);
+		if(server == null)return;
+		listeServer.add(server);
+		addServer();
 		this.repaint();
 	}
 	
+	private void addServer() {
+		this.remove(this.getComponentCount()-1);
+		int i = listeServer.size()-1;
+		list.add(new labelServer(listeServer.get(i).getAdr(),listeServer.get(i).getPort(),listeServer.get(i).getNbJoueur(),list.getComponentCount(),jeu));
+		list.setPreferredSize(new Dimension(350, (list.getComponentCount()+1)*75));
+		list.setBounds(5,5,350, (list.getComponentCount()+1)*75);
+	}
+
 	private void createVue() {
-		this.removeAll();
-		list.removeAll();
 		for(int i = 0 ; i< listeServer.size();i++) {
 			list.add(new labelServer(listeServer.get(i).getAdr(),listeServer.get(i).getPort(),listeServer.get(i).getNbJoueur(),list.getComponentCount(),jeu));			
 		}
@@ -52,7 +69,9 @@ public class ListeServeur extends JPanel implements Constante{
 		list.setPreferredSize(new Dimension(350, (list.getComponentCount()+1)*75));
 		list.setBounds(5,5,350, (list.getComponentCount()+1)*75);
 		
-		this.add(this.scrollPaneVertical(list));
+		this.removeAll();
+		scroll = this.scrollPaneVertical(list);
+		this.add(scroll);
 	}
 
 	public void paintComponent(Graphics g) {

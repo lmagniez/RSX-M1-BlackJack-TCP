@@ -39,13 +39,16 @@ public class Server {
 	}
 
 	public static Server creationServeur(String hostName, int port, String msg) {
-		Server server = new Server(hostName,Integer.toString(port),lireNombrePersonne(msg));		
+		int nb;
+		if((nb=lireNombrePersonne(msg)) ==-1)return null;
+		Server server = new Server(hostName,Integer.toString(port),nb);		
 		return server;
 	}
 
 	private static int lireNombrePersonne(String msg) {
-		int number = Integer.parseInt(msg.replaceAll("[\\D]", ""));
-		return number;
+			msg = msg.replaceAll("[\\D]", "");
+			if(msg.equals(""))return -1;
+			return Integer.parseInt(msg);
 	}
 	
 	
