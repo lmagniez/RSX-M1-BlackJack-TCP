@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import Constante.Constante;
-import Panel.JeuClient.FrameJeu;
+import Jeu.FrameJeu;
 
 public class BlackJackClient implements Constante {
 

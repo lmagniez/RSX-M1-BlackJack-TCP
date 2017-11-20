@@ -1,4 +1,4 @@
-package Panel.Jeu;
+package Jeu.Panel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,39 +25,35 @@ public class ListeJoueur extends JPanel implements Constante{
 	public ListeJoueur(Jeu jeu) {
 		this.jeu = jeu;
 		createVue();
+		this.setOpaque(false);
 		this.setLayout(null);
 	}
 	
 	private void createVue() {
 		list.setOpaque(false);
-		this.add(this.scrollPaneVertical(list));
+		this.add(this.scrollPaneHorizontal(list));
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(tapis, 0, 0,300, 500, this);
 		
 		g.setColor(or);
 		g.setFont(new Font("verdana", Font.BOLD, 35));
-		g.drawString("Joueurs", 70, 50);
+		g.drawString("Joueurs", 160, 40);
 	}
 	
-	/**
-	 * Creation du JScrollPane
-	 * @param comp
-	 * @return JScrollPane
-	 */
-    public static JScrollPane scrollPaneVertical(JComponent comp) {    	
-        JScrollPane scroller = new JScrollPane(comp);
-        scroller.getHorizontalScrollBar().setUnitIncrement(30);
-        scroller.setBounds(10,60,280,380);
-        scroller.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
-        scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scroller.setOpaque(false);
-        scroller.getViewport().setOpaque(false);
-        scroller.setBorder(null);
-        return scroller;
-    }
+	public static JScrollPane scrollPaneHorizontal(JComponent component) {
+		JScrollPane scroller = new JScrollPane(component);
+		scroller.getHorizontalScrollBar().setUnitIncrement(30);
+		scroller.setBounds(5, 50, 440,138);
+		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scroller.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
+		scroller.setOpaque(false);
+		scroller.getViewport().setOpaque(false);
+		scroller.setAlignmentX(JScrollPane.LEFT_ALIGNMENT);
+		scroller.setBorder(null);
+		return scroller;
+	}
 	
 	
 	class labelJouer extends JPanel{
@@ -70,8 +66,8 @@ public class ListeJoueur extends JPanel implements Constante{
 			this.nom = nom;
 			this.somme = somme;
 			
-			this.setPreferredSize(new Dimension(280, 50));
-			this.setBounds( 0 , 10*incrementY , 280, 50);
+			this.setPreferredSize(new Dimension(138,138));
+			this.setBounds(incrementY*138+(list.getComponentCount()+1)*20 , 0 , 138, 138);
 			
 			this.setBackground(transparent);
 			
@@ -81,20 +77,27 @@ public class ListeJoueur extends JPanel implements Constante{
 		public void paintComponent(Graphics g) {
 			g.setFont(new Font("verdana", Font.BOLD, 20));
 			g.setColor(or);
-			g.drawString(nom, 40, 30);
 			
+			if(nom.contains("Joueur")) {
+				g.drawString(nom, 20, 30);
+			}else {
+				g.drawString(nom, 40, 30);
+			}
 			g.setFont(new Font("verdana", Font.BOLD, 20));
 			g.setColor(or);
-			g.drawString(String.valueOf(somme)+"$", 140, 30);
+			g.drawString(String.valueOf(somme)+"$", 10, 125);
 			
-			g.drawRect(0, 0, 275, 40);
+			g.drawImage(avatar,40,45, 50,50, this);
+			
+			g.drawRect(0, 5, 132, 130);
 		}
 	}
 
 
 	public void addJoueur(Joueur joueur) {
+		list.setLayout(null);
 		list.add(new labelJouer(joueur.getid(),joueur.getnom(),joueur.getsomme(),list.getComponentCount()));
-		list.setPreferredSize(new Dimension(280, (list.getComponentCount()+1)*50));
-		list.setBounds(10,80,280, (list.getComponentCount()+1)*50);
+		list.setPreferredSize(new Dimension(list.getComponentCount()*138+(list.getComponentCount()+1)*20,200));
+		list.setBounds(0,0,list.getComponentCount()*138+(list.getComponentCount()+1)*20,200);
 	}
 }

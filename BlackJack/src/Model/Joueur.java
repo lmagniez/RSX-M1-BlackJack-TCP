@@ -8,7 +8,7 @@ public class Joueur {
 
 	public Joueur(int id , int somme) {
 		this.id = id;
-		this.nom = "J"+ (id+1);
+		this.nom = "Joueur"+ (id+1);
 		this.somme = somme;
 	}
 

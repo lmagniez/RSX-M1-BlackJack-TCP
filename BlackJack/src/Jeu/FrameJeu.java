@@ -1,11 +1,8 @@
-package Panel.JeuClient;
+package Jeu;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Jeu.ControllerJeu;
-import Jeu.Jeu;
-import Jeu.ModelJeu;
 import Reseau.BlackJackClient;
 
 public class FrameJeu extends JFrame{
@@ -21,7 +18,7 @@ public class FrameJeu extends JFrame{
 	 */
 	public FrameJeu(BlackJackClient newJ){
 		this.setTitle("BlackJack");
-		this.setSize(1200,500);
+		this.setSize(1224,768);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);

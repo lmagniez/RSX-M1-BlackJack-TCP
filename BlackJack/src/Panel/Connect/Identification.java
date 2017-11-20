@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Constante.Constante;
-import Panel.JeuClient.FrameJeu;
+import Jeu.FrameJeu;
 import Panel.Menu.Bouton;
 import Panel.Menu.FrameJeuMenu;
 import Reseau.BlackJackClient;

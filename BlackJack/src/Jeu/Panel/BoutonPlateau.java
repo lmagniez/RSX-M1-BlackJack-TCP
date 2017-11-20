@@ -1,4 +1,4 @@
-package Panel.Jeu;
+package Jeu.Panel;
 
 import java.awt.Color;
 import java.awt.Component;
