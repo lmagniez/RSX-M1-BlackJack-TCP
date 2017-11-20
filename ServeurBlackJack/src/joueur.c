@@ -81,6 +81,7 @@ void afficher_joueur(joueur *j){
 		printf("Jeu %d\n",i);
 		afficher_jeu(&(j->jeux[i]));
 	}
+	//printf("JSON: \n%s\n",joueur_to_json(j));
 }
 
 //si la mise est possible, passe le joueur en état PLAYING
@@ -129,3 +130,51 @@ int modifier_credit(joueur *j, int credit){
 	j->credit = j->credit + credit;
 	return j->credit;
 }
+
+
+int id_joueur;
+	jeu *jeux;
+	int nb_jeux;
+	int credit;
+	int mise_totale;
+	int mise_actuelle;
+	etat e;
+
+char * joueur_to_json(joueur *j){
+	
+	char *buf = malloc(sizeof(char)*MAX_BUF_JOUEUR);
+	char str[12];
+	int cur_size = 0;
+	buf[cur_size++] = '{';
+	buf[cur_size++] = '\n';
+	strcat(buf,"\"id_joueur\": ");
+	sprintf(str, "\"%d\",\n", j->id_joueur);
+	strcat(buf,str);
+	strcat(buf,"\"credit\": ");
+	sprintf(str, "\"%d\",\n", j->credit);
+	strcat(buf,str);
+	strcat(buf,"\"mise_totale\": ");
+	sprintf(str, "\"%d\",\n", j->mise_totale);
+	strcat(buf,str);
+	strcat(buf,"\"mise_actuelle\": ");
+	sprintf(str, "\"%d\",\n", j->mise_actuelle);
+	strcat(buf,str);
+	strcat(buf,"\"etat\": ");
+	sprintf(str, "\"%s\",\n", str_from_etat(j->e));
+	strcat(buf,str);
+	strcat(buf,"\"jeux\": \n[\n");
+	for(int i=0; i< j->nb_jeux; i++){
+		if(i>0){
+			strcat(buf, ",\n");
+		}
+		strcat(buf, jeu_to_json(&(j->jeux[i])));
+		
+	}
+	strcat(buf,"\n]\n");
+	
+	strcat(buf,"\n}");
+	
+	return buf;
+	
+}
+

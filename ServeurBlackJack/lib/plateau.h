@@ -9,6 +9,7 @@
 
 
 #define NB_JOUEUR_MAX 7
+#define MAX_BUF_PLATEAU 1500
 
 typedef struct{
 	tas pioche;
@@ -39,7 +40,7 @@ int demander_rester(plateau *p, int id_joueur);
 int demander_double(plateau *p, int id_joueur);
 int demander_abandon(plateau *p, int id_joueur);
 int check_joueur_actif(plateau *p, int id_joueur);
-
+char * plateau_to_json(plateau *p);
 
 
 #endif

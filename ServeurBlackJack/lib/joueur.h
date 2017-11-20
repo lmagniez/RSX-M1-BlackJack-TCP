@@ -9,6 +9,8 @@
 #include "jeu.h"
 
 #define MAX_JEUX 3
+#define MAX_BUF_JOUEUR 500
+
 
 //OFF: pas de joueur
 //WAITING: vient de rejoindre la partie, attend le prochain tour
@@ -37,6 +39,8 @@ int proposer_mise(joueur *j, int mise);
 int peut_splitter(joueur *j);
 int splitter_jeu(joueur *j);
 int modifier_credit(joueur *j, int credit);
+
+char * joueur_to_json(joueur *j);
 
 #endif
 
