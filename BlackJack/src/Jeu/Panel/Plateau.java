@@ -40,6 +40,9 @@ public class Plateau extends JPanel implements ActionListener, Constante{
 		activeeMise();
 	}
 	
+	public Plateau() {
+	}
+
 	public void init() {
 		this.setLayout(null);
 		
