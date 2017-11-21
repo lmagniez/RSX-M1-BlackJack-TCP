@@ -42,8 +42,8 @@ public class ModelJeu {
 		return listeJoueur.get(0).getsomme() >= mise;
 	}
 
-	public void afficheErreurMessage() {
-		jeu.afficheMessageErreur();
+	public void afficheErreurMessage(String msg) {
+		jeu.afficheErreur(msg);
 	}
 
 	public void afficheBoutonAction() {

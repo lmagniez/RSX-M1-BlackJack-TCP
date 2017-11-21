@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import Constante.Constante;
+import Jeu.FrameJeu;
 import Reseau.Connection;
 
 public class Menu extends JPanel implements ActionListener,Constante{
@@ -49,7 +50,12 @@ public class Menu extends JPanel implements ActionListener,Constante{
 		if (e.getActionCommand().equals("Quitter")) 
 			frame.dispose();
 		else if (e.getActionCommand().equals("Jouer")) {
-			frame.choosePort();
+			//frame.choosePort();
+			
+			//REMPLACER
+			new FrameJeu(null);
+			frame.setVisible(false);
+			
 		}		
 	}
 }

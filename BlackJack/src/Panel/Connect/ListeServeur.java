@@ -15,11 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import Constante.Constante;
+import Jeu.FrameJeu;
 import Jeu.Jeu;
+import Jeu.Panel.BoutonPlateau;
 import Model.Joueur;
 import Model.Server;
-import Panel.Jeu.BoutonPlateau;
-import Panel.JeuClient.FrameJeu;
 import Panel.Menu.FrameJeuMenu;
 import Reseau.Connection;
 
