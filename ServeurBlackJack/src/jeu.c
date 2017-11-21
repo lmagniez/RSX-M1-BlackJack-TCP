@@ -25,7 +25,7 @@ char * str_from_etat_jeu(etat_jeu e){
 }
 
 void generer_jeu(jeu *j){
-	j->cartes = malloc(sizeof(carte)*MAX_CARTE);
+	j->cartes = malloc(sizeof(face_carte)*MAX_CARTE);
 	j->nb_carte = 0;
 	j->valeur = 0;
 	j->e_jeu = JOUE;
@@ -74,8 +74,11 @@ carte remove_carte(jeu *j){
 		update_valeur_totale(j);
 		return j->cartes[j->nb_carte];
 	}
-	else 
-		return -1;
+	else{ 
+		carte c;
+		c.face=-1;
+		return c;
+	}
 }
 
 
@@ -83,7 +86,7 @@ void update_valeur_totale(jeu *j){
 	int nb_as = 0;
 	j->valeur=0;
 	for(int i=0; i<j->nb_carte; i++){
-		int val = getValueFromCarte(j->cartes[i]);
+		int val = getValueFromCarte(j->cartes[i].face);
 		if(val==11)
 			nb_as++;
 		j->valeur+=val;
@@ -109,9 +112,12 @@ void destroy_jeu(jeu *j){
 
 void afficher_jeu(jeu *j){
 	for(int i=0; i<j->nb_carte; i++){
+		/*
 		int val = getValueFromCarte(j->cartes[i]);
 		char *title = getTextFromCarte(j->cartes[i]);
 		printf("carte %d-> %s val: %d\n", i, title, val);
+		*/
+		afficher_carte(&(j->cartes[i]));
 		
 	}
 	printf("Etat: %s Score total: %d\n",str_from_etat_jeu(j->e_jeu), j->valeur);
@@ -132,10 +138,25 @@ char * jeu_to_json(jeu *j){
 			strcat(buf, ",");
 		}
 		strcat(buf, "\"");
-		strcat(buf, getTextFromCarte(j->cartes[i]));
+		strcat(buf, getTextFromCarte(j->cartes[i].face));
 		strcat(buf, "\"");
 	}
 	strcat(buf,"],\n");
+	strcat(buf,"\"couleur_cartes\": [");
+	for(int i=0; i< j->nb_carte; i++){
+		if(i>0){
+			strcat(buf, ",");
+		}
+		strcat(buf, "\"");
+		strcat(buf, getTextFromCouleurCarte(j->cartes[i].couleur));
+		strcat(buf, "\"");
+	}
+	strcat(buf,"],\n");
+	
+	
+	strcat(buf,"\"etat_jeu\": \"");
+	strcat(buf,str_from_etat_jeu(j->e_jeu));
+	strcat(buf,"\",\n");
 	strcat(buf,"\"value\": \"");
 	sprintf(str, "%d", j->valeur);
 	strcat(buf, str);

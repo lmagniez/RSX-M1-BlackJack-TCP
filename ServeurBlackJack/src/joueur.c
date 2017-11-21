@@ -101,8 +101,8 @@ int peut_splitter(joueur *j){
 		return -1;
 	for(int i=0; i<j->nb_jeux; i++){
 		if(j->jeux[i].nb_carte==2){
-			int val1 = getValueFromCarte(j->jeux[i].cartes[0]);
-			int val2 = getValueFromCarte(j->jeux[i].cartes[1]);
+			int val1 = getValueFromCarte(j->jeux[i].cartes[0].face);
+			int val2 = getValueFromCarte(j->jeux[i].cartes[1].face);
 			if(val1 == val2)
 				return i;
 		}
