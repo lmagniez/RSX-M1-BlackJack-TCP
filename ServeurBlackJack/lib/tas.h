@@ -16,7 +16,9 @@
 #define TAUX_MELANGE 1000
 
 typedef struct{
-	carte *cartes;
+	/*face_carte *cartes;
+	couleur_carte *couleurs;*/
+	carte* cartes;
 	int nb_carte;
 	int sommet_pile;
 } tas;
@@ -26,5 +28,6 @@ void generer_tas(tas* t);
 void melanger_tas(tas* t);
 void afficher_tas(tas* t);
 carte get_next_carte(tas *t);
+//face_carte get_next_carte(tas *t);
 
 #endif

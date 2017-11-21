@@ -249,7 +249,7 @@ int demander_tirer(plateau *p, int id_joueur){
 				- montant_perdu;
 		}
 		change_tour(p);
-		return c;
+		return c.face;
 	}
 	
 	
@@ -284,7 +284,7 @@ int demander_double(plateau *p, int id_joueur){
 			carte c = get_next_carte(&(p->pioche));
 			
 			printf("JOUEUR %d EST SATISFAIT DE SON JEU ET DOUBLE %d\n",id_joueur, p->tour_id_jeu);
-			add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c);
+			//add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c);
 			if(add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c)==PERDU){
 			
 				printf("MAIS JOUEUR %d PERD SON JEU %d\n",id_joueur, p->tour_id_jeu);
@@ -300,7 +300,7 @@ int demander_double(plateau *p, int id_joueur){
 			check_joueur_actif(p, id_joueur);
 			
 			change_tour(p);
-			return c;
+			return c.face;
 			
 		}
 	}

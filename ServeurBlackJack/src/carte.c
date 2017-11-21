@@ -1,7 +1,7 @@
 
 #include "../lib/carte.h"
 
-int getValueFromCarte(carte c){
+int getValueFromCarte(face_carte c){
 	switch(c){
 		case AS:
 			return 11;
@@ -46,7 +46,7 @@ int getValueFromCarte(carte c){
 	return -1;
 }
 
-char* getTextFromCarte(carte c){
+char* getTextFromCarte(face_carte c){
 	switch(c){
 		case AS:
 			return "as";
@@ -89,6 +89,29 @@ char* getTextFromCarte(carte c){
 			break;
 	}
 	return "error";
+}
+
+char* getTextFromCouleurCarte(couleur_carte c){
+	switch(c){
+		case COEUR:
+			return "coeur";
+			break;
+		case CARREAU:
+			return "carreau";
+			break;
+		case PIQUE:
+			return "pique";
+			break;
+		case TREFLE:
+			return "trefle";
+			break;
+	}
+	return "error";
+}
+
+
+void afficher_carte(carte *c){
+	printf("%s:%s\n",getTextFromCarte(c->face),getTextFromCouleurCarte(c->couleur));
 }
 
 /*

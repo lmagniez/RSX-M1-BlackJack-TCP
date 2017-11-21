@@ -9,7 +9,7 @@
 
 void test_carte(){
 	
-	carte c = AS;
+	face_carte c = AS;
 	int res = getValueFromCarte(c);
 	char* title = getTextFromCarte(c);
 	
@@ -38,6 +38,9 @@ void test_carte(){
 void test_double(){
 	plateau p;
 	init_plateau(&p);
+	
+	//afficher_tas(&(p.pioche));
+	
 	rejoindre_partie(&p, 500);
 	rejoindre_partie(&p, 1000);
 	
@@ -70,8 +73,10 @@ void test_split(){
 	
 	demander_mise(&p, 0, 500);
 	
-	p.joueurs[0].jeux[0].cartes[0] = ROI;
-	p.joueurs[0].jeux[0].cartes[1] = ROI;
+	p.joueurs[0].jeux[0].cartes[0].face = ROI;
+	p.joueurs[0].jeux[0].cartes[0].couleur = TREFLE;
+	p.joueurs[0].jeux[0].cartes[1].face = ROI;
+	p.joueurs[0].jeux[0].cartes[1].couleur = COEUR;
 	p.joueurs[0].jeux[0].nb_carte = 2;
 	update_valeur_totale(&(p.joueurs[0].jeux[0]));
 	
@@ -98,11 +103,16 @@ void test_split2(){
 	demander_mise(&p, 0, 500);
 	
 	p.joueurs[0].nb_jeux = 2;
-	p.joueurs[0].jeux[0].cartes[0] = ROI;
-	p.joueurs[0].jeux[0].cartes[1] = ROI;
+	p.joueurs[0].jeux[0].cartes[0].face = ROI;
+	p.joueurs[0].jeux[0].cartes[0].couleur = TREFLE;
+	p.joueurs[0].jeux[0].cartes[1].face = ROI;
+	p.joueurs[0].jeux[0].cartes[1].couleur = COEUR;
 	p.joueurs[0].jeux[0].nb_carte = 2;
-	p.joueurs[0].jeux[1].cartes[0] = DEUX;
-	p.joueurs[0].jeux[1].cartes[1] = ROI;
+	
+	p.joueurs[0].jeux[1].cartes[0].face = DEUX;
+	p.joueurs[0].jeux[1].cartes[0].couleur = COEUR;
+	p.joueurs[0].jeux[1].cartes[1].face = ROI;
+	p.joueurs[0].jeux[1].cartes[1].couleur = PIQUE;
 	p.joueurs[0].jeux[1].nb_carte = 2;
 	update_valeur_totale(&(p.joueurs[0].jeux[0]));
 	update_valeur_totale(&(p.joueurs[0].jeux[1]));
@@ -186,8 +196,10 @@ void test_abandon2(){
 	rejoindre_partie(&p, 500);
 	demander_mise(&p, 0, 500);
 	
-	p.joueurs[0].jeux[0].cartes[0] = ROI;
-	p.joueurs[0].jeux[0].cartes[1] = ROI;
+	p.joueurs[0].jeux[0].cartes[0].face = ROI;
+	p.joueurs[0].jeux[0].cartes[0].couleur = TREFLE;
+	p.joueurs[0].jeux[0].cartes[1].face = ROI;
+	p.joueurs[0].jeux[0].cartes[1].couleur = COEUR;
 	p.joueurs[0].jeux[0].nb_carte = 2;
 	update_valeur_totale(&(p.joueurs[0].jeux[0]));
 	
@@ -232,6 +244,38 @@ void test_reste(){
 	
 }
 
+void big_test(){
+	plateau p;
+	init_plateau(&p);
+	rejoindre_partie(&p, 500);
+	rejoindre_partie(&p, 1000);
+	rejoindre_partie(&p, 600);
+	rejoindre_partie(&p, 300);
+	rejoindre_partie(&p, 2000);
+	rejoindre_partie(&p, 1000);
+	rejoindre_partie(&p, 2500);
+	
+	
+	demander_mise(&p, 0, 100);
+	demander_mise(&p, 1, 400);
+	demander_mise(&p, 2, 400);
+	demander_mise(&p, 3, 100);
+	demander_mise(&p, 4, 200);
+	demander_mise(&p, 5, 500);
+	demander_mise(&p, 6, 600);
+	
+	for(int i=0; i<7; i++){
+		demander_tirer(&p,i);
+	}
+	for(int i=0; i<7; i++){
+		demander_tirer(&p,i);
+	}
+	
+	demander_rester(&p, 0);
+	demander_abandon(&p, 1);
+	
+	afficher_plateau(&p);
+}
 
 int main(){
 	
@@ -239,9 +283,12 @@ int main(){
 	
 	//test_general();
 	//test_split();
-	test_split2();
+	//test_split2();
 	//test_double();
 	//test_abandon();
 	//test_abandon2();
 	//test_reste();
+	
+	big_test();
+	
 }
