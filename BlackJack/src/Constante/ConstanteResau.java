@@ -1,6 +1,10 @@
 package Constante;
 
+import Reseau.BlackJackClient;
+
 public interface ConstanteResau {
+	
+	public String ip = BlackJackClient.getIpadresse();
 	
 	public String get = "GET ";
 	public String post = "POST ";

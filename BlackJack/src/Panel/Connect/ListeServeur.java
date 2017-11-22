@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import Constante.Constante;
+import Constante.ConstanteResau;
 import Jeu.FrameJeu;
 import Jeu.Jeu;
 import Jeu.Panel.BoutonPlateau;
@@ -26,7 +27,7 @@ import Panel.Menu.FrameJeuMenu;
 import Reseau.BlackJackClient;
 import Reseau.Connection;
 
-public class ListeServeur extends JPanel implements Constante{
+public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 
 	FrameJeuMenu jeu;
 	private JPanel list = new JPanel();
@@ -158,7 +159,7 @@ public class ListeServeur extends JPanel implements Constante{
 			BlackJackClient client;
 			 try {
 				if (tab.length > 1 && !tab[0].equals("") && !tab[1].equals("")) {
-					client = new BlackJackClient(tab[0], Integer.valueOf(tab[1]),BlackJackClient.getIpadresse());
+					client = new BlackJackClient(tab[0], Integer.valueOf(tab[1]),ip);
 				} else if (tab.length > 0 && !!tab[0].equals("")) {
 					client = new BlackJackClient(tab[0]);
 				} else {

@@ -54,6 +54,7 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	
 	public BlackJackClient(String hostAddr, Integer hostPort,final String adresse)
 		throws UnknownHostException, IOException, InterruptedException {
+		ip = adresse;
 		Socket socketSend = new Socket(InetAddress.getByName(hostAddr), hostPort);
 		socketReader = new BufferedReader(new InputStreamReader(socketSend.getInputStream()));
 		socketWriter = new BufferedWriter(new OutputStreamWriter(socketSend.getOutputStream()));
@@ -61,10 +62,11 @@ public class BlackJackClient implements Constante,ConstanteResau {
 			new Thread() {
 				public void run() {
 					try {
-						setMessage(GeneratorEntete.share.generationEnteteGetAvecHost(connect,adresse),socketWriter);
+						setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
 						fenetreclient = new FrameJeu(BlackJackClient.this); 
+						
 						String result=socketReader.readLine();
-						//System.out.println(result);
+						System.out.println(result);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -91,12 +93,12 @@ public class BlackJackClient implements Constante,ConstanteResau {
 			
 			for (; n.hasMoreElements();){
                 NetworkInterface e = n.nextElement();
-                if(e.getName().equals("en0")) {
+                if(e.getName().equals("en0") || e.getName().equals("eth0")) {
                 		Enumeration<InetAddress> a = e.getInetAddresses();
                 		InetAddress addr = null;
-                    for (; a.hasMoreElements();){
+                		for (; a.hasMoreElements();){
                             addr = a.nextElement();
-                    }
+                		}
                     return addr.getHostAddress();
                 }
                 
