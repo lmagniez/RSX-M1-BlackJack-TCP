@@ -9,8 +9,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import Constante.Constante;
 import Constante.ConstanteResau;
@@ -22,6 +25,7 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	private static final String LO_ADDR = "127.0.0.1";
 	public static final int DEFAULT_LOCAL_PORT = 1989;
 
+	private String ip;
 	private PrintStream defaultOutStream = System.out;
 	private InputStream defaultInStream = System.in;
 	private BufferedReader cliReader = new BufferedReader(new InputStreamReader(defaultInStream));
@@ -35,7 +39,7 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	}
 
 	public BlackJackClient(String hostAddr) throws UnknownHostException, IOException, InterruptedException {
-		this(hostAddr, DEFAULT_LOCAL_PORT);
+		this(hostAddr, DEFAULT_LOCAL_PORT,"127.0.0.1");
 	}
 
 	public void setMessage(String s, BufferedWriter w) {
@@ -48,25 +52,23 @@ public class BlackJackClient implements Constante,ConstanteResau {
 		}
 	}
 	
-	public BlackJackClient(String hostAddr, Integer hostPort)
+	public BlackJackClient(String hostAddr, Integer hostPort,final String adresse)
 		throws UnknownHostException, IOException, InterruptedException {
-		Socket socket = new Socket(InetAddress.getByName(hostAddr), hostPort);
-		socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		Socket socketSend = new Socket(InetAddress.getByName(hostAddr), hostPort);
+		socketReader = new BufferedReader(new InputStreamReader(socketSend.getInputStream()));
+		socketWriter = new BufferedWriter(new OutputStreamWriter(socketSend.getOutputStream()));
 		try {
 			new Thread() {
 				public void run() {
-					System.out.println(GeneratorEntete.share.generationEnteteGet(connect));
-					
-					setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
-					fenetreclient = new FrameJeu(BlackJackClient.this); 
-					/*
 					try {
-					 
+						setMessage(GeneratorEntete.share.generationEnteteGetAvecHost(connect,adresse),socketWriter);
+						fenetreclient = new FrameJeu(BlackJackClient.this); 
+						String result=socketReader.readLine();
+						//System.out.println(result);
 					} catch (IOException e) {
-						fenetreclient.ecranFin("Erreur du Serveur");
-						game=false;
-					}*/
+						e.printStackTrace();
+					}
+					
 				}
 			}.start();
 		} catch (Exception e) {
@@ -81,4 +83,29 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	public BufferedWriter getSocketWriter() {
 		return socketWriter;
 	}
+
+	public static String getIpadresse() {
+		try {
+			Enumeration<NetworkInterface> n;
+			n = NetworkInterface.getNetworkInterfaces();
+			
+			for (; n.hasMoreElements();){
+                NetworkInterface e = n.nextElement();
+                if(e.getName().equals("en0")) {
+                		Enumeration<InetAddress> a = e.getInetAddresses();
+                		InetAddress addr = null;
+                    for (; a.hasMoreElements();){
+                            addr = a.nextElement();
+                    }
+                    return addr.getHostAddress();
+                }
+                
+			}
+		} catch (SocketException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return "";
+	}
+	
 }

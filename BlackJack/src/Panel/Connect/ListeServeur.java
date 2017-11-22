@@ -158,7 +158,7 @@ public class ListeServeur extends JPanel implements Constante{
 			BlackJackClient client;
 			 try {
 				if (tab.length > 1 && !tab[0].equals("") && !tab[1].equals("")) {
-					client = new BlackJackClient(tab[0], Integer.valueOf(tab[1]));
+					client = new BlackJackClient(tab[0], Integer.valueOf(tab[1]),BlackJackClient.getIpadresse());
 				} else if (tab.length > 0 && !!tab[0].equals("")) {
 					client = new BlackJackClient(tab[0]);
 				} else {

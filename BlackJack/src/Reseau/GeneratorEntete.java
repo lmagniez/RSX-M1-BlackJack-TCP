@@ -1,5 +1,8 @@
 package Reseau;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import Constante.ConstanteResau;
 
 public class GeneratorEntete implements ConstanteResau{
@@ -16,5 +19,9 @@ public class GeneratorEntete implements ConstanteResau{
 
 	public String generationEntetePostString(String route,String data) {
 		return post + route + "\n" + data + "\n";
+	}
+
+	public String generationEnteteGetAvecHost(String route,String adresse){
+		return get + route + "\nhost: "+ adresse +"\n";
 	}
 }

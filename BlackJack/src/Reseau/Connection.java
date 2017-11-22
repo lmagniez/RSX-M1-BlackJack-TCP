@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
 import Panel.Connect.Identification;
@@ -42,7 +43,7 @@ public class Connection {
     	      	        try {
 							dsocket.receive(packet);
 							String msg = new String(buffer, 0, packet.getLength());
-		    	      	    ident.getListeServeur().add(packet.getAddress().toString().replaceAll("/", ""),portTCP,msg);
+							ident.getListeServeur().add(packet.getAddress().toString().replaceAll("/", ""),portTCP,msg);
 		    	      	    packet.setLength(buffer.length);
 					} catch (IOException e) {
 							System.out.println("RECEIV UDP");
