@@ -16,6 +16,8 @@ public class BlackJack implements ConstanteResau{
 		System.out.println(GeneratorEntete.share.generationEntetePostNumber(mise,200));
 		System.out.println(GeneratorEntete.share.generationEntetePostString("NEXISTE/PAS","AU CAS OU"));
 		
+		System.out.println("POUR VOIR AUTRE ROUTES : Constante -> ConstanteReseau");
+		
 		FrameJeuMenu fen1=new FrameJeuMenu();
 	}
 }
