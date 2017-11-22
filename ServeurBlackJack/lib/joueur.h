@@ -22,6 +22,7 @@ typedef enum {OFF, WAITING, PLAYING, FINISHED, LOSE} etat;
 typedef struct{
 	int id_joueur;
 	jeu *jeux;
+	char *adresse;
 	int nb_jeux;
 	int credit;
 	int mise_totale;
@@ -32,7 +33,7 @@ typedef struct{
 void afficher_joueur(joueur *j);
 void generer_joueur(joueur *j, int id_joueur);
 void destroy_joueur(joueur *j);
-void start_joueur(joueur *j, int credit);
+void start_joueur(joueur *j, int credit, char *adresse);
 void stop_joueur(joueur *j);
 
 int proposer_mise(joueur *j, int mise);
