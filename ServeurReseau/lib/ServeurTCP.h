@@ -13,7 +13,7 @@
 #include <pthread.h>
 #include "./Network_Toolbox.h"
 
-void * threadServeurTCP(void * arg);
-pthread_t startServeurTCP();
+void * threadServeurTCPConnection(void * arg);
+pthread_t startServeurTCPConnection();
 
 #endif

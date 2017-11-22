@@ -36,7 +36,7 @@ int socket_TCP();
 int wait_connection_TCP(int sock);
 void close_TCP(int fd);
 void TCP_bind_server(int sock, int port);
-void receive_data_TCP(int sock);
+char * receive_data_TCP(int sock);
 void handler_tcp(int arg);
 void send_data_TCP(int sock, char* msg);
 void connect_TCP(int sock, char *host, int port);
