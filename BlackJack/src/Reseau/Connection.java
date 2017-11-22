@@ -28,11 +28,11 @@ public class Connection {
         socket.close();
     }
     
-    private  void ecouteUDP(Identification ident) throws IOException {  		
-    	      DatagramSocket dsocket = new DatagramSocket(port);
-    	      byte[] buffer = new byte[50];
+    private  void ecouteUDP(final Identification ident) throws IOException {  		
+    	      final DatagramSocket dsocket = new DatagramSocket(port);
+    	      final byte[] buffer = new byte[50];
 
-    	      DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+    	      final DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
     	      
     	      Thread t = new Thread() {
     	          public void run() {

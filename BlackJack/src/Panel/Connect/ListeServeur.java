@@ -134,7 +134,6 @@ public class ListeServeur extends JPanel implements Constante{
 		/**
 		 * Action Performed 
 		 */
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Join")) {
 				

@@ -69,7 +69,6 @@ public class Plateau extends JPanel implements ActionListener, Constante{
 		super.paintComponent(g);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Mise")) {
 			jeu.controllerJeu.mise(Integer.parseInt(miseStrings[miseList.getSelectedIndex()]));

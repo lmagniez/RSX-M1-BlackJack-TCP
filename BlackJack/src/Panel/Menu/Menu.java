@@ -44,18 +44,12 @@ public class Menu extends JPanel implements ActionListener,Constante{
 		g.drawImage(fond,0, 0, 400, 500,this);
 	}
 
-
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Quitter")) 
 			frame.dispose();
 		else if (e.getActionCommand().equals("Jouer")) {
-			//frame.choosePort();
-			
-			//REMPLACER
-			new FrameJeu(null);
-			frame.setVisible(false);
-			
+			frame.choosePort();			
 		}		
 	}
 }
