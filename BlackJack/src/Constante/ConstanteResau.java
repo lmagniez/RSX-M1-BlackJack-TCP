@@ -12,4 +12,6 @@ public interface ConstanteResau {
 	public String leave = "/action/leave";
 	public String doubler = "/action/doubler";
 	public String rester = "/action/rester";
+	
+	public String connect = "action/connect";
 }

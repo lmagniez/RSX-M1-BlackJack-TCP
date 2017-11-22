@@ -13,9 +13,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import Constante.Constante;
+import Constante.ConstanteResau;
 import Jeu.FrameJeu;
 
-public class BlackJackClient implements Constante {
+public class BlackJackClient implements Constante,ConstanteResau {
 
 	private FrameJeu fenetreclient;
 	private static final String LO_ADDR = "127.0.0.1";
@@ -39,7 +40,7 @@ public class BlackJackClient implements Constante {
 
 	public void setMessage(String s, BufferedWriter w) {
 		try {
-			w.write(s + "\n");
+			w.write(s);
 			w.flush();
 		} catch (IOException e) {
 			fenetreclient.ecranFin("Erreur du Serveur");
@@ -55,6 +56,8 @@ public class BlackJackClient implements Constante {
 		try {
 			new Thread() {
 				public void run() {
+					setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
+					fenetreclient = new FrameJeu(BlackJackClient.this); 
 					/*
 					try {
 					 

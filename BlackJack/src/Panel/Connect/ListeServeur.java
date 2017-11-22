@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -21,6 +23,7 @@ import Jeu.Panel.BoutonPlateau;
 import Model.Joueur;
 import Model.Server;
 import Panel.Menu.FrameJeuMenu;
+import Reseau.BlackJackClient;
 import Reseau.Connection;
 
 public class ListeServeur extends JPanel implements Constante{
@@ -143,11 +146,6 @@ public class ListeServeur extends JPanel implements Constante{
 				String[] tab = { this.addresse, this.port };
 				creerclient(tab);
 				repaint();
-				
-				//TO DO 
-				//error = "CONNECTION A FAIRE";
-				new FrameJeu(null);
-				frameJeuMenu.setVisible(false);
 			}
 		}
 
@@ -156,17 +154,17 @@ public class ListeServeur extends JPanel implements Constante{
 		 * @param tab
 		 */
 		private void creerclient(String[] tab) {
-			
-			/*
+			String error;
+			BlackJackClient client;
 			 try {
 				if (tab.length > 1 && !tab[0].equals("") && !tab[1].equals("")) {
-					new BattleShipClient(tab[0], Integer.valueOf(tab[1]));
+					client = new BlackJackClient(tab[0], Integer.valueOf(tab[1]));
 				} else if (tab.length > 0 && !!tab[0].equals("")) {
-					new BattleShipClient(tab[0]);
+					client = new BlackJackClient(tab[0]);
 				} else {
-					new BattleShipClient();
+					client= new BlackJackClient();
 				}
-				f.setVisible(false);
+				frameJeuMenu.setVisible(false);
 			} catch (UnknownHostException e1) {
 				error = "Unknown Error";
 				repaint();
@@ -176,7 +174,7 @@ public class ListeServeur extends JPanel implements Constante{
 			} catch (InterruptedException e1) {
 				error = "Connection Lost";
 				repaint();
-			}*/
+			}
 		}
 	}
 }
