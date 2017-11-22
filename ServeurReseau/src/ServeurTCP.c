@@ -7,9 +7,13 @@
 int receiveTCP = 1;
 
 void * threadServeurTCP(void * arg){
+
+	int tcp_socket = socket_TCP();
+	TCP_bind_server(tcp_socket,9090);
+	int ecoute = wait_connection_TCP(tcp_socket);	
 	
 	while(receiveTCP){
-
+		receive_data_TCP(ecoute);
 	}
 	
 	(void) arg;

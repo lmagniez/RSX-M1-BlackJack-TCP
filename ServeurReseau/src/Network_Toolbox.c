@@ -196,24 +196,35 @@ void receive_data_TCP(int sock){
 
 	int nb_lu_total = 1;
 	int nb_max = MAX_MSG;
-	msg[0]='\0';
+	//msg[0]='\0';
 
 	int nb_lu;
+	int dejaRecu = 0;
 
-	alarm(5);
-	signal(SIGALRM, handler_tcp);
+	struct timeval timeout;      
+   timeout.tv_sec = 0;
+   timeout.tv_usec = 0;
+	setsockopt (sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+
+
+	//socket_timeout
+	
 
 	for(;;){
 		signal(SIGALRM, handler_tcp);
-		alarm(5);
-		nb_lu=recv(sock, buffer, BUFF_SIZE, 0);
-		alarm(0);
+		//alarm(5);
+		
+		if(dejaRecu)timeout.tv_sec = 5;
 
+		nb_lu=recv(sock, buffer, BUFF_SIZE, 0);
+		//alarm(0);
+		
 		if(nb_lu == -1)
 			perror("erreur receive TCP");
-		buffer[nb_lu_total] = '\0';
+		buffer[nb_lu] = '\0';
 
 		if(nb_lu > 0){
+			dejaRecu = 1;
 			nb_lu_total += nb_lu;
 			if(nb_lu_total > nb_max)
 				msg = realloc(msg, nb_lu_total * sizeof(char));
@@ -221,9 +232,8 @@ void receive_data_TCP(int sock){
 			printf("Recerive tmp TCP message \"%s\" (%lu bytes)\n", buffer, strlen(buffer));
 		}
 		else{
-			printf("Received TCP messagre \"%s\" (%d bytes)\n", msg, nb_lu_total);
 			free(msg);
-			//close(sock);
+			close(sock);
 			return;
 		}
 
@@ -262,7 +272,7 @@ void TCP_bind_server(int sock, int port){
 		perror("ERROR on listen");
 		exit(h_errno);
 	}
-	printf("UDP socket bound on port %d\n", port);
+	printf("TCP socket bound on port %d\n", port);
 
 }
 

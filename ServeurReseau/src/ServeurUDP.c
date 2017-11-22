@@ -30,7 +30,7 @@ char * messageRetour(int nbJoueur){
 
 
 char * verificationPartie(){
-	int nbJoueur = 5;
+	int nbJoueur = 3;
 	return messageRetour(nbJoueur);
 }
 

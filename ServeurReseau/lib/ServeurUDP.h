@@ -1,3 +1,6 @@
+#ifndef SERVER_UDP
+#define SERVER_UDP
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,3 +18,5 @@ void sendBackBroadcast(struct client c);
 
 void * threadServeurUDP(void * arg);
 pthread_t startServeurUDP();
+
+#endif
