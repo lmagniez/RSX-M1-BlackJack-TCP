@@ -107,15 +107,12 @@ int socket_TCP(){
 	return res;
 }
 
+void connect_TCP(int sock, char * hostaddr, int port){
 
-
-void connect_TCP(int sock, char *host, int port){
 	struct in_addr ipv4addr;
-	inet_pton(AF_INET,host,&ipv4addr);
 
-	printf("%d %s \n",strlen(host),host);
-
-	struct hostent *he = gethostbyaddr(&ipv4addr,sizeof(struct in_addr),AF_INET);
+	inet_pton(AF_INET, hostaddr, &ipv4addr);
+	struct hostent *he = gethostbyaddr(&ipv4addr, sizeof ipv4addr, AF_INET);
 	if(he == NULL) {
 		herror("connect_TCP() -- gethostbyaddr");
 		exit(h_errno);
