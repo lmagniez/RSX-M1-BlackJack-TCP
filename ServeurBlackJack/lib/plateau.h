@@ -17,7 +17,7 @@ typedef struct{
 	joueur *joueurs;
 	int nb_joueur;
 	int tour_id_joueur;
-	int tour_id_jeu;	
+	int tour_id_jeu;
 } plateau;
 
 void init_plateau(plateau *p);
@@ -25,7 +25,7 @@ void destroy_plateau(plateau *p);
 void distribuer_carte(plateau *p, jeu *j);
 void afficher_plateau(plateau *p);
 
-int rejoindre_partie(plateau *p, int credit);
+int rejoindre_partie(plateau *p, int credit, char *adresse);
 int quitter_partie(plateau *p, int id_joueur);
 
 int peut_commencer_tour(plateau *p);

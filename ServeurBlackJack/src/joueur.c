@@ -31,7 +31,7 @@ char * str_from_etat(etat e){
 		case LOSE:
 			return "LOSE";
 			break;
-			
+
 	}
 	return NULL;
 }
@@ -43,6 +43,7 @@ void generer_joueur(joueur *j, int id_joueur){
 	j->mise_totale = -1;
 	j->e = OFF;
 	j->nb_jeux = -1;
+	j->adresse = malloc(sizeof(char)*(3*4+3+1));
 	j->jeux = malloc(sizeof(jeu)*MAX_JEUX);
 	for(int i=0; i<MAX_JEUX; i++){
 		generer_jeu(&(j->jeux[i]));
@@ -53,14 +54,16 @@ void destroy_joueur(joueur *j){
 	for(int i=0; i<MAX_JEUX; i++){
 		destroy_jeu(&(j->jeux[0]));
 	}
+	free(j->adresse);
 	free(j->jeux);
 }
 
-void start_joueur(joueur *j, int credit){
+void start_joueur(joueur *j, int credit, char *adresse){
 	j->credit = credit;
 	j->mise_actuelle = 0;
 	j->mise_totale = 0;
 	j->e = WAITING;
+	strcpy(j->adresse, adresse);
 	j->nb_jeux = 1;
 	start_jeu(&(j->jeux[0]));
 }
@@ -75,8 +78,8 @@ void stop_joueur(joueur *j){
 
 
 void afficher_joueur(joueur *j){
-	printf("--Joueur %d-- Credit: %d Mise: %d (reel: %d) Etat: %s\n", 
-		j->id_joueur, j->credit, j->mise_totale, j->mise_actuelle, str_from_etat(j->e));
+	printf("--Joueur %d-- Credit: %d Mise: %d (reel: %d) Etat: %s Adresse: %s\n",
+		j->id_joueur, j->credit, j->mise_totale, j->mise_actuelle, str_from_etat(j->e), j->adresse);
 	for(int i=0; i<j->nb_jeux; i++){
 		printf("Jeu %d\n",i);
 		afficher_jeu(&(j->jeux[i]));
@@ -88,14 +91,14 @@ void afficher_joueur(joueur *j){
 //sinon retourne -1
 int proposer_mise(joueur *j, int mise){
 	if(j->credit>mise){
-		j->credit += -mise; 
+		j->credit += -mise;
 		return 1;
 	}
 	return -1;
 }
 
 //retourne l'indice du jeu pouvant être splitté
-//sinon retourne -1 
+//sinon retourne -1
 int peut_splitter(joueur *j){
 	if(j->nb_jeux==3)
 		return -1;
@@ -114,7 +117,7 @@ int peut_splitter(joueur *j){
 //splitte le jeu
 int splitter_jeu(joueur *j){
 	int id_jeux=peut_splitter(j);
-	
+
 	if(id_jeux!=-1){
 		j->nb_jeux++;
 		j->jeux[j->nb_jeux-1].e_jeu = JOUE;
@@ -123,7 +126,7 @@ int splitter_jeu(joueur *j){
 		return j->nb_jeux;
 	}
 	return -1;
-	
+
 }
 
 int modifier_credit(joueur *j, int credit){
@@ -141,7 +144,7 @@ int id_joueur;
 	etat e;
 
 char * joueur_to_json(joueur *j){
-	
+
 	char *buf = malloc(sizeof(char)*MAX_BUF_JOUEUR);
 	char str[12];
 	int cur_size = 0;
@@ -168,13 +171,13 @@ char * joueur_to_json(joueur *j){
 			strcat(buf, ",\n");
 		}
 		strcat(buf, jeu_to_json(&(j->jeux[i])));
-		
+
 	}
 	strcat(buf,"\n]\n");
-	
+
 	strcat(buf,"\n}");
-	
+
 	return buf;
-	
+
 }
 
