@@ -46,7 +46,7 @@ public class Server {
 	}
 
 	private static int lireNombrePersonne(String msg) {
-			msg = msg.replaceAll("[a-zA-Z1-9\\D]", "");
+			msg = msg.replaceAll("[\\D]", "");
 			if(msg.equals(""))return -1;
 			return Integer.parseInt(msg);
 	}

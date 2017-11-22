@@ -13,7 +13,9 @@ public class Connection {
 	
 	public static Connection share = new Connection();
 	
-	public  int port = 8080;
+	public  int portTCP = 9090;
+	public  int portUDP = 8080;
+	
 	public  boolean recoit = true;
 	
     public  void broadcast(String broadcastMessage, InetAddress address) throws IOException {
@@ -23,13 +25,13 @@ public class Connection {
         byte[] buffer = broadcastMessage.getBytes();
         
         DatagramPacket packet 
-          = new DatagramPacket(buffer, buffer.length, address, port);
+          = new DatagramPacket(buffer, buffer.length, address, portUDP);
         socket.send(packet);
         socket.close();
     }
     
     private  void ecouteUDP(final Identification ident) throws IOException {  		
-    	      final DatagramSocket dsocket = new DatagramSocket(port);
+    	      final DatagramSocket dsocket = new DatagramSocket(portUDP);
     	      final byte[] buffer = new byte[50];
 
     	      final DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -40,10 +42,8 @@ public class Connection {
     	      	        try {
 							dsocket.receive(packet);
 							String msg = new String(buffer, 0, packet.getLength());
-							
-		    	      	    ident.getListeServeur().add(packet.getAddress().getHostName(),port,msg);
-
-		    	      	        packet.setLength(buffer.length);
+		    	      	    ident.getListeServeur().add(packet.getAddress().toString().replaceAll("/", ""),portTCP,msg);
+		    	      	    packet.setLength(buffer.length);
 					} catch (IOException e) {
 							System.out.println("RECEIV UDP");
 							e.printStackTrace();
@@ -59,6 +59,7 @@ public class Connection {
 			share.broadcast("I WANT TO PLAY BLACKJACK", InetAddress.getByName("255.255.255.255"));
 	        share.ecouteUDP(ident);
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("SEND UDP BRODCAST");
 		} 
     }
