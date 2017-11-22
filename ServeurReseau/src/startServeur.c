@@ -3,7 +3,7 @@
 
 int main(){
 	pthread_t udpThread = startServeurUDP();
-	pthread_t tcpThread = startServeurTCP();
+	pthread_t tcpThread = startServeurTCPConnection();
 
 	
     if (pthread_join(tcpThread, NULL)) {

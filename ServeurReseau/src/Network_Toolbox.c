@@ -1,4 +1,5 @@
 #include "../lib/Network_Toolbox.h"
+#include <errno.h>
 #define MAX_LENGTH 1024
 #define MAX_MSG 100
 #define BUFF_SIZE 20
@@ -16,23 +17,10 @@ int socket_UDP(){
 	return fd;
 }
 
-//receive from
-
-
 void close_UDP(int fd){
-
 	if(close(fd)==-1)//shutdown pour un seul coté
 		perror("close UDP");
-
 }
-
-/*
-host :
-netdb.h
-arpa /inet.h
-
-get_addr_infos
-*/
 
 void send_UDP(int sock, char* host, int port, char* msg){
 	
@@ -108,20 +96,9 @@ void UDP_bind_server(int sock, int port){
 	printf("UDP socket bound on port %d\n", port);
 }
 
-//client message, addr ip, port
-//serveur que port pour le bind dessus
-
-/*
- *
- * TCP
- *
- */
-
-
 int socket_TCP(){
 
 	int res;
-	//int socket(int domain, int type, int protocol);
 	res = socket(AF_INET,SOCK_STREAM,0);
 	if(res==-1){
 		perror("socket open");
@@ -133,27 +110,29 @@ int socket_TCP(){
 
 
 void connect_TCP(int sock, char *host, int port){
+	struct in_addr ipv4addr;
+	inet_pton(AF_INET,host,&ipv4addr);
 
+	printf("%d %s \n",strlen(host),host);
 
-	struct hostent *he = gethostbyname(host);
+	struct hostent *he = gethostbyaddr(&ipv4addr,sizeof(struct in_addr),AF_INET);
 	if(he == NULL) {
-		herror("connect_TCP() -- gethostbyname");
+		herror("connect_TCP() -- gethostbyaddr");
 		exit(h_errno);
 	}
-
 
 	struct sockaddr_in dest;
 	memset(&dest, 0, sizeof(struct sockaddr_in));
 	dest.sin_family = he->h_addrtype;
 	dest.sin_port = htons(port);
 	memcpy(&(dest.sin_addr.s_addr), he->h_addr, he->h_length);
-	printf("Connection attempt to %s on port %d...\n", host, port);
+	printf("Connection attempt to %s on port %d...\n", he->h_addr, port);
 
 	if(connect(sock, (struct sockaddr*)&dest,sizeof(dest))==-1){
 		perror("Connect_TCP()");
 	}
-	printf("Done\n");
 
+	printf("Done\n");
 }
 
 
@@ -165,7 +144,6 @@ void send_data_TCP(int sock, char* msg){
 	for(; nb_envoyes < nb_total;){
 		int nb_send = send(sock, msg+nb_envoyes, nb_total - nb_envoyes, 0);
 		printf("Send tmp TCP message \"%.*s\" (%d bytes)\n", nb_send, msg + nb_envoyes, nb_send);
-		//nb_total += nb_send;
 		nb_envoyes += nb_send;
 
 		printf("%d %d %d\n", nb_send, nb_envoyes, nb_total);
@@ -175,70 +153,44 @@ void send_data_TCP(int sock, char* msg){
 	}
 
 	printf("Send TCP message \"%s\" (%lu bytes)\n", msg, strlen(msg));
-	/*
-	while(nb_envoyes<nb_total){
-
-		int size = send(int sock, msg+nb_envoyes, strlen(msg+nb_envoyes), 0);
-		nb_envoyes += size;
-	}*/
-
-}
-
-void handler_tcp(int arg){
-	printf("No response !! %d\n", arg);
-	exit(0);
 }
 
 //envoie signal au bout 5 sec si rien reçu
-void receive_data_TCP(int sock){
+char * receive_data_TCP(int sock){
 	char *msg = malloc(sizeof(char)*MAX_MSG);
 	char buffer[BUFF_SIZE];
 
 	int nb_lu_total = 1;
 	int nb_max = MAX_MSG;
-	//msg[0]='\0';
 
 	int nb_lu;
-	int dejaRecu = 0;
-
 	struct timeval timeout;      
-   timeout.tv_sec = 0;
-   timeout.tv_usec = 0;
-	setsockopt (sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
-
-
-	//socket_timeout
-	
+   	timeout.tv_sec = 2;
+   	timeout.tv_usec = 0;
 
 	for(;;){
-		signal(SIGALRM, handler_tcp);
-		//alarm(5);
-		
-		if(dejaRecu)timeout.tv_sec = 5;
+
+		setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
 
 		nb_lu=recv(sock, buffer, BUFF_SIZE, 0);
-		//alarm(0);
 		
-		if(nb_lu == -1)
-			perror("erreur receive TCP");
-		buffer[nb_lu] = '\0';
+		if(nb_lu == -1){
+			return msg;
+		}
 
+		buffer[nb_lu] = '\0';
 		if(nb_lu > 0){
-			dejaRecu = 1;
 			nb_lu_total += nb_lu;
 			if(nb_lu_total > nb_max)
 				msg = realloc(msg, nb_lu_total * sizeof(char));
 			strcat(msg, buffer);
-			printf("Recerive tmp TCP message \"%s\" (%lu bytes)\n", buffer, strlen(buffer));
 		}
 		else{
-			free(msg);
 			close(sock);
-			return;
+			return msg;
 		}
-
 	}
-
+	return msg;
 }
 
 void close_TCP(int fd){
