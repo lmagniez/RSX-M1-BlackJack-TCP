@@ -1,3 +1,5 @@
+#ifndef NETWORK_TOOLBOX
+#define NETWORK_TOOLBOX
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -39,4 +41,4 @@ void handler_tcp(int arg);
 void send_data_TCP(int sock, char* msg);
 void connect_TCP(int sock, char *host, int port);
 
-
+#endif
