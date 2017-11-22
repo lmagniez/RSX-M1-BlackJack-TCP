@@ -27,10 +27,11 @@ void * threadServeurTCPConnection(void * arg){
 		msg = msg+25;
 		msg[strlen(msg)-1] = '\0';
 
-		int tcp_sock_send = socket_TCP();
-		connect_TCP(tcp_sock_send,msg,9090);
-		send_data_TCP(tcp_sock_send,"C'est bon");
-		close_TCP(tcp_sock_send);
+		int tcp_socket_send = socket_TCP();
+		connect_TCP(tcp_socket_send,msg,9090);
+		send_data_TCP(tcp_socket_send,"C'est bon");
+
+		close_TCP(tcp_socket_send);
 
 
 		free(msg);
