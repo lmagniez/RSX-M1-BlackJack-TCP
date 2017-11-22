@@ -49,10 +49,9 @@ public class ListeServeur extends JPanel implements Constante{
 	}
 	
 	public void add(String hostName, int port, String msg) {
-
-		System.out.print(msg);
 		Server server = Server.creationServeur(hostName,port,msg);
 		if(server == null)return;
+		System.out.print(msg);
 		listeServer.add(server);
 		addServer();
 		this.repaint();
