@@ -134,15 +134,6 @@ int modifier_credit(joueur *j, int credit){
 	return j->credit;
 }
 
-
-int id_joueur;
-	jeu *jeux;
-	int nb_jeux;
-	int credit;
-	int mise_totale;
-	int mise_actuelle;
-	etat e;
-
 char * joueur_to_json(joueur *j){
 
 	char *buf = malloc(sizeof(char)*MAX_BUF_JOUEUR);

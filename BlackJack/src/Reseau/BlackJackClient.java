@@ -29,8 +29,10 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	private PrintStream defaultOutStream = System.out;
 	private InputStream defaultInStream = System.in;
 	private BufferedReader cliReader = new BufferedReader(new InputStreamReader(defaultInStream));
+	
 	private BufferedReader socketReader;
 	private BufferedWriter socketWriter;
+	
 	private boolean game=true;
 	
 	
@@ -55,27 +57,22 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	public BlackJackClient(String hostname,String hostAddr, Integer hostPort,final String adresse)
 		throws UnknownHostException, IOException, InterruptedException {
 		ip = adresse;
-		Socket socketSend = new Socket(InetAddress.getByName(hostname), hostPort);
-		Socket socketReceiv = new Socket(InetAddress.getByName(hostname), hostPort);
+		final Socket socketSend = new Socket(InetAddress.getByName(hostname), hostPort);
 		
-		socketReader = new BufferedReader(new InputStreamReader(socketReceiv.getInputStream()));
 		socketWriter = new BufferedWriter(new OutputStreamWriter(socketSend.getOutputStream()));
+		socketReader = new BufferedReader(new InputStreamReader(socketSend.getInputStream()));
+		
 		try {
 			new Thread() {
 				public void run() {
+					setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
+					fenetreclient = new FrameJeu(BlackJackClient.this);
 					try {
-						setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
-						fenetreclient = new FrameJeu(BlackJackClient.this); 
-
-						System.out.println("-----> ");
-						String result=socketReader.readLine();
-						System.out.println("-----------> ");
-						
-						System.out.println("-----> " + result);
+						String s = socketReader.readLine();
+						System.out.println("------" + s + "------");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
 				}
 			}.start();
 		} catch (Exception e) {
