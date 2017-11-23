@@ -10,6 +10,8 @@
 int receiveUDP = 1;
 
 char * messageRetour(int nbJoueur){
+
+
 	char buffer[2];
 	sprintf(buffer, "%d", nbJoueur);
 
@@ -17,20 +19,21 @@ char * messageRetour(int nbJoueur){
 	
 	char * param = malloc(sizeof(char)*sizeParam);
 
-	param = strcat(param,"{");
-	param = strcat(param,buffer);
-	param = strcat(param,"}");
+	strcat(param,"{");
+	strcat(param,buffer);
+	strcat(param,"}");
 
 	strcpy(come,COMEHERE);
 	strcat(come,param);
 	come[sizeof(COMEHERE)+sizeParam+1] = '\0';
 
-	return come;
+	return "COME HERE TO HAVE FUN{5}";
+
 }
 
 
 char * verificationPartie(){
-	int nbJoueur = 3;
+	int nbJoueur = 5;
 	return messageRetour(nbJoueur);
 }
 
