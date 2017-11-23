@@ -43,11 +43,10 @@ public class Connection {
     	      	        try {
 							dsocket.receive(packet);
 							String msg = new String(buffer, 0, packet.getLength());
-							ident.getListeServeur().add(packet.getAddress().toString().replaceAll("/", ""),portTCP,msg);
+							ident.getListeServeur().add(packet.getAddress().toString().replaceAll("/", ""),packet.getAddress().getHostName(),portTCP,msg);
 		    	      	    packet.setLength(buffer.length);
 					} catch (IOException e) {
 							System.out.println("RECEIV UDP");
-							e.printStackTrace();
 					}
     	      	     }
     	          }
@@ -60,8 +59,7 @@ public class Connection {
 			share.broadcast("I WANT TO PLAY BLACKJACK", InetAddress.getByName("255.255.255.255"));
 	        share.ecouteUDP(ident);
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("SEND UDP BRODCAST");
+			ident.afficheEcranErreur("Veuillez fermer les autres \n fenetres de BlackJack");
 		} 
     }
 

@@ -49,8 +49,8 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 		}
 	}
 	
-	public void add(String hostName, int port, String msg) {
-		Server server = Server.creationServeur(hostName,port,msg);
+	public void add(String addr , String hostname, int port, String msg) {
+		Server server = Server.creationServeur(hostname,addr,port,msg);
 		if(server == null)return;
 		listeServer.add(server);
 		addServer();
@@ -60,14 +60,14 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 	private void addServer() {
 		this.remove(this.getComponentCount()-1);
 		int i = listeServer.size()-1;
-		list.add(new labelServer(listeServer.get(i).getAdr(),listeServer.get(i).getPort(),listeServer.get(i).getNbJoueur(),list.getComponentCount(),jeu));
+		list.add(new labelServer(listeServer.get(i),list.getComponentCount(),jeu));
 		list.setPreferredSize(new Dimension(350, (list.getComponentCount()+1)*75));
 		list.setBounds(5,5,350, (list.getComponentCount()+1)*75);
 	}
 
 	private void createVue() {
 		for(int i = 0 ; i< listeServer.size();i++) {
-			list.add(new labelServer(listeServer.get(i).getAdr(),listeServer.get(i).getPort(),listeServer.get(i).getNbJoueur(),list.getComponentCount(),jeu));			
+			list.add(new labelServer(listeServer.get(i),list.getComponentCount(),jeu));			
 		}
 		list.setOpaque(false);
 		list.setPreferredSize(new Dimension(350, (list.getComponentCount()+1)*75));
@@ -101,17 +101,13 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 	
 	
 	class labelServer extends JPanel implements ActionListener{
-		private String addresse;
-		private String port;
-		private int nbJoueur;
+		private Server serv;
 		private BoutonPlateau boutonConnect= new BoutonPlateau(this,"Join");
 		private FrameJeuMenu frameJeuMenu;
 		
-		private labelServer(String addr,String port,int nbJoueur,int incrementY,FrameJeuMenu frameJeuMenu) {
+		private labelServer(Server serv,int incrementY,FrameJeuMenu frameJeuMenu) {
 			this.frameJeuMenu = frameJeuMenu;
-			this.addresse = addr;
-			this.nbJoueur = nbJoueur;
-			this.port = port;
+			this.serv = serv;
 			
 			this.setPreferredSize(new Dimension(340, 75));
 			this.setBounds( 0 , 10*incrementY , 300, 75);
@@ -119,7 +115,7 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 			
 			boutonConnect.setBounds(220,30,100,30);
 			
-			if(nbJoueur>=8)this.boutonConnect.setEnabled(false);
+			if(serv.getNbJoueur()>=7)this.boutonConnect.setEnabled(false);
 			
 			this.add(boutonConnect);
 			
@@ -131,9 +127,9 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 			g.setFont(new Font("verdana", Font.BOLD, 15));
 			g.setColor(or);
 
-			g.drawString("Adresse: "+this.addresse, 10, 20);
-			g.drawString("Port: "+this.port, 10, 40);
-			g.drawString("Table: "+nbJoueur+"/8", 10, 60);
+			g.drawString("Adresse: "+serv.getAdr(), 10, 20);
+			g.drawString("Port: "+serv.getPort(), 10, 40);
+			g.drawString("Table: "+serv.getNbJoueur()+"/8", 10, 60);
 			g.drawRect(0, 0, 338, 70);
 		}
 		
@@ -144,7 +140,7 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 			if (e.getActionCommand().equals("Join")) {
 				Connection.share.ferme();
 				
-				String[] tab = { this.addresse, this.port };
+				String[] tab = { serv.getHostname(),serv.getAdr(), serv.getPort() };
 				creerclient(tab);
 				repaint();
 			}
@@ -159,7 +155,7 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 			BlackJackClient client;
 			 try {
 				if (tab.length > 1 && !tab[0].equals("") && !tab[1].equals("")) {
-					client = new BlackJackClient(tab[0], Integer.valueOf(tab[1]),ip);
+					client = new BlackJackClient(tab[0],tab[1], Integer.valueOf(tab[2]),ip);
 				} else if (tab.length > 0 && !!tab[0].equals("")) {
 					client = new BlackJackClient(tab[0]);
 				} else {

@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import Constante.Constante;
 import Jeu.FrameJeu;
+import Panel.Erreur.PanelErreur;
 import Panel.Menu.Bouton;
 import Panel.Menu.FrameJeuMenu;
 import Reseau.BlackJackClient;
@@ -53,4 +54,11 @@ public class Identification extends JPanel implements Constante {
 	public ListeServeur getListeServeur() {
 		return listeServeur;
 	}
+
+	public void afficheEcranErreur(String erreur) {
+		PanelErreur afficheErreur = new PanelErreur(erreur);
+		f.swapEcran(afficheErreur);
+	}
+	
+	
 }

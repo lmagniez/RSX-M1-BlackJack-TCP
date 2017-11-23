@@ -39,7 +39,7 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	}
 
 	public BlackJackClient(String hostAddr) throws UnknownHostException, IOException, InterruptedException {
-		this(hostAddr, DEFAULT_LOCAL_PORT,"127.0.0.1");
+		this("localhost",hostAddr, DEFAULT_LOCAL_PORT,"127.0.0.1");
 	}
 
 	public void setMessage(String s, BufferedWriter w) {
@@ -52,11 +52,13 @@ public class BlackJackClient implements Constante,ConstanteResau {
 		}
 	}
 	
-	public BlackJackClient(String hostAddr, Integer hostPort,final String adresse)
+	public BlackJackClient(String hostname,String hostAddr, Integer hostPort,final String adresse)
 		throws UnknownHostException, IOException, InterruptedException {
 		ip = adresse;
-		Socket socketSend = new Socket(InetAddress.getByName(hostAddr), hostPort);
-		socketReader = new BufferedReader(new InputStreamReader(socketSend.getInputStream()));
+		Socket socketSend = new Socket(InetAddress.getByName(hostname), hostPort);
+		Socket socketReceiv = new Socket(InetAddress.getByName(hostname), hostPort);
+		
+		socketReader = new BufferedReader(new InputStreamReader(socketReceiv.getInputStream()));
 		socketWriter = new BufferedWriter(new OutputStreamWriter(socketSend.getOutputStream()));
 		try {
 			new Thread() {
@@ -64,9 +66,12 @@ public class BlackJackClient implements Constante,ConstanteResau {
 					try {
 						setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
 						fenetreclient = new FrameJeu(BlackJackClient.this); 
-						
+
+						System.out.println("-----> ");
 						String result=socketReader.readLine();
-						System.out.println(result);
+						System.out.println("-----------> ");
+						
+						System.out.println("-----> " + result);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -93,7 +98,7 @@ public class BlackJackClient implements Constante,ConstanteResau {
 			
 			for (; n.hasMoreElements();){
                 NetworkInterface e = n.nextElement();
-                if(e.getName().equals("en0") || e.getName().equals("eth0")) {
+                if(e.getName().equals("en0") || e.getName().equals("eth0") || e.getName().equals("Adresse IPv4")) {
                 		Enumeration<InetAddress> a = e.getInetAddresses();
                 		InetAddress addr = null;
                 		for (; a.hasMoreElements();){
