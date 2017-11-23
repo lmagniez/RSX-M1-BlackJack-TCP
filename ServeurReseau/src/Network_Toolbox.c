@@ -148,8 +148,6 @@ void send_data_TCP(int sock, char* msg){
 		if(nb_send == -1)
 			perror("send_data_TCP() -- send");
 	}
-
-	printf("Send TCP message \"%s\" (%lu bytes)\n", msg, strlen(msg));
 }
 
 //envoie signal au bout 5 sec si rien reçu
@@ -172,6 +170,7 @@ char * receive_data_TCP(int sock){
 		nb_lu=recv(sock, buffer, BUFF_SIZE, 0);
 		
 		if(nb_lu == -1){
+			timeout.tv_sec = 0;
 			return msg;
 		}
 
@@ -184,6 +183,8 @@ char * receive_data_TCP(int sock){
 		}
 		else{
 			close(sock);
+			printf("nb_lu null\n");
+			timeout.tv_sec = 0;
 			return msg;
 		}
 	}

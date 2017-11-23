@@ -10,33 +10,31 @@ int receiveTCP = 1;
 plateau p;
 
 void * threadServeurTCPConnection(void * arg){
-	/*
 	int tcp_socket = socket_TCP();
 	TCP_bind_server(tcp_socket,9090);
 
 	while(receiveTCP){
 		int ecoute = wait_connection_TCP(tcp_socket);
-		char * msg = receive_data_TCP(ecoute);		
+		char * msg = receive_data_TCP(ecoute);	
+
+		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT 	
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
 		if(strcmp(msg,"")==0){ 
-			printf("Fin connection \n");
 			free(msg);
 			//GERER DECONNECTION CLIENT SERVEUR ICI
-			break;
+			continue;
 		}
 
+		//FUTUR CREATION DU THREAD POUR CLIENT
+
 		printf("%s\n",msg); 
-
-
-
-
+		send_data_TCP(ecoute,"coucou\n");
 
 		free(msg);
 	}
 
 	close_TCP(tcp_socket);	
-*/
 	(void) arg;
     pthread_exit(NULL);
 }
