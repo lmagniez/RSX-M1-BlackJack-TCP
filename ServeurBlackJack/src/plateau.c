@@ -341,7 +341,7 @@ int demander_mise(plateau *p, int id_joueur, int mise){
 		p->joueurs[id_joueur].mise_totale = mise;
 		p->joueurs[id_joueur].credit += -mise;
 		printf("JOUEUR %d mise %d\n", id_joueur, mise);
-		return 0;
+		return mise;
 	}
 	return -1;
 }
@@ -359,6 +359,16 @@ int check_joueur_actif(plateau *p, int id_joueur){
 	p->joueurs[id_joueur].e = FINISHED;
 	return 1;
 }
+
+int get_id_from_adresse(plateau *p, char *adresse){
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(strcmp(p->joueurs[i].adresse, adresse)==0){
+			return i;
+		}
+	}
+	return -1;
+}
+
 
 char * plateau_to_json(plateau *p){
 
@@ -399,5 +409,7 @@ char * plateau_to_json(plateau *p){
 	return buf;
 
 }
+
+
 
 
