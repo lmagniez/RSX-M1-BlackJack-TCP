@@ -4,7 +4,7 @@ SRCDIR = ./src/
 CC = gcc 
 CFLAGS = -Wall -Wextra -g -O2
 
-OBJET = $(BINDIR)ServeurUDP.o $(BINDIR)Network_Toolbox.o $(BINDIR)startServeur.o $(BINDIR)ServeurTCP.o $(BINDIR)carte.o $(BINDIR)tas.o $(BINDIR)jeu.o $(BINDIR)joueur.o $(BINDIR)plateau.o 
+OBJET = $(BINDIR)ServeurUDP.o $(BINDIR)Network_Toolbox.o $(BINDIR)startServeur.o $(BINDIR)ServeurTCP.o $(BINDIR)parsingCmd.o $(BINDIR)carte.o $(BINDIR)tas.o $(BINDIR)jeu.o $(BINDIR)joueur.o $(BINDIR)plateau.o 
 
 all: server
 
@@ -26,6 +26,9 @@ $(BINDIR)joueur.o: $(PLATEAUSRCDIR)joueur.c
 $(BINDIR)plateau.o: $(PLATEAUSRCDIR)plateau.c
 	@$(CC) $(CFLAGS) -c  -o $@ $(PLATEAUSRCDIR)plateau.c
 
+
+$(BINDIR)parsingCmd.o : $(SRCDIR)parsingCmd.c
+	$(CC) $(CFLAGS) -c -o $@ $(SRCDIR)parsingCmd.c -lpthread  
 
 $(BINDIR)ServeurTCP.o : $(SRCDIR)ServeurTCP.c
 	$(CC) $(CFLAGS) -c -o $@ $(SRCDIR)ServeurTCP.c -lpthread  
