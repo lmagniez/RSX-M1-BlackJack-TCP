@@ -1,10 +1,13 @@
 #include "../lib/ServeurTCP.h"
+#include "../../ServeurBlackJack/lib/plateau.h"
 #define MAX_LENGTH 1024
 #define MAX_MSG 100
 #define BUFF_SIZE 20
 #define MAX_BACKLOG 9
 
 int receiveTCP = 1;
+
+plateau p;
 
 void * threadServeurTCPConnection(void * arg){
 	/*
@@ -40,6 +43,7 @@ void * threadServeurTCPConnection(void * arg){
 
 
 pthread_t startServeurTCPConnection(){
+	init_plateau(&p);
 	pthread_t threadServeur;
 	if(pthread_create(&threadServeur, NULL, threadServeurTCPConnection, NULL) == -1) {
 		perror("pthread_create()\n");
