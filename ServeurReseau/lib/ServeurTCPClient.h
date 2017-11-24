@@ -1,5 +1,5 @@
-#ifndef SERVER_TCP
-#define SERVER_TCP
+#ifndef SERVER_TCP_CLIENT
+#define SERVER_TCP_CLIENT
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -12,9 +12,8 @@
 #include <signal.h>
 #include <pthread.h>
 #include "./Network_Toolbox.h"
-#include "./ServeurTCPClient.h"
 
-void * threadServeurTCPConnection(void * arg);
-pthread_t startServeurTCPConnection();
+void * threadServeurTCPClient(void * arg);
+pthread_t startServeurTCPClient(int socket);
 
 #endif

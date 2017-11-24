@@ -27,8 +27,7 @@ char * messageRetour(int nbJoueur){
 	strcat(come,param);
 	come[sizeof(COMEHERE)+sizeParam+1] = '\0';
 
-	return "COME HERE TO HAVE FUN{5}";
-
+	return come;
 }
 
 
