@@ -50,8 +50,24 @@ public class Joueur {
 		return credit;
 	}
 	
-	public String getnom() {
+	public String getNom() {
 		return nom;
+	}
+	
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public int getId_joueur() {
+		return id_joueur;
+	}
+
+	public int getCredit() {
+		return credit;
+	}
+
+	public EtatJoueur getEtat() {
+		return etat;
 	}
 
 	public int getMise_totale() {

@@ -3,11 +3,13 @@ package Jeu;
 import java.util.ArrayList;
 
 import Model.Joueur;
+import Model.Plateau;
 
 public class ModelJeu {
 
+	private int id = 0;
 	private Jeu jeu;
-	public ArrayList<Joueur> listeJoueur = new ArrayList<Joueur>();
+	private Plateau plateau;
 	
 	public void addObserverGrille(Jeu j) {
 		jeu = j;
@@ -15,12 +17,8 @@ public class ModelJeu {
 		//AJOUTER JOUEUR
 	}
 	
-	public void addJoueur() {
-		jeu.addJoueur(listeJoueur.get(listeJoueur.size()-1));
-	}
-
 	public boolean verifAssezArgent(int mise) {
-		return listeJoueur.get(0).getsomme() >= mise;
+		return plateau.getListJoueur().get(id).getsomme() >= mise;
 	}
 
 	public void afficheErreurMessage(String msg) {
@@ -29,6 +27,29 @@ public class ModelJeu {
 
 	public void afficheBoutonAction() {
 		jeu.afficheBoutonAction();
+	}
+
+	public void setPlateau(Plateau p) {
+		jeu.reset();
+		plateau = p;
+		majNom();
+		miseAjourInterface();
+	}
+
+	private void majNom() {
+		for(int i  = 0 ; i < plateau.getListJoueur().size();i++) {
+			if(plateau.getListJoueur().get(i).getid() == id) {
+				plateau.getListJoueur().get(i).setNom("YOU");
+			}else {
+				plateau.getListJoueur().get(i).setNom("Joueur" + plateau.getListJoueur().get(i).getid());
+			}
+		}
+	}
+
+	private void miseAjourInterface() {
+		for(int i  = 0 ; i < plateau.getListJoueur().size();i++) {
+			jeu.addJoueur(plateau.getListJoueur().get(i));
+		}
 	}
 	
 	
