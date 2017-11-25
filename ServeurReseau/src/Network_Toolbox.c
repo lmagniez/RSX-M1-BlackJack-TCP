@@ -159,9 +159,9 @@ char * receive_data_TCP(int sock){
 	int nb_max = MAX_MSG;
 
 	int nb_lu;
-	struct timeval timeout;      
-   	timeout.tv_sec = 2;
-   	timeout.tv_usec = 0;
+	struct timeval timeout; 
+ 	timeout.tv_sec = 2;
+ 	timeout.tv_usec = 0;
 
 	for(;;){
 
