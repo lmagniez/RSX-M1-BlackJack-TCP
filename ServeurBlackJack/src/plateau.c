@@ -404,7 +404,7 @@ char * plateau_to_json(plateau *p){
 	}
 	strcat(buf,"\n]\n");
 
-	strcat(buf,"\n}");
+	strcat(buf,"\n}\n");
 
 	return buf;
 
