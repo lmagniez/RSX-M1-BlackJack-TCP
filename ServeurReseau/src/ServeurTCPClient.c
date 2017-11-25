@@ -39,6 +39,31 @@ char * jsonTest(){
 	return plateau_to_json(&p);
 }
 
+char * generationTaille(char * json){
+	int size = strlen(json);
+	char buf[50] ="\0";
+	char str[12];
+
+	strcpy(buf,"{ \"taille\" : ");
+	
+	sprintf(str, "\"%d\"", size);
+	strcat(buf,str);
+
+	strcat(buf,"}\n");
+
+	return buf;
+}
+
+void sendPlateau(int ecoute){
+
+	char * json = jsonTest();
+	char * taiileJson = generationTaille(json);
+
+	send_data_TCP(ecoute,taiileJson);	
+	send_data_TCP(ecoute,json);	
+
+}
+
 void * threadServeurTCPClient(void * arg){
 	int ecoute = socketGeneral;
 	printf("%d\n",ecoute);
@@ -55,7 +80,7 @@ void * threadServeurTCPClient(void * arg){
 			continue;
 		}
 
-		send_data_TCP(ecoute,jsonTest());	
+		sendPlateau(ecoute);
 
 		free(msg);
 	}
