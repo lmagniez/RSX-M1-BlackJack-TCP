@@ -3,6 +3,7 @@ package Jeu;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Model.Plateau;
 import Reseau.BlackJackClient;
 
 public class FrameJeu extends JFrame{
@@ -49,5 +50,9 @@ public class FrameJeu extends JFrame{
 
 	public void ecranFin(String string) {
 		// TODO Auto-generated method stub
+	}
+
+	public void setPlateau(Plateau p) {
+		modelJeux.setPlateau(p);
 	}
 }

@@ -32,4 +32,8 @@ public interface ConstanteParser {
 	public String cartes = "cartes";
 	public String couleurs = "couleur_cartes";
 	
+	
+	//INFORMATION
+	public String taille = "taille";
+	
 }

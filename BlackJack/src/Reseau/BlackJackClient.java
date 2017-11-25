@@ -1,6 +1,5 @@
 package Reseau;
 
-import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -18,8 +17,9 @@ import java.util.Enumeration;
 import Constante.Constante;
 import Constante.ConstanteResau;
 import Jeu.FrameJeu;
+import Model.Plateau;
 
-public class BlackJackClient implements Constante,ConstanteResau {
+public class BlackJackClient implements Constante, ConstanteResau {
 
 	private FrameJeu fenetreclient;
 	private static final String LO_ADDR = "127.0.0.1";
@@ -29,19 +29,18 @@ public class BlackJackClient implements Constante,ConstanteResau {
 	private PrintStream defaultOutStream = System.out;
 	private InputStream defaultInStream = System.in;
 	private BufferedReader cliReader = new BufferedReader(new InputStreamReader(defaultInStream));
-	
+
 	private BufferedReader socketReader;
 	private BufferedWriter socketWriter;
-	
-	private boolean game=true;
-	
-	
+
+	private boolean game = true;
+
 	public BlackJackClient() throws UnknownHostException, IOException, InterruptedException {
 		this(LO_ADDR);
 	}
 
 	public BlackJackClient(String hostAddr) throws UnknownHostException, IOException, InterruptedException {
-		this("localhost",hostAddr, DEFAULT_LOCAL_PORT,"127.0.0.1");
+		this("localhost", hostAddr, DEFAULT_LOCAL_PORT, "127.0.0.1");
 	}
 
 	public void setMessage(String s, BufferedWriter w) {
@@ -50,26 +49,27 @@ public class BlackJackClient implements Constante,ConstanteResau {
 			w.flush();
 		} catch (IOException e) {
 			fenetreclient.ecranFin("Erreur du Serveur");
-			game=false;
+			game = false;
 		}
 	}
-	
-	public BlackJackClient(String hostname,String hostAddr, Integer hostPort,final String adresse)
-		throws UnknownHostException, IOException, InterruptedException {
+
+	public BlackJackClient(String hostname, String hostAddr, Integer hostPort, final String adresse)
+			throws UnknownHostException, IOException, InterruptedException {
 		ip = adresse;
 		final Socket socketSend = new Socket(InetAddress.getByName(hostname), hostPort);
-		
+
 		socketWriter = new BufferedWriter(new OutputStreamWriter(socketSend.getOutputStream()));
 		socketReader = new BufferedReader(new InputStreamReader(socketSend.getInputStream()));
-		
+
 		try {
 			new Thread() {
 				public void run() {
-					setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
+					setMessage(GeneratorEntete.share.generationEnteteGet(connect), socketWriter);
 					fenetreclient = new FrameJeu(BlackJackClient.this);
 					try {
-						String s = socketReader.readLine();
-						System.out.println("------" + s + "------");
+						String plateauJson = readPlateau();
+						Plateau p = Parser.share.parseJsonData(plateauJson);
+						fenetreclient.setPlateau(p);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -78,6 +78,20 @@ public class BlackJackClient implements Constante,ConstanteResau {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String readPlateau() throws IOException {
+			String s = socketReader.readLine();
+			String size = Parser.share.parseJsonMessage(s);
+			StringBuilder msg = new StringBuilder();
+			int sizeRead = 0;
+			while(msg.toString().length() <= Integer.parseInt(size)-2) {
+				s= "";
+				s = socketReader.readLine();
+				sizeRead += s.length();
+				msg.append(s+"\n");
+			}
+			return msg.toString();
 	}
 
 	public BufferedReader getSocketReader() {
@@ -92,18 +106,18 @@ public class BlackJackClient implements Constante,ConstanteResau {
 		try {
 			Enumeration<NetworkInterface> n;
 			n = NetworkInterface.getNetworkInterfaces();
-			
-			for (; n.hasMoreElements();){
-                NetworkInterface e = n.nextElement();
-                if(e.getName().equals("en0") || e.getName().equals("eth0") || e.getName().equals("Adresse IPv4")) {
-                		Enumeration<InetAddress> a = e.getInetAddresses();
-                		InetAddress addr = null;
-                		for (; a.hasMoreElements();){
-                            addr = a.nextElement();
-                		}
-                    return addr.getHostAddress();
-                }
-                
+
+			for (; n.hasMoreElements();) {
+				NetworkInterface e = n.nextElement();
+				if (e.getName().equals("en0") || e.getName().equals("eth0") || e.getName().equals("Adresse IPv4")) {
+					Enumeration<InetAddress> a = e.getInetAddresses();
+					InetAddress addr = null;
+					for (; a.hasMoreElements();) {
+						addr = a.nextElement();
+					}
+					return addr.getHostAddress();
+				}
+
 			}
 		} catch (SocketException e1) {
 			// TODO Auto-generated catch block
@@ -111,5 +125,5 @@ public class BlackJackClient implements Constante,ConstanteResau {
 		}
 		return "";
 	}
-	
+
 }

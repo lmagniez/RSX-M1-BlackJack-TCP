@@ -1,5 +1,5 @@
 package Model;
 
 public enum CarteCouleur {
-	coeur,carreau,trefle,pic
+	coeur,carreau,trefle,pique
 }

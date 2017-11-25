@@ -15,28 +15,12 @@ void * threadServeurTCPConnection(void * arg){
 
 	while(receiveTCP){
 		int ecoute = wait_connection_TCP(tcp_socket);
-		char * msg = receive_data_TCP(ecoute);	
-
-		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT 	
-
-		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
-		if(strcmp(msg,"")==0){ 
-			free(msg);
-			//GERER DECONNECTION CLIENT SERVEUR ICI
-			continue;
-		}
-
-		//FUTUR CREATION DU THREAD POUR CLIENT
-
-		printf("%s\n",msg); 
-		send_data_TCP(ecoute,"coucou\n");
-
-		free(msg);
+		pthread_t client = startServeurTCPClient(ecoute);
 	}
 
 	close_TCP(tcp_socket);	
 	(void) arg;
-    pthread_exit(NULL);
+ pthread_exit(NULL);
 }
 
 
@@ -46,6 +30,6 @@ pthread_t startServeurTCPConnection(){
 	if(pthread_create(&threadServeur, NULL, threadServeurTCPConnection, NULL) == -1) {
 		perror("pthread_create()\n");
 		exit(0);
-    }
-    return threadServeur;
+ }
+ return threadServeur;
 }

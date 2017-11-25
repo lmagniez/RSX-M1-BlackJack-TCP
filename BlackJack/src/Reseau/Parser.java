@@ -10,6 +10,7 @@ import Model.EtatJoueur;
 import Model.Jeu;
 import Model.Joueur;
 import Model.Plateau;
+import Panel.Menu.FrameJeuMenu;
 
 public class Parser implements ConstanteParser{
 
@@ -22,20 +23,20 @@ public class Parser implements ConstanteParser{
 		public String ligneReplace;
 		
 		
-		public static void parseJson(String json) {
-			if(json.contains("message")) {
-				share.parseMessage(json);
-			}else {
-				share.parseData(json);
-			}
+		public Plateau parseJsonData(String json) {
+			return share.parseData(json);
+		}
+		
+		public String parseJsonMessage(String json) {
+			return share.parseMessage(json);
 		}
 
-		private void parseData(String json) {
+		private Plateau parseData(String json) {
 			Plateau plateau = new Plateau();
 			jsonArrayGeneral = json.split("\n");
 			for(int i=0 ; i< jsonArrayGeneral.length;i++) {
 				if(jsonArrayGeneral[i].contains(jeu_croupier)) {
-					plateau.setJeu_croupier(parseJeu(i,jsonArrayGeneral));
+					plateau.setJeu_croupier(parseJeu(i,jsonArrayGeneral,size_jeu_croupier));
 				}
 				if(jsonArrayGeneral[i].contains(joueurs)) {
 					for(int a=i ; a< jsonArrayGeneral.length;a++) {
@@ -47,6 +48,7 @@ public class Parser implements ConstanteParser{
 					parseSimpleChampPlateau(plateau,jsonArrayGeneral[i]);
 				}
 			}
+			return plateau;
 		}
 
 		private void parseJoueur(Plateau plateau) {
@@ -55,16 +57,13 @@ public class Parser implements ConstanteParser{
 				plateau.getListJoueur().add(parseUnJoueur(jsonArrayGeneral[i]));
 			}
 			System.out.print(plateau);
-			System.out.println("");
-			System.out.println("");
-			System.out.println("");
-			System.out.println("");
-			System.out.println("");
 		}
 
 		private Joueur parseUnJoueur(String joueurJson) {
 			jsonJoueurs = joueurJson.split("\n");
 			Joueur newJ = new Joueur();
+
+			System.out.println(joueurJson+"\n");
 			for(int i = 0 ; i< jsonJoueurs.length;i++) {
 				if(jsonJoueurs[i].contains(jeux)) {
 					recupAllJeuPlayer(newJ,i,true);
@@ -80,8 +79,8 @@ public class Parser implements ConstanteParser{
 			if(!jsonJoueurs[numLigne].contains("}, {") && !premier) {
 				return;
 			}
-			newJ.getJeux().add(parseJeu(numLigne,jsonJoueurs));
-			recupAllJeuPlayer(newJ,numLigne+size_jeu_croupier,false);
+			newJ.getJeux().add(parseJeu(numLigne,jsonJoueurs,size_jeu_croupier+1));
+			recupAllJeuPlayer(newJ,numLigne+size_jeu_croupier+1,false);
 		}
 
 		//-------------------------------------
@@ -135,18 +134,16 @@ public class Parser implements ConstanteParser{
 				return;
 			}
 		}
-		
-
-		private void parseMessage(String json) {}
 
 		//---------------------------------
 		//-------------GENERIQUE-----------
 		//---------------------------------
 		
-		private Jeu parseJeu(int i,String [] jsonArray) {
+		private Jeu parseJeu(int i,String [] jsonArray,int sizeJeu) {
 			Jeu jeu = new Jeu();
-			for(int a = i+1 ; a < i+size_jeu_croupier ;a++) {
+			for(int a = i+1 ; a < i+sizeJeu ;a++) {
 				ligneSplit = jsonArray[a].split(":");
+				if(ligneSplit.length == 1)continue;
 				ligneReplace = ligneSplit[1].replaceAll("[-:{}_\"\t \r ]", "");
 				
 				if(ligneSplit[0].contains(couleurs)) {
@@ -171,6 +168,19 @@ public class Parser implements ConstanteParser{
 				}
 			}
 			return jeu;
+		}
+	
+		
+		//---------------------------------
+		//------------MESSAGE--------------
+		//---------------------------------
+		private String parseMessage(String ligne) {
+			if(ligne.contains(taille)) {
+				ligneReplace = ligne.replaceAll("[a-zA-Z-:{}_,\"\t ]", "");
+				return ligneReplace;
+			}
+			
+			return "";
 		}
 		
 }

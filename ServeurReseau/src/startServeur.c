@@ -7,7 +7,7 @@ int main(){
 	
 	plateau p;
 	init_plateau(&p);
-	
+	/*
 	parseur_REST("POST /action/connect\n\
 host: 192.123.23.32", &p);
 	
@@ -16,7 +16,8 @@ host: 192.123.23.32\n\
 200", &p);
 
 	parseur_REST("POSTGET", &p);
-	
+	*/
+
 	pthread_t udpThread = startServeurUDP();
 	pthread_t tcpThread = startServeurTCPConnection();
 

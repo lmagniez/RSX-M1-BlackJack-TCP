@@ -96,8 +96,12 @@ public class ListeJoueur extends JPanel implements Constante{
 
 	public void addJoueur(Joueur joueur) {
 		list.setLayout(null);
-		list.add(new labelJouer(joueur.getid(),joueur.getnom(),joueur.getsomme(),list.getComponentCount()));
+		list.add(new labelJouer(joueur.getid(),joueur.getNom(),joueur.getsomme(),list.getComponentCount()));
 		list.setPreferredSize(new Dimension(list.getComponentCount()*138+(list.getComponentCount()+1)*20,200));
 		list.setBounds(0,0,list.getComponentCount()*138+(list.getComponentCount()+1)*20,200);
+	}
+
+	public void removeJoueurs() {
+		list.removeAll();
 	}
 }

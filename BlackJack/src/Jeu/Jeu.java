@@ -58,4 +58,8 @@ public class Jeu extends JPanel implements Constante{
 		g.drawImage(cadre,610,530, 480,200, this);
 		g.drawImage(fondPlateau,135,35,940,472, this);
 	}
+
+	public void reset() {
+		listeJoueur.removeJoueurs();	
+	}
 }
