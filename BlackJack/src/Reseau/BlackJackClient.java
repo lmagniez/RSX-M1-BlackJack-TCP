@@ -68,8 +68,12 @@ public class BlackJackClient implements Constante,ConstanteResau {
 					setMessage(GeneratorEntete.share.generationEnteteGet(connect),socketWriter);
 					fenetreclient = new FrameJeu(BlackJackClient.this);
 					try {
-						String s = socketReader.readLine();
-						System.out.println("------" + s + "------");
+						String msg = "";
+						String s;
+						while((s = socketReader.readLine()) != null) {
+							msg += s;
+						}
+						System.out.println("------" + msg + "------");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
