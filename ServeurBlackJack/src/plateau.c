@@ -90,6 +90,7 @@ int quitter_partie(plateau *p, int id_joueur){
 		return -1;
 	}
 	stop_joueur(&(p->joueurs[id_joueur]));
+	p->nb_joueur--;
 
 	return 1;
 }
