@@ -40,8 +40,10 @@ public class ModelJeu {
 		for(int i  = 0 ; i < plateau.getListJoueur().size();i++) {
 			if(plateau.getListJoueur().get(i).getid() == id) {
 				plateau.getListJoueur().get(i).setNom("YOU");
+				plateau.getListJoueur().get(i).setJoueurPrincipal(true);
 			}else {
 				plateau.getListJoueur().get(i).setNom("Joueur" + plateau.getListJoueur().get(i).getid());
+				plateau.getListJoueur().get(i).setJoueurPrincipal(false);
 			}
 		}
 	}

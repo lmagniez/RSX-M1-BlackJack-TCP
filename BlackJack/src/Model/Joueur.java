@@ -6,6 +6,7 @@ public class Joueur {
 
 	private int id_joueur;
 	private String nom;
+	private boolean joueurPrincipal;
 	private int credit;
 	private int mise_totale;
 	private int mise_actuelle;
@@ -92,6 +93,14 @@ public class Joueur {
 
 	public void setJeux(ArrayList<Jeu> jeux) {
 		this.jeux = jeux;
+	}
+
+	public boolean isJoueurPrincipal() {
+		return joueurPrincipal;
+	}
+
+	public void setJoueurPrincipal(boolean joueurPrincipal) {
+		this.joueurPrincipal = joueurPrincipal;
 	}
 
 	@Override
