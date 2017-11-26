@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public interface Constante {
@@ -14,6 +15,10 @@ public interface Constante {
 	public Image fondListe=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond_liste.png");
 	
 	public ImageIcon loading = new ImageIcon( "./src/Ressource/Image/loading.gif" );
+	
+	public ImageIcon jetonIcon = new ImageIcon(new ImageIcon("./src/Ressource/Image/jetons.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	public ImageIcon jeuxIcon = new ImageIcon(new ImageIcon("./src/Ressource/Image/cartesPacket.png").getImage().getScaledInstance(40, 30, Image.SCALE_DEFAULT));
+	
 	public Image cadre = Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/cadre.png");
 	
 	public Image fondPlateau=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/table.png");

@@ -100,6 +100,11 @@ public class Parser implements ConstanteParser{
 				plateau.setTour_id_jeu(Integer.parseInt(ligneReplace));
 				return;
 			}
+			else if(ligne.contains(tour_started)) {
+				plateau.setTour_started(Integer.parseInt(ligneReplace));
+				return;
+			}
+			
 		}
 		
 		

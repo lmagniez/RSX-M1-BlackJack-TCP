@@ -5,9 +5,10 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import Constante.Constante;
 import Model.Joueur;
 
-public class Information extends JPanel{
+public class Information extends JPanel implements Constante{
 
 	Jeu jeu;
 	
@@ -18,53 +19,58 @@ public class Information extends JPanel{
 	}
 
 	public void addBoutonMiseDisplay(Joueur joueur, int num) {
-		if(joueur.isJoueurPrincipal()) {
-			int[] pos = positionXYBoutonMise(num);
-			
-			JButton bouton = new JButton();
-			bouton.setBackground(Color.BLUE);
-			bouton.setText("M"+num);
-			bouton.setBounds(pos[0],pos[1],50,30);
+		if(!joueur.isJoueurPrincipal()) {
+			int[] pos = positionXYBoutonMise(num-1);
+			JButtonJoueur Jbouton = new JButtonJoueur(joueur,true);
+			JButton bouton = Jbouton.getButton();
+			bouton.setBounds(pos[0],pos[1],60,30);
 			this.add(bouton);
+			repaint();
+		}else {
+			JButtonJoueur Jbouton = new JButtonJoueur(joueur,true);
+			JButton bouton = Jbouton.getButton();
+			bouton.setBounds(440,370,60,30);
+			this.add(bouton);
+			repaint();
 		}
 	}
 
 	public void addBoutonJeuDisplay(Joueur joueur, int num) {
 		if(!joueur.isJoueurPrincipal()) {
-			int[] pos = positionXYBoutonJeu(num);
+			int[] pos = positionXYBoutonJeu(num-1);
 			
-			JButton bouton = new JButton();
-			bouton.setBackground(Color.YELLOW);
-
-			bouton.setText("C"+num);
-			bouton.setBounds(pos[0],pos[1],50,30);
+			JButtonJoueur Jbouton = new JButtonJoueur(joueur,false);
+			JButton bouton = Jbouton.getButton();
+			
+			bouton.setBounds(pos[0],pos[1],60,30);
 			this.add(bouton);
+			repaint();
 		}
 	}
 
 	private int[] positionXYBoutonMise(int numJoueur) {		
 		if(numJoueur==1){
-			int[] tab = {160,150};
+			int[] tab = {20,160};
 			return tab;
 		}
 		else if(numJoueur==2) {
-			int[] tab = {275,240};
+			int[] tab = {137,230};
 			return tab;
 		}
 		else if(numJoueur==3) {
-			int[] tab = {420,225};
+			int[] tab = {283,310};
 			return tab;
 		}
 		else if(numJoueur==4) {
-			int[] tab = {740,300};
+			int[] tab = {598,310};
 			return tab;
 		}
 		else if(numJoueur==5) {
-			int[] tab = {885,240};
+			int[] tab = {744,230};
 			return tab;
 		}
 		else if(numJoueur==6) {
-			int[] tab = {1000,150};
+			int[] tab = {860,130};
 			return tab;
 		}
 		return null;
@@ -72,27 +78,27 @@ public class Information extends JPanel{
 	
 	private int[] positionXYBoutonJeu(int numJoueur) {		
 		if(numJoueur==1){
-			int[] tab = {160,180};
+			int[] tab = {20,130};
 			return tab;
 		}
 		else if(numJoueur==2) {
-			int[] tab = {275,270};
+			int[] tab = {137,200};
 			return tab;
 		}
 		else if(numJoueur==3) {
-			int[] tab = {420,255};
+			int[] tab = {283,280};
 			return tab;
 		}
 		else if(numJoueur==4) {
-			int[] tab = {740,330};
+			int[] tab = {598,280};
 			return tab;
 		}
 		else if(numJoueur==5) {
-			int[] tab = {885,270};
+			int[] tab = {744,200};
 			return tab;
 		}
 		else if(numJoueur==6) {
-			int[] tab = {1000,180};
+			int[] tab = {860,130};
 			return tab;
 		}
 		return null;

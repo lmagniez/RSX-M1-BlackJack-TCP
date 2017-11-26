@@ -7,6 +7,7 @@ public class Plateau {
 	private int nb_joueur;
 	private int tour_id_joueur;
 	private int tour_id_jeu;
+	private int tour_started;
 	private Jeu jeu_croupier;
 	
 	private ArrayList<Joueur> listJoueur= new ArrayList();
@@ -61,6 +62,14 @@ public class Plateau {
 
 	public void setListJoueur(ArrayList<Joueur> listJoueur) {
 		this.listJoueur = listJoueur;
+	}
+
+	public int getTour_started() {
+		return tour_started;
+	}
+
+	public void setTour_started(int tour_started) {
+		this.tour_started = tour_started;
 	}
 
 	@Override
