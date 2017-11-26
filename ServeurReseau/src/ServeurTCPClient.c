@@ -12,30 +12,21 @@ char * jsonTest(){
 	plateau p;
 	init_plateau(&p);
 	rejoindre_partie(&p, 500, "127.000.1.1");
-	rejoindre_partie(&p, 500, "127.000.1.2");
-	rejoindre_partie(&p, 500, "127.000.1.3");
-	rejoindre_partie(&p, 500, "127.000.1.4");
-	rejoindre_partie(&p, 500, "127.000.1.5");
+	rejoindre_partie(&p, 1000, "127.000.1.2");
+	rejoindre_partie(&p, 600, "127.000.1.3");
+	rejoindre_partie(&p, 300, "127.000.1.4");
+	rejoindre_partie(&p, 2000, "127.000.1.5");
 	rejoindre_partie(&p, 1000, "127.000.1.6");
 
 	demander_mise(&p, 0, 100);
-	demander_mise(&p, 1, 1200);
-	demander_mise(&p, 2, 200);
-	demander_mise(&p, 4, 500);
+	demander_mise(&p, 1, 400);
+	demander_mise(&p, 2, 400);
+	demander_mise(&p, 3, 100);
+	demander_mise(&p, 4, 200);
 
+	char * json = plateau_to_json(&p);
 
-	demander_tirer(&p,0);
-	demander_tirer(&p,0);
-	demander_tirer(&p,1);
-	demander_tirer(&p,2);
-	demander_tirer(&p,3);
-	demander_tirer(&p,4);
-	demander_tirer(&p,5);
-	demander_tirer(&p,0);
-	demander_tirer(&p,1);
-
-
-	return plateau_to_json(&p);
+	return json;
 }
 
 char * generationTaille(char * json){
@@ -61,9 +52,6 @@ void sendPlateau(int ecoute){
 	printf("%s\n",tailleJson);
 
 	send_data_TCP(ecoute,tailleJson);	
-
-	printf("coucou\n");
-
 	send_data_TCP(ecoute,json);	
 
 }

@@ -265,6 +265,9 @@ void big_test(){
 	rejoindre_partie(&p, 2500, "127.000.1.7");
 	demander_mise(&p, 6, 600);
 
+
+	afficher_plateau(&p);
+	printf("%s",plateau_to_json(&p));
 	/*
 	for(int i=0; i<7; i++){
 		demander_tirer(&p,i);
@@ -276,7 +279,6 @@ void big_test(){
 	demander_rester(&p, 0);
 	demander_abandon(&p, 1);
 	*/
-	afficher_plateau(&p);
 }
 
 int main(){
