@@ -13,8 +13,6 @@ public class ModelJeu {
 	
 	public void addObserverGrille(Jeu j) {
 		jeu = j;
-		
-		//AJOUTER JOUEUR
 	}
 	
 	public boolean verifAssezArgent(int mise) {
@@ -52,6 +50,7 @@ public class ModelJeu {
 		for(int i  = 0 ; i < plateau.getListJoueur().size();i++) {
 			jeu.addJoueur(plateau.getListJoueur().get(i));
 		}
+		jeu.donneJeuCroupier(plateau.getJeu_croupier());
 	}
 	
 	

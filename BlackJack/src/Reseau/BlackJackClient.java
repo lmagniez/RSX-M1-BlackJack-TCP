@@ -82,6 +82,7 @@ public class BlackJackClient implements Constante, ConstanteResau {
 
 	public String readPlateau() throws IOException {
 			String s = socketReader.readLine();
+			System.out.println(s);
 			String size = Parser.share.parseJsonMessage(s);
 			StringBuilder msg = new StringBuilder();
 			int sizeRead = 0;
