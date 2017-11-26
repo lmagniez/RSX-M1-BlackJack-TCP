@@ -31,7 +31,9 @@ char * str_from_etat(etat e){
 		case LOSE:
 			return "LOSE";
 			break;
-
+		case BETTING:
+			return "BETTING";
+			break;
 	}
 	return NULL;
 }
@@ -58,11 +60,14 @@ void destroy_joueur(joueur *j){
 	free(j->jeux);
 }
 
-void start_joueur(joueur *j, int credit, char *adresse){
+void start_joueur(joueur *j, int credit, char *adresse, int tour_started){
 	j->credit = credit;
 	j->mise_actuelle = 0;
 	j->mise_totale = 0;
-	j->e = WAITING;
+	if(tour_started)
+		j->e = WAITING;
+	else
+		j->e = BETTING;
 	strcpy(j->adresse, adresse);
 	j->nb_jeux = 1;
 	start_jeu(&(j->jeux[0]));

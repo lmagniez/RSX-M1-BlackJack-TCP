@@ -43,13 +43,13 @@ void init_plateau(plateau *p){
 	p->nb_joueur = 0;
 	p->tour_id_joueur = -1;
 	p->tour_id_jeu = -1;
-	init_tour(p);
+	p->tour_started = 0;
 }
 
 
 void afficher_plateau(plateau *p){
 	printf("===Plateau:===\n");
-	printf("--Tour-- id_joueur: %d id_jeu: %d\n",p->tour_id_joueur, p->tour_id_jeu);
+	printf("--Tour-- id_joueur: %d id_jeu: %d started: %d\n",p->tour_id_joueur, p->tour_id_jeu, p->tour_started);
 	printf("Croupier: \n");
 	afficher_jeu(&(p->jeu_croupier));
 	printf("Joueurs: \n");
@@ -57,7 +57,7 @@ void afficher_plateau(plateau *p){
 		printf("\n");
 		afficher_joueur(&(p->joueurs[i]));
 	}
-	printf("JSON: \n%s\n",plateau_to_json(p));
+	//printf("JSON: \n%s\n",plateau_to_json(p));
 }
 
 
@@ -70,12 +70,12 @@ int rejoindre_partie(plateau *p, int credit, char *adresse){
 	else {
 		for(int i=0; i<NB_JOUEUR_MAX; i++){
 			if(p->joueurs[i].e==OFF){
-				start_joueur(&(p->joueurs[i]),credit, adresse);
+				start_joueur(&(p->joueurs[i]),credit, adresse, p->tour_started);
 				p->nb_joueur++;
-				if(p->nb_joueur==1){
+				/*if(p->nb_joueur==1){
 					p->tour_id_joueur = i;
 					p->tour_id_jeu = 0;
-				}
+				}*/
 
 				return i;
 			}
@@ -96,11 +96,11 @@ int quitter_partie(plateau *p, int id_joueur){
 	return 1;
 }
 
-//distribue 2 cartes à chaque joueurs
+//distribue 2 cartes à chaque joueurs, 1 au croupier
 void init_tour(plateau *p){
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 		if(p->joueurs[i].e == PLAYING){
-			demander_tirer(p, i);
+			//demander_tirer(p, i);
 			carte c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
 			add_carte(&(p->joueurs[i].jeux[0]),c);
@@ -108,8 +108,40 @@ void init_tour(plateau *p){
 	}
 	carte c = get_next_carte(&(p->pioche));
 	add_carte(&(p->jeu_croupier),c);
-	add_carte(&(p->jeu_croupier),c);
+	
+	p->tour_started = 1;
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(p->joueurs[i].e==PLAYING){
+			p->tour_id_joueur = i;
+			p->tour_id_jeu = 0;
+			return;
+		}
+	}
+	
 }
+
+
+//si un joueur n'a pas encore misé, faux
+int tour_est_demarre(plateau *p){
+	if(p->nb_joueur == 0){
+		return 0;
+	}
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(p->joueurs[i].e == BETTING)
+			return 0;
+	}
+	return 1;
+}
+
+//nouveau tour: passe les joueurs en attente 
+/*
+void demarre_tour(plateau *p){
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(p->joueurs[i].e == WAITING)
+			p->joueurs[i].e = BETTING;
+	}
+	p->tour_started = 1;
+}*/
 
 //1 si nouveau tour (lancer le croupier)
 int change_tour(plateau *p){
@@ -151,7 +183,7 @@ int change_tour(plateau *p){
 		//action_croupier(p);
 		for(int i=0; i<NB_JOUEUR_MAX; i++){
 			if(p->joueurs[i].e==WAITING)
-				p->joueurs[i].e=PLAYING;
+				p->joueurs[i].e=BETTING;
 		}
 		return 1;
 	}
@@ -353,12 +385,17 @@ int demander_abandon(plateau *p, int id_joueur){
 //en debut de tour
 //place la mise
 int demander_mise(plateau *p, int id_joueur, int mise){
-	if(p->joueurs[id_joueur].e==WAITING && p->joueurs[id_joueur].credit >= mise){
+	if(p->joueurs[id_joueur].e==BETTING && p->joueurs[id_joueur].credit >= mise){
 		p->joueurs[id_joueur].e = PLAYING;
 		p->joueurs[id_joueur].mise_actuelle = mise;
 		p->joueurs[id_joueur].mise_totale = mise;
 		p->joueurs[id_joueur].credit += -mise;
 		printf("JOUEUR %d mise %d\n", id_joueur, mise);
+		
+		if(tour_est_demarre(p)){
+			printf("TOUS LES JOUEURS ONT MISES, DEBUT PARTIE\n");
+			init_tour(p);
+		}
 		return mise;
 	}
 	return -1;
@@ -403,6 +440,9 @@ char * plateau_to_json(plateau *p){
 	strcat(buf,str);
 	strcat(buf,"\"tour_id_jeu\": ");
 	sprintf(str, "\"%d\",\n", p->tour_id_jeu);
+	strcat(buf,str);
+	strcat(buf,"\"tour_started\": ");
+	sprintf(str, "\"%d\",\n", p->tour_started);
 	strcat(buf,str);
 
 	strcat(buf,"\"jeu_croupier\": ");

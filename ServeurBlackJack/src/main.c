@@ -253,8 +253,7 @@ void big_test(){
 	rejoindre_partie(&p, 300, "127.000.1.4");
 	rejoindre_partie(&p, 2000, "127.000.1.5");
 	rejoindre_partie(&p, 1000, "127.000.1.6");
-	rejoindre_partie(&p, 2500, "127.000.1.7");
-
+	//quitter_partie(&p, 3);
 
 	demander_mise(&p, 0, 100);
 	demander_mise(&p, 1, 400);
@@ -262,8 +261,11 @@ void big_test(){
 	demander_mise(&p, 3, 100);
 	demander_mise(&p, 4, 200);
 	demander_mise(&p, 5, 500);
+	
+	rejoindre_partie(&p, 2500, "127.000.1.7");
 	demander_mise(&p, 6, 600);
 
+	/*
 	for(int i=0; i<7; i++){
 		demander_tirer(&p,i);
 	}
@@ -273,7 +275,7 @@ void big_test(){
 
 	demander_rester(&p, 0);
 	demander_abandon(&p, 1);
-
+	*/
 	afficher_plateau(&p);
 }
 
@@ -281,7 +283,7 @@ int main(){
 
 
 
-	test_general();
+	//test_general();
 	//test_split();
 	//test_split2();
 	//test_double();

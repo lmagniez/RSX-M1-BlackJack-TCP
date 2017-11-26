@@ -14,10 +14,11 @@
 
 //OFF: pas de joueur
 //WAITING: vient de rejoindre la partie, attend le prochain tour
+//BETTING: joue une partie, pas encore misé
 //PLAYING: joue une partie
 //FINISHED: attend les autres joueurs (satisfait de son résultat)
 //LOSE: game over mais reste sur le plateau pour observer
-typedef enum {OFF, WAITING, PLAYING, FINISHED, LOSE} etat;
+typedef enum {OFF, WAITING, BETTING, PLAYING, FINISHED, LOSE} etat;
 
 typedef struct{
 	int id_joueur;
@@ -33,7 +34,7 @@ typedef struct{
 void afficher_joueur(joueur *j);
 void generer_joueur(joueur *j, int id_joueur);
 void destroy_joueur(joueur *j);
-void start_joueur(joueur *j, int credit, char *adresse);
+void start_joueur(joueur *j, int credit, char *adresse, int tour_started);
 void stop_joueur(joueur *j);
 
 int proposer_mise(joueur *j, int mise);
