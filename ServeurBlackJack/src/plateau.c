@@ -43,6 +43,7 @@ void init_plateau(plateau *p){
 	p->nb_joueur = 0;
 	p->tour_id_joueur = -1;
 	p->tour_id_jeu = -1;
+	init_tour(p);
 }
 
 
@@ -93,6 +94,21 @@ int quitter_partie(plateau *p, int id_joueur){
 	p->nb_joueur--;
 
 	return 1;
+}
+
+//distribue 2 cartes à chaque joueurs
+void init_tour(plateau *p){
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(p->joueurs[i].e == PLAYING){
+			demander_tirer(p, i);
+			carte c = get_next_carte(&(p->pioche));
+			add_carte(&(p->joueurs[i].jeux[0]),c);
+			add_carte(&(p->joueurs[i].jeux[0]),c);
+		} 
+	}
+	carte c = get_next_carte(&(p->pioche));
+	add_carte(&(p->jeu_croupier),c);
+	add_carte(&(p->jeu_croupier),c);
 }
 
 //1 si nouveau tour (lancer le croupier)
@@ -205,6 +221,7 @@ void tour_croupier(plateau *p){
 
 				}
 				reinit_jeu(&(p->joueurs[i].jeux[j]));
+				init_tour(p);
 			}
 			p->joueurs[i].mise_actuelle = 0;
 			p->joueurs[i].mise_totale = 0;
