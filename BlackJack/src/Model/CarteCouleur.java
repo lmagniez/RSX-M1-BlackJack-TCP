@@ -1,18 +1,15 @@
 package Model;
 
 public enum CarteCouleur {
-	coeur,carreau,trefle,pique;
+	coeur(1),carreau(2),trefle(3),pique(4);
 	
-	public static String getDirectory(CarteCouleur couleur) { 
-		switch(couleur) {
-		case coeur :
-			return "coeur";
-		case carreau :
-			return "carreau";
-		case trefle :
-			return "trefle";
-		default :
-			return "coeur";
-		}
-	}
+	private int value;
+	
+    private CarteCouleur(int value) {
+        this.value = value;
+    }
+    
+    public int getValue() {
+        return value;
+    }
 }
