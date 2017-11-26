@@ -19,6 +19,7 @@ public interface ConstanteParser {
 	public String nb_joueur = "nb_joueur";
 	public String tour_id_joueur = "tour_id_joueur";
 	public String tour_id_jeu = "tour_id_jeu";
+	public String tour_started = "tour_started";
 	
 	public String value = "value";
 	
