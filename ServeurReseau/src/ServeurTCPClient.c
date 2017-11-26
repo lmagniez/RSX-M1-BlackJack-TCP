@@ -16,8 +16,6 @@ char * jsonTest(){
 	rejoindre_partie(&p, 500, "127.000.1.3");
 	rejoindre_partie(&p, 500, "127.000.1.4");
 	rejoindre_partie(&p, 500, "127.000.1.5");
-	quitter_partie(&p, 1);
-	quitter_partie(&p, 3);
 	rejoindre_partie(&p, 1000, "127.000.1.6");
 
 	demander_mise(&p, 0, 100);

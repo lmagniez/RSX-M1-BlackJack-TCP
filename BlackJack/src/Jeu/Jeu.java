@@ -2,6 +2,7 @@ package Jeu;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -14,6 +15,7 @@ import Constante.Constante;
 import Jeu.Panel.Dialogue;
 import Jeu.Panel.ListeJoueur;
 import Jeu.Panel.Plateau;
+import Model.EtatJeu;
 import Model.Joueur;
 
 public class Jeu extends JPanel implements Constante {
@@ -28,6 +30,8 @@ public class Jeu extends JPanel implements Constante {
 	public Plateau plateau = new Plateau(this);
 	public ListeJoueur listeJoueur = new ListeJoueur(this);
 
+	public Information info = new Information(this);
+	
 	public Jeu(FrameJeu frameJeu, ControllerJeu controllerJeu) {
 		this.frameJeu = frameJeu;
 		this.controllerJeu = controllerJeu;
@@ -39,10 +43,12 @@ public class Jeu extends JPanel implements Constante {
 		plateau.setBounds(135, 35, 940, 472);
 		listeJoueur.setBounds(130, 530, 480, 200);
 		dialogue.setBounds(630, 538, 480, 200);
-
+		info.setBounds(135, 35, 940, 472);
+		
 		this.add(plateau);
 		this.add(dialogue);
 		this.add(listeJoueur);
+		this.add(info);
 	}
 
 	public void afficheErreur(String msg) {
@@ -55,6 +61,8 @@ public class Jeu extends JPanel implements Constante {
 
 	public void addJoueur(Joueur joueur) {
 		listeJoueur.addJoueur(joueur);
+		info.addBoutonMiseDisplay(joueur,listeJoueur.getListeJoueur().size());
+		info.addBoutonJeuDisplay(joueur,listeJoueur.getListeJoueur().size());
 		repaint();
 	}
 
@@ -81,6 +89,22 @@ public class Jeu extends JPanel implements Constante {
 						g.drawImage(cartes[jeu.getJeuCouleurs().get(c).getValue()-1][jeu.getJeuCartes().get(c).getValue()-1],540 + 30*c, 340 - 60 * j, 40, 60, this);
 					}
 				}
+			}else {
+				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
+					int [] positionJeu = positionXYJeu(i);
+					g.setColor(or);
+					g.setFont(new Font("verdana", Font.BOLD, 10));
+					g.drawString("NBJeux: "+listeJoueur.getListeJoueur().get(i).getJeux().size(), positionJeu[0], positionJeu[1]);
+					
+					if(listeJoueur.getListeJoueur().get(i).getJeux().get(j).getEtat() == EtatJeu.JOUE) {
+						Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
+						
+						int [] positionCarte = positionXYCarte(i);
+						for(int c = 0 ; c < jeu.getJeuCartes().size();c++) {
+							g.drawImage(cartes[jeu.getJeuCouleurs().get(c).getValue()-1][jeu.getJeuCartes().get(c).getValue()-1],positionCarte[0] + 30*c, positionCarte[1] - 60 * j, 40, 60, this);
+						}
+					}
+				}	
 			}
 		}
 		
@@ -88,8 +112,8 @@ public class Jeu extends JPanel implements Constante {
 			for (int j = 0; j < 5; j++)
 				g.drawImage(carteRecto,480 + 60*j, 83, 40, 60, this);
 		else if(jeuCroupier != null){
-			for (int j = 0; j < 5; j++)
-				g.drawImage(cartes[jeuCroupier.getJeuCouleurs().get(j).getValue()-1][jeuCroupier.getJeuCartes().get(j).getValue()-1],600 + 20*j, 90 , 40, 60, this);
+			for (int j = 0; j < jeuCroupier.getJeuCouleurs().size(); j++)
+				g.drawImage(cartes[jeuCroupier.getJeuCouleurs().get(j).getValue()-1][jeuCroupier.getJeuCartes().get(j).getValue()-1],480 + 60*j, 83, 40, 60, this);
 		}
 	}
 
@@ -99,36 +123,18 @@ public class Jeu extends JPanel implements Constante {
         
 		for (int i = 0; i < listeJoueur.getListeJoueur().size(); i++) {
 			if (!listeJoueur.getListeJoueur().get(i).isJoueurPrincipal()) {
-				if(i==1) {
-					g.fillOval(200, 215, 20, 20);
-				}
-				else if(i==2) {
-					g.fillOval(315, 290, 20, 20);
-				}
-				else if(i==3) {
-					g.fillOval(460, 370, 20, 20);
-				}
-				else if(i==4) {
-					g.fillOval(780, 365, 20, 20);
-				}
-				else if(i==5) {
-					g.fillOval(925, 290, 20, 20);
-				}
-				else if(i==6) {
-					g.fillOval(1040, 215, 20, 20);
-				}
+				int [] tab = positionXYCercle(i);
+				g.fillOval(tab[0], tab[1], 20, 20);
 			}
 		}
 	}
 
 	private void dessinerConnectionRouge(Graphics g) {
 		g.setColor(Color.RED);
-		g.fillOval(200, 215, 20, 20);
-		g.fillOval(315, 290, 20, 20);
-		g.fillOval(460, 370, 20, 20);
-		g.fillOval(780, 365, 20, 20);
-		g.fillOval(925, 290, 20, 20);
-		g.fillOval(1040, 215, 20, 20);
+		for (int i = 1; i < 7; i++) {
+				int [] tab = positionXYCercle(i);
+				g.fillOval(tab[0], tab[1], 20, 20);
+		}
 	}
 
 	
@@ -139,4 +145,89 @@ public class Jeu extends JPanel implements Constante {
 	public void donneJeuCroupier(Model.Jeu jeu_croupier) {
 		jeuCroupier = jeu_croupier;
 	}
+	
+	private int[] positionXYCercle(int numJoueur) {		
+			if(numJoueur==1){
+				int[] tab = {200,215};
+				return tab;
+			}
+			else if(numJoueur==2) {
+				int[] tab = {315,290};
+				return tab;
+			}
+			else if(numJoueur==3) {
+				int[] tab = {460,370};
+				return tab;
+			}
+			else if(numJoueur==4) {
+				int[] tab = {780,365};
+				return tab;
+			}
+			else if(numJoueur==5) {
+				int[] tab = {925,290};
+				return tab;
+			}
+			else if(numJoueur==6) {
+				int[] tab = {1040,215};
+				return tab;
+			}
+			return null;
+	}
+
+	private int[] positionXYJeu(int numJoueur) {		
+		if(numJoueur==1){
+			int[] tab = {160,250};
+			return tab;
+		}
+		else if(numJoueur==2) {
+			int[] tab = {270,320};
+			return tab;
+		}
+		else if(numJoueur==3) {
+			int[] tab = {420,400};
+			return tab;
+		}
+		else if(numJoueur==4) {
+			int[] tab = {740,400};
+			return tab;
+		}
+		else if(numJoueur==5) {
+			int[] tab = {890,320};
+			return tab;
+		}
+		else if(numJoueur==6) {
+			int[] tab = {1020,215};
+			return tab;
+		}
+		return null;
+	}
+	
+	private int[] positionXYCarte(int numJoueur) {		
+		if(numJoueur==1){
+			int[] tab = {120,115};
+			return tab;
+		}
+		else if(numJoueur==2) {
+			int[] tab = {235,190};
+			return tab;
+		}
+		else if(numJoueur==3) {
+			int[] tab = {380,270};
+			return tab;
+		}
+		else if(numJoueur==4) {
+			int[] tab = {700,265};
+			return tab;
+		}
+		else if(numJoueur==5) {
+			int[] tab = {845,190};
+			return tab;
+		}
+		else if(numJoueur==6) {
+			int[] tab = {960,115};
+			return tab;
+		}
+		return null;
+}
+	
 }
