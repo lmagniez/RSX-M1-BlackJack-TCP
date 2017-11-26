@@ -36,12 +36,13 @@ char * jsonTest(){
 	demander_tirer(&p,0);
 	demander_tirer(&p,1);
 
+
 	return plateau_to_json(&p);
 }
 
 char * generationTaille(char * json){
 	int size = strlen(json);
-	char buf[50] ="\0";
+	char * buf = malloc(sizeof(char)*50);
 	char str[12];
 
 	strcpy(buf,"{ \"taille\" : ");
@@ -57,9 +58,14 @@ char * generationTaille(char * json){
 void sendPlateau(int ecoute){
 
 	char * json = jsonTest();
-	char * taiileJson = generationTaille(json);
+	char * tailleJson = generationTaille(json);
 
-	send_data_TCP(ecoute,taiileJson);	
+	printf("%s\n",tailleJson);
+
+	send_data_TCP(ecoute,tailleJson);	
+
+	printf("coucou\n");
+
 	send_data_TCP(ecoute,json);	
 
 }
