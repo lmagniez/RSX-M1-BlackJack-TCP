@@ -9,7 +9,7 @@
 
 
 #define NB_JOUEUR_MAX 7
-#define MAX_BUF_PLATEAU 1500
+#define MAX_BUF_PLATEAU 2500
 
 typedef struct{
 	tas pioche;

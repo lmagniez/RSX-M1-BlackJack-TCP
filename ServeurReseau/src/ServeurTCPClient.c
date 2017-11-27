@@ -16,13 +16,18 @@ char * jsonTest(){
 	rejoindre_partie(&p, 600, "127.000.1.3");
 	rejoindre_partie(&p, 300, "127.000.1.4");
 	rejoindre_partie(&p, 2000, "127.000.1.5");
-	rejoindre_partie(&p, 1000, "127.000.1.6");
+	rejoindre_partie(&p, 500, "127.000.1.6");
+	rejoindre_partie(&p, 500, "127.000.1.7");
 
 	demander_mise(&p, 0, 100);
 	demander_mise(&p, 1, 400);
 	demander_mise(&p, 2, 400);
 	demander_mise(&p, 3, 100);
 	demander_mise(&p, 4, 200);
+	demander_mise(&p, 5, 200);
+	demander_mise(&p, 6, 200);
+
+
 
 	char * json = plateau_to_json(&p);
 
@@ -35,7 +40,7 @@ char * generationTaille(char * json){
 	char str[12];
 
 	strcpy(buf,"{ \"taille\" : ");
-	
+
 	sprintf(str, "\"%d\"", size);
 	strcat(buf,str);
 
@@ -51,8 +56,8 @@ void sendPlateau(int ecoute){
 
 	printf("%s\n",tailleJson);
 
-	send_data_TCP(ecoute,tailleJson);	
-	send_data_TCP(ecoute,json);	
+	send_data_TCP(ecoute,tailleJson);
+	send_data_TCP(ecoute,json);
 
 }
 
@@ -61,12 +66,12 @@ void * threadServeurTCPClient(void * arg){
 	printf("%d\n",ecoute);
 
 	while(receiveTCPClient){
-		char * msg = receive_data_TCP(ecoute);	
+		char * msg = receive_data_TCP(ecoute);
 
-		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT 
+		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
-		if(strcmp(msg,"")==0){ 
+		if(strcmp(msg,"")==0){
 			free(msg);
 			//GERER DECONNECTION CLIENT SERVEUR ICI
 			continue;

@@ -9,7 +9,7 @@
 #include "jeu.h"
 
 #define MAX_JEUX 3
-#define MAX_BUF_JOUEUR 500
+#define MAX_BUF_JOUEUR 1000
 
 
 //OFF: pas de joueur

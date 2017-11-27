@@ -10,7 +10,7 @@
 #include "carte.h"
 
 #define MAX_CARTE 10
-#define MAX_BUF_JEU 200
+#define MAX_BUF_JEU 500
 
 
 typedef enum {JOUE, SATISFAIT, PERDU} etat_jeu;

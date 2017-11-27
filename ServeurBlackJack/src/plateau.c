@@ -57,7 +57,7 @@ void afficher_plateau(plateau *p){
 		printf("\n");
 		afficher_joueur(&(p->joueurs[i]));
 	}
-	//printf("JSON: \n%s\n",plateau_to_json(p));
+	printf("JSON: \n%s\n",plateau_to_json(p));
 }
 
 
@@ -428,7 +428,7 @@ int get_id_from_adresse(plateau *p, char *adresse){
 char * plateau_to_json(plateau *p){
 
 	char *buf = malloc(sizeof(char)*MAX_BUF_PLATEAU);
-	char str[12];
+	char *str = malloc(sizeof(char)*12);
 	int cur_size = 0;
 	buf[cur_size++] = '{';
 	buf[cur_size++] = '\n';
@@ -456,7 +456,8 @@ char * plateau_to_json(plateau *p){
 			if(cpt>0){
 				strcat(buf, ",\n");
 			}
-			strcat(buf, joueur_to_json(&(p->joueurs[i])));
+			char * joueur = joueur_to_json(&(p->joueurs[i]));
+			strcat(buf, joueur);
 			cpt++;
 		}
 	}
