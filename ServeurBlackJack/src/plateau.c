@@ -103,6 +103,7 @@ void init_tour(plateau *p){
 			//demander_tirer(p, i);
 			carte c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
+			carte c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
 		} 
 	}
