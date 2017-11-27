@@ -52,9 +52,17 @@ char * generationTaille(char * json){
 void sendPlateau(int ecoute){
 
 	char * json = jsonTest();
+	//json variable externe
+	//recup plateau
 	char * tailleJson = generationTaille(json);
 
-	printf("%s\n",tailleJson);
+	//idJoueur:"changeant"
+	//dialogue:"mess"
+	//quand créé joueur, renvoie id joueur 
+	//dans thread une valeur id_joueur
+	//génération json associer message
+
+	//printf("%s\n",tailleJson);
 
 	send_data_TCP(ecoute,tailleJson);
 	send_data_TCP(ecoute,json);
@@ -69,6 +77,7 @@ void * threadServeurTCPClient(void * arg){
 		char * msg = receive_data_TCP(ecoute);
 
 		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT
+		//EN FONCTION RESULTAT, ENVOIE A TOUT LE MONDE
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
 		if(strcmp(msg,"")==0){

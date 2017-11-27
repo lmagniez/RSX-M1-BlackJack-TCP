@@ -15,7 +15,12 @@ void * threadServeurTCPConnection(void * arg){
 
 	while(receiveTCP){
 		int ecoute = wait_connection_TCP(tcp_socket);
-		pthread_t client = startServeurTCPClient(ecoute);
+		char * msg = receive_data_TCP(ecoute);
+
+		//get connect, recupere ici 
+		//IF CONNECT
+			pthread_t client = startServeurTCPClient(ecoute);
+		
 	}
 
 	close_TCP(tcp_socket);	

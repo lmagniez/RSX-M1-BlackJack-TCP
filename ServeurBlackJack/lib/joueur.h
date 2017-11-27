@@ -24,6 +24,8 @@ typedef struct{
 	int id_joueur;
 	jeu *jeux;
 	char *adresse;
+	//thread
+	//num socket
 	int nb_jeux;
 	int credit;
 	int mise_totale;
