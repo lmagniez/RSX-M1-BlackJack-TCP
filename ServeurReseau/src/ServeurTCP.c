@@ -15,7 +15,6 @@ void * threadServeurTCPConnection(void * arg){
 
 	while(receiveTCP){
 		int ecoute = wait_connection_TCP(tcp_socket);
-		printf("SERVEUR TCP\n");
 		pthread_t client = startServeurTCPClient(ecoute);
 		
 	}

@@ -8,29 +8,16 @@
 int receiveTCPClient = 1;
 int socketGeneral;
 
-char * jsonTest(){
-	plateau p;
+plateau p;
+
+void init_plateau_test(){
 	init_plateau(&p);
 	rejoindre_partie(&p, 500, "127.000.1.1");
-	rejoindre_partie(&p, 1000, "127.000.1.2");
-	rejoindre_partie(&p, 600, "127.000.1.3");
-	rejoindre_partie(&p, 300, "127.000.1.4");
-	rejoindre_partie(&p, 2000, "127.000.1.5");
-	rejoindre_partie(&p, 500, "127.000.1.6");
-	rejoindre_partie(&p, 500, "127.000.1.7");
+	demander_mise(&p, 0, 10);
+}
 
-	demander_mise(&p, 0, 100);
-	demander_mise(&p, 1, 400);
-	demander_mise(&p, 2, 400);
-	demander_mise(&p, 3, 100);
-	demander_mise(&p, 4, 200);
-	demander_mise(&p, 5, 200);
-	demander_mise(&p, 6, 200);
-
-
-
+char * jsonTest(){
 	char * json = plateau_to_json(&p);
-
 	return json;
 }
 
@@ -73,18 +60,23 @@ void * threadServeurTCPClient(void * arg){
 	int ecoute = socketGeneral;
 	printf("%d\n",ecoute);
 
+	init_plateau_test();
+	//Connection
+	char * msg = receive_data_TCP(ecoute);
+	printf("init : %s\n",msg );
+	sendPlateau(ecoute);
+
+
 	while(receiveTCPClient){
 		char * msg = receive_data_TCP(ecoute);
+		printf("%s\n",msg );
 		
-		
-		printf("serveurTcpClient %s \n" , msg);
 		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT
 		//EN FONCTION RESULTAT, ENVOIE A TOUT LE MONDE
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
 		if(strcmp(msg,"")==0){
 			free(msg);
-			printf("JJJJJJJJ ----> %d \n", ecoute);
 			continue;
 		}
 
