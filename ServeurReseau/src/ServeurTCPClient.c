@@ -75,14 +75,16 @@ void * threadServeurTCPClient(void * arg){
 
 	while(receiveTCPClient){
 		char * msg = receive_data_TCP(ecoute);
-
+		
+		
+		printf("serveurTcpClient %s \n" , msg);
 		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT
 		//EN FONCTION RESULTAT, ENVOIE A TOUT LE MONDE
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
 		if(strcmp(msg,"")==0){
 			free(msg);
-			//GERER DECONNECTION CLIENT SERVEUR ICI
+			printf("JJJJJJJJ ----> %d \n", ecoute);
 			continue;
 		}
 
