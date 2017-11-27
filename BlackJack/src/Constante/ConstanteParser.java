@@ -23,6 +23,9 @@ public interface ConstanteParser {
 	
 	public String value = "value";
 	
+	public String id_joueur_plateau = "id_joueur_plateau";
+	public String dialogue = "dialogue";
+	
 	public String id_joueur = "id_joueur";
 	public String credit = "credit";
 	public String mise_totale = "mise_totale";

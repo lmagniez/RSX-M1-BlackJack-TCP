@@ -74,19 +74,14 @@ public class Plateau extends JPanel implements ActionListener, Constante{
 			jeu.controllerJeu.mise(Integer.parseInt(miseStrings[miseList.getSelectedIndex()]));
 		}else if(e.getActionCommand().equals("Tirer")) {
 			jeu.controllerJeu.demandeCarte();
-			activeeMise();
 		}else if(e.getActionCommand().equals("Rester")) {
 			jeu.controllerJeu.rester();
-			activeeMise();
 		}else if(e.getActionCommand().equals("Doubler")) {
 			jeu.controllerJeu.demandeDouble();
-			activeeMise();
 		}else if(e.getActionCommand().equals("Split")) {
 			jeu.controllerJeu.demandeSplit();
-			activeeMise();
 		}else if(e.getActionCommand().equals("Leave")) {
 			jeu.controllerJeu.demandeQuitter();
-			activeeMise();
 		}
 	}
 

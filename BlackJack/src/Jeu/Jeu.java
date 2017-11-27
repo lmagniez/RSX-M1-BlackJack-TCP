@@ -229,5 +229,19 @@ public class Jeu extends JPanel implements Constante {
 		}
 		return null;
 }
+
+	
+	public void desactiveAllBouton() {
+		plateau.desactiveAll();
+	}
+
+	public void activeBouton() {
+		plateau.desactiveMise();
+	}
+
+	public void activeMise() {
+		plateau.activeeMise();
+	}
+	
 	
 }
