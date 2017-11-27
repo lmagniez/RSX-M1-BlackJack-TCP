@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class Plateau {
 
+	private int id_joueur = 0;
+	private String dialogue;
+	
 	private int nb_joueur;
 	private int tour_id_joueur;
 	private int tour_id_jeu;
@@ -72,10 +75,21 @@ public class Plateau {
 		this.tour_started = tour_started;
 	}
 
-	@Override
-	public String toString() {
-		return "Plateau [nb_joueur=" + nb_joueur + ", tour_id_joueur=" + tour_id_joueur + ", tour_id_jeu=" + tour_id_jeu
-				+ ", jeu_croupier=" + jeu_croupier + ", listJoueur=" + listJoueur + "]";
+
+	public int getId_joueur() {
+		return id_joueur;
+	}
+
+	public void setId_joueur(int id_joueur) {
+		this.id_joueur = id_joueur;
+	}
+
+	public String getDialogue() {
+		return dialogue;
+	}
+
+	public void setDialogue(String dialogue) {
+		this.dialogue = dialogue;
 	}
 	
 	

@@ -19,14 +19,14 @@ public class Information extends JPanel implements Constante{
 	}
 
 	public void addBoutonMiseDisplay(Joueur joueur, int num) {
-		if(!joueur.isJoueurPrincipal()) {
+		if(!joueur.isJoueurPrincipal() && joueur.getMise_actuelle() != 0) {
 			int[] pos = positionXYBoutonMise(num-1);
 			JButtonJoueur Jbouton = new JButtonJoueur(joueur,true);
 			JButton bouton = Jbouton.getButton();
 			bouton.setBounds(pos[0],pos[1],60,30);
 			this.add(bouton);
 			repaint();
-		}else {
+		}else if(joueur.getMise_actuelle() != 0){
 			JButtonJoueur Jbouton = new JButtonJoueur(joueur,true);
 			JButton bouton = Jbouton.getButton();
 			bouton.setBounds(440,370,60,30);
@@ -36,7 +36,7 @@ public class Information extends JPanel implements Constante{
 	}
 
 	public void addBoutonJeuDisplay(Joueur joueur, int num) {
-		if(!joueur.isJoueurPrincipal()) {
+		if(!joueur.isJoueurPrincipal() && joueur.getJeux().size()>1) {
 			int[] pos = positionXYBoutonJeu(num-1);
 			
 			JButtonJoueur Jbouton = new JButtonJoueur(joueur,false);

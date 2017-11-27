@@ -56,14 +56,12 @@ public class Parser implements ConstanteParser{
 			for(int i = 0 ; i< jsonArrayGeneral.length;i++) {
 				plateau.getListJoueur().add(parseUnJoueur(jsonArrayGeneral[i]));
 			}
-			System.out.print(plateau);
 		}
 
 		private Joueur parseUnJoueur(String joueurJson) {
 			jsonJoueurs = joueurJson.split("\n");
 			Joueur newJ = new Joueur();
 
-			System.out.println(joueurJson+"\n");
 			for(int i = 0 ; i< jsonJoueurs.length;i++) {
 				if(jsonJoueurs[i].contains(jeux)) {
 					recupAllJeuPlayer(newJ,i,true);
@@ -102,6 +100,14 @@ public class Parser implements ConstanteParser{
 			}
 			else if(ligne.contains(tour_started)) {
 				plateau.setTour_started(Integer.parseInt(ligneReplace));
+				return;
+			}
+			else if(ligne.contains(id_joueur_plateau)) {
+				plateau.setId_joueur(Integer.parseInt(ligneReplace));
+				return;
+			}
+			else if(ligne.contains(dialogue)) {
+				plateau.setDialogue(ligneReplace);
 				return;
 			}
 			

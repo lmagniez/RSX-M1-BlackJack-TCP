@@ -9,7 +9,6 @@ public class ControllerJeu implements ConstanteMessage,ConstanteResau{
 
 	private BlackJackClient joueurReseau;
 	private ModelJeu modelJ;
-
 	
 	public ControllerJeu(BlackJackClient newJ, ModelJeu modelJeux) {
 		joueurReseau = newJ;
@@ -20,8 +19,8 @@ public class ControllerJeu implements ConstanteMessage,ConstanteResau{
 		boolean assezArgent = modelJ.verifAssezArgent(miseValue);
 		if(assezArgent) {
 			String entete = GeneratorEntete.share.generationEntetePostNumber(mise,miseValue);
-			System.out.println(entete);
-			modelJ.afficheBoutonAction();
+			joueurReseau.setMessage(entete, joueurReseau.getSocketWriter());
+			modelJ.desactiveAllBoutons();
 		}else {
 			modelJ.afficheErreurMessage(erreurMise);
 		}
@@ -29,27 +28,31 @@ public class ControllerJeu implements ConstanteMessage,ConstanteResau{
 
 	public void demandeCarte() {
 		String entete = GeneratorEntete.share.generationEnteteGet(tirer);
-		System.out.println(entete);
+		joueurReseau.setMessage(entete, joueurReseau.getSocketWriter());
+		modelJ.desactiveAllBoutons();
 	}
 
 	public void rester() {
 		String entete = GeneratorEntete.share.generationEnteteGet(rester);
-		System.out.println(entete);
+		joueurReseau.setMessage(entete, joueurReseau.getSocketWriter());
+		modelJ.desactiveAllBoutons();
 	}
 
 	public void demandeDouble() {
 		String entete = GeneratorEntete.share.generationEnteteGet(doubler);
-		System.out.println(entete);
+		joueurReseau.setMessage(entete, joueurReseau.getSocketWriter());
+		modelJ.desactiveAllBoutons();
 	}
 
 	public void demandeSplit() {
 		String entete = GeneratorEntete.share.generationEnteteGet(split);
-		System.out.println(entete);
-		
+		joueurReseau.setMessage(entete, joueurReseau.getSocketWriter());
+		modelJ.desactiveAllBoutons();
 	}
 
 	public void demandeQuitter() {
 		String entete = GeneratorEntete.share.generationEnteteGet(leave);
-		System.out.println(entete);
+		joueurReseau.setMessage(entete, joueurReseau.getSocketWriter());
+		modelJ.desactiveAllBoutons();
 	}
 }
