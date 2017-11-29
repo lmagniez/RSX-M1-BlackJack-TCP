@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include "./Network_Toolbox.h"
+#include "../../ServeurBlackJack/lib/plateau.h"
 
 char * verificationPartie();
 void sendBackBroadcast(struct client c);

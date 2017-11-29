@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <pthread.h>
 
 #include "carte.h"
 #include "jeu.h"
@@ -24,8 +25,8 @@ typedef struct{
 	int id_joueur;
 	jeu *jeux;
 	char *adresse;
-	//thread
-	//num socket
+	pthread_t thread_joueur;
+	int num_socket;
 	int nb_jeux;
 	int credit;
 	int mise_totale;

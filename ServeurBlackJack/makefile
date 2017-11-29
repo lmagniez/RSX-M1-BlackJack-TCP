@@ -4,7 +4,7 @@ SRCDIR=src/
 
 OBJET=$(BINDIR)carte.o $(BINDIR)tas.o $(BINDIR)jeu.o $(BINDIR)joueur.o $(BINDIR)plateau.o 
 CC=gcc
-CFLAGS=-Wall -g
+CFLAGS=-Wall -g -lpthread
 
 main : $(OBJET)
 	@$(CC) -o $(EXEC)main $(BINDIR)*.o $(SRCDIR)main.c

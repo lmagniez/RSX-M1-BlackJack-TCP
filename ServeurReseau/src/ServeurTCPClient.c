@@ -10,19 +10,20 @@ int socketGeneral;
 
 plateau p;
 
+/*
 void init_plateau_test(){
 	init_plateau(&p);
 	rejoindre_partie(&p, 500, "127.000.1.1");
 	demander_mise(&p, 0, 10);
 }
-
-char * jsonTest(){
-	char * json = plateau_to_json(&p);
+*/
+char * get_json(){
+	char * json = plateau_to_json(&p, 0, "null");
 	return json;
 }
 
 char * generationTaille(char * json){
-	int size = strlen(json);
+	int size = strlen(json)+1;
 	char * buf = malloc(sizeof(char)*50);
 	char str[12];
 
@@ -31,23 +32,25 @@ char * generationTaille(char * json){
 	sprintf(str, "\"%d\"", size);
 	strcat(buf,str);
 
-	strcat(buf,"}\n");
+	strcat(buf,"}\0");
 
 	return buf;
 }
 
 void sendPlateau(int ecoute){
 
-	char * json = jsonTest();
+	char * json = get_json();
 	//json variable externe
 	//recup plateau
 	char * tailleJson = generationTaille(json);
 
 	//idJoueur:"changeant"
 	//dialogue:"mess"
-	//quand créé joueur, renvoie id joueur 
+	//quand créé joueur, renvoie id joueur
 	//dans thread une valeur id_joueur
 	//génération json associer message
+
+
 
 	//printf("%s\n",tailleJson);
 
@@ -60,25 +63,43 @@ void * threadServeurTCPClient(void * arg){
 	int ecoute = socketGeneral;
 	printf("%d\n",ecoute);
 
-	init_plateau_test();
+	//init_plateau_test();
 	//Connection
 	char * msg = receive_data_TCP(ecoute);
+	//remplace par parseur check co
 	printf("init : %s\n",msg );
-	sendPlateau(ecoute);
 
+	// if !co
+	// pthread_exit(NULL);
+	char *res = parseur_REST(msg, &p);
+	printf("res %s\n",res);
+	if (strcmp(res,"CONNECT OK")!=0){
+		printf("pb co\n");
+		//créé json
+		pthread_exit(NULL);
+	}
+	//rejoindre_partie(&p, MISE_VALUE, "127.000.1.1");
+	sendPlateau(ecoute);
 
 	while(receiveTCPClient){
 		char * msg = receive_data_TCP(ecoute);
 		printf("%s\n",msg );
-		
+
 		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT
 		//EN FONCTION RESULTAT, ENVOIE A TOUT LE MONDE
+
+		if (strstr("SPLIT KO", res)){
+			printf("split ko\n");
+			//créé json
+		}
+
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
 		if(strcmp(msg,"")==0){
 			free(msg);
 			continue;
 		}
+		char *res = parseur_REST(msg, &p);
 
 		sendPlateau(ecoute);
 

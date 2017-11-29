@@ -8,6 +8,8 @@
 #define sizeParam 4
 
 int receiveUDP = 1;
+extern plateau p;
+
 
 char * messageRetour(int nbJoueur){
 
@@ -16,7 +18,7 @@ char * messageRetour(int nbJoueur){
 	sprintf(buffer, "%d", nbJoueur);
 
 	char * come = malloc(sizeof(COMEHERE)+sizeParam+1);
-	
+
 	char * param = malloc(sizeof(char)*sizeParam);
 
 	strcat(param,"{");
@@ -32,7 +34,7 @@ char * messageRetour(int nbJoueur){
 
 
 char * verificationPartie(){
-	int nbJoueur = 5;
+	int nbJoueur = p.nb_joueur;
 	return messageRetour(nbJoueur);
 }
 
@@ -50,10 +52,10 @@ void * threadServeurUDP(void * arg){
 	UDP_bind_server(udp_sock,port);
 	while(receiveUDP){
 		struct client client = recv_UDP(udp_sock,port);
-		sendBackBroadcast(client);	
+		sendBackBroadcast(client);
 	}
 	close_UDP(udp_sock);
-	
+
 	(void) arg;
     pthread_exit(NULL);
 }
@@ -65,6 +67,6 @@ pthread_t startServeurUDP(){
 		perror("pthread_create()\n");
 		exit(0);
     }
-    
+
     return threadServeur;
 }

@@ -5,6 +5,9 @@
 #define BUFF_SIZE 20
 #define MAX_BACKLOG 9
 
+plateau p;
+
+
 int socket_UDP(){
 
 	int fd;
@@ -23,7 +26,7 @@ void close_UDP(int fd){
 }
 
 void send_UDP(int sock, char* host, int port, char* msg){
-	
+
 	struct hostent* he = gethostbyname(host);
 	if(he == NULL){
 		herror("Send_UDP() -- gethostbyname");
@@ -67,7 +70,7 @@ struct client recv_UDP(int sock, int port){
 
 	printf("-> UDP message: \"%s\" host: \"%s\" port: \"%d\"\n",
 		buf, host_ip, port);
-	
+
 	struct client c;
 	strcpy(c.host,host_ip);
 	c.port = port;
@@ -159,7 +162,7 @@ char * receive_data_TCP(int sock){
 	int nb_max = MAX_MSG;
 
 	int nb_lu;
-	struct timeval timeout; 
+	struct timeval timeout;
  	timeout.tv_sec = 2;
  	timeout.tv_usec = 0;
 
@@ -168,7 +171,7 @@ char * receive_data_TCP(int sock){
 		setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
 
 		nb_lu=recv(sock, buffer, BUFF_SIZE, 0);
-		
+
 		if(nb_lu == -1){
 			timeout.tv_sec = 0;
 			return msg;

@@ -41,7 +41,7 @@ int demander_rester(plateau *p, int id_joueur);
 int demander_double(plateau *p, int id_joueur);
 int demander_abandon(plateau *p, int id_joueur);
 int check_joueur_actif(plateau *p, int id_joueur);
-char * plateau_to_json(plateau *p);
+char * plateau_to_json(plateau *p, int id_joueur, char *msg);
 int get_id_from_adresse(plateau *p, char *adresse);
 
 void init_tour(plateau *p);

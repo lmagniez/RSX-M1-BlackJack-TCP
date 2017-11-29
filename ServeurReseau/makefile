@@ -2,7 +2,7 @@ PLATEAUSRCDIR = ../ServeurBlackJack/src/
 BINDIR = ./bin/
 SRCDIR = ./src/
 CC = gcc 
-CFLAGS = -Wall -Wextra -g -O2
+CFLAGS = -Wall -Wextra -g -O2 -lpthread
 
 OBJET = $(BINDIR)ServeurUDP.o $(BINDIR)Network_Toolbox.o $(BINDIR)startServeur.o $(BINDIR)ServeurTCP.o $(BINDIR)parsingCmd.o $(BINDIR)carte.o $(BINDIR)tas.o $(BINDIR)jeu.o $(BINDIR)joueur.o $(BINDIR)plateau.o $(BINDIR)ServeurTCPClient.o
 

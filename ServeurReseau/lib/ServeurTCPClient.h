@@ -12,6 +12,8 @@
 #include <signal.h>
 #include <pthread.h>
 #include "./Network_Toolbox.h"
+#include "./parsingCmd.h"
+
 
 void * threadServeurTCPClient(void * arg);
 pthread_t startServeurTCPClient(int socket);

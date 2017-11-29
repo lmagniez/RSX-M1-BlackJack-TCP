@@ -10,6 +10,8 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include "../../ServeurBlackJack/lib/plateau.h"
+
 
 struct client{
 	char host[15];

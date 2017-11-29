@@ -1,20 +1,19 @@
 #include "../lib/parsingCmd.h"
 #include "../../ServeurBlackJack/lib/plateau.h"
 
-#define CREDIT 500
 /*
 GET action/connect
-host: 
+host:
 
 POST /action/mise
-host: 
+host:
 200
 */
 	/*
 	public String get = "GET ";
 	public String post = "POST ";
 	*/
-	
+
 	/*
 	char* mise = "/action/mise";
 	char* tirer = "/action/tirer";
@@ -23,11 +22,11 @@ host:
 	char* leave = "/action/leave";
 	char* doubler = "/action/doubler";
 	char* rester = "/action/rester";
-	
+
 	char* connect = "action/connect";
 	*/
-	
-	void parseur_REST(char *cmd, plateau *p){
+
+	char *parseur_REST(char *cmd, plateau *p){
 		char adr[15];
 		int is_post = 0;
 		int is_get = 0;
@@ -39,14 +38,14 @@ host:
 		int is_rester = 0;
 		int is_connect = 0;
 		int cpt_cmd = 0;
-		
+
 		int id_joueur = -1;
 		int mise = 0;
-		
+
 		printf("\nCMD -> %s\n",cmd);
-		
+
 		char *cmd_tmp = cmd;
-		
+
 		//GET/POST
 		cmd_tmp = strstr(cmd, POST);
 		if(cmd_tmp != NULL){
@@ -60,11 +59,11 @@ host:
 		}
 		if((!is_post&&!is_get)||(is_post&&is_get)){
 			printf("erreur parsing POST GET!!\n");
-			return;
+			return NULL;
 		}
-		
+
 		//printf("cmd a partir de maintenant \n -> %s\n", cmd);
-		
+
 		//MISE, TIRER, SPLIT, DOUBLER, RESTER, CONNECT
 		cmd_tmp = strstr(cmd, MISE);
 		if(cmd_tmp != NULL){
@@ -110,16 +109,16 @@ host:
 		}
 		if(cpt_cmd != 1){
 			perror("erreur parsing commande!!\n");
-			return;
+			return NULL;
 		}
-		
+
 		//passer le host:
 		cmd_tmp = strstr(cmd, "host: ");
 		if(cmd_tmp != NULL){
 			cmd = cmd_tmp+strlen("host: ");
 			cpt_cmd++;
 		}
-		
+
 		//get adresse
 		adr[0] = '\0';
 		int cpt = 0;
@@ -129,110 +128,111 @@ host:
 		}
 		adr[cpt++]='\0';
 		printf("adr -> %s\n", adr);
-		
+
 		if(is_connect){
 			printf("connect!\n");
 			id_joueur = rejoindre_partie(p, CREDIT, adr);
 			printf("connecté en tant que joueur %d!\n",id_joueur);
-			
-			return;
+
+			return "CONNECT OK";
 		}
-		
+
 		//get id_joueur
 		id_joueur = get_id_from_adresse(p, adr);
 		if(id_joueur < 0){
 			perror("l'adresse ne correspond pas au joueur!\n");
-			return;
+			return NULL;
 		}
-		
+
 		cmd = cmd + cpt;
 		//printf("cmd a partir de maintenant \n -> %s\n", cmd);
-		
-		
+
+
 		//mise d'un joueur (POST)
 		if(is_mise){
 			printf("mise!\n");
 			if(!is_post){
 				perror("erreur! Mise doit etre POST!\n");
-				return;
+				return NULL;
 			}
 			mise = atoi(cmd);
 			if(mise <= 0){
 				perror("mise incorrecte !\n");
-				return;
+				return NULL;
 			}
 			if(demander_mise(p, id_joueur, mise) == -1){
 				printf("Ne peux pas miser!\n");
-				return;
+				return NULL;
 			}
-			
+
 			printf("mise -> %d\n",mise);
-			return;
+			return NULL;
 		}
-		
+
 		//tirage d'une carte (GET)
 		else if(is_tirer){
 			printf("tirer!\n");
 			if(!is_get){
 				perror("erreur! Tirer doit etre GET!\n");
-				return;
+				return NULL;
 			}
 			if(demander_tirer(p, id_joueur) == -1){
 				printf("Ne peux pas tirer\n");
-				return;
+				return NULL;
 			}
 		}
-		
+
 		//split jeu (GET)
 		else if(is_split){
 			printf("split!\n");
 			if(!is_get){
 				perror("erreur! Split doit etre GET!\n");
-				return;
+				return NULL;
 			}
 			if(demander_split(p, id_joueur) == -1){
 				printf("Ne peux pas split\n");
-				return;
+				return "SPLIT KO";
 			}
 		}
-		
+
 		//leave jeu (GET)
 		else if(is_leave){
 			printf("leave!\n");
 			if(!is_get){
 				perror("erreur! Leave doit etre GET!\n");
-				return;
+				return NULL;
 			}
 			if(demander_abandon(p, id_joueur) == -1){
 				printf("Ne peux pas leave\n");
-				return;
+				return NULL;
 			}
 		}
-		
+
 		//doubler jeu (GET)
 		else if(is_doubler){
 			printf("doubler!\n");
 			if(!is_get){
 				perror("erreur! Doubler doit etre GET!\n");
-				return;
+				return NULL;
 			}
 			if(demander_double(p, id_joueur) == -1){
 				printf("Ne peux pas doubler\n");
-				return;
+				return NULL;
 			}
 		}
-		
+
 		//rester jeu (GET)
 		else if(is_rester){
 			printf("rester!\n");
 			if(!is_get){
 				perror("erreur! Rester doit etre GET!\n");
-				return;
+				return NULL;
 			}
 			if(demander_rester(p, id_joueur) == -1){
 				printf("Ne peux pas rester\n");
-				return;
+				return NULL;
 			}
 		}
-		
+		return NULL;
+
 	}

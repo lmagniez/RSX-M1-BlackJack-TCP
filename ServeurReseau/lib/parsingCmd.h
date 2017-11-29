@@ -19,8 +19,9 @@
 #define POST "POST"
 #define GET "GET"
 
+#define CREDIT 10000
 
-void parseur_REST(char *cmd, plateau *p);
+char* parseur_REST(char *cmd, plateau *p);
 
 
 
