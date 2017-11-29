@@ -32,7 +32,7 @@ char * generationTaille(char * json){
 	sprintf(str, "\"%d\"", size);
 	strcat(buf,str);
 
-	strcat(buf,"}\0");
+	strcat(buf,"}\n");
 
 	return buf;
 }
