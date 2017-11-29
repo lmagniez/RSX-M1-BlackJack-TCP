@@ -32,7 +32,6 @@ public class ModelJeu {
 
 	public void setPlateau(Plateau p) {
 		jeu.reset();
-				
 		plateau.setId_joueur(p.getId_joueur());
 		plateau.setDialogue(p.getDialogue());
 		plateau.setNb_joueur(p.getNb_joueur());
@@ -49,7 +48,6 @@ public class ModelJeu {
 	}
 
 	private void gestionBouton() {
-		System.out.print(plateau.toString());
 		for(int i = 0;i<plateau.getListJoueur().size();i++) {
 			if(plateau.getListJoueur().get(i).getid() == plateau.getId_joueur()) {
 				Joueur j = plateau.getListJoueur().get(i);

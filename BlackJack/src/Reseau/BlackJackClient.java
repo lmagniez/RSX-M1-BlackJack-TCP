@@ -71,7 +71,8 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 						while(true){
 							String message = message();
 							message = message.replace("\0", "");
-							readPlateau(Integer.parseInt(message));
+							if(!message.isEmpty())
+								readPlateau(Integer.parseInt(message));
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -85,7 +86,6 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 
 	public String message() throws IOException {
 			String s = socketReader.readLine();
-			System.out.print("****>"+s);
 			String size = Parser.share.parseJsonMessage(s);
 			return size;
 	}
@@ -101,7 +101,6 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 			sizeRead += s.length();
 			msg.append(s+"\n");	
 		}
-		System.out.println(msg.toString());
 		Plateau p = Parser.share.parseJsonData(msg.toString());
 		fenetreclient.setPlateau(p);
 	}

@@ -32,6 +32,11 @@ public class Parser implements ConstanteParser{
 		}
 
 		private Plateau parseData(String json) {
+			jsonArrayGeneral = null;
+			jsonJoueurs = null;
+			ligneSplit = null;
+			joueursJSON ="";
+			
 			Plateau plateau = new Plateau();
 			jsonArrayGeneral = json.split("\n");
 			for(int i=0 ; i< jsonArrayGeneral.length;i++) {
@@ -42,6 +47,7 @@ public class Parser implements ConstanteParser{
 					for(int a=i ; a< jsonArrayGeneral.length;a++) {
 						joueursJSON += jsonArrayGeneral[a]+"\n";
 					}
+					System.out.println(joueursJSON);
 					parseJoueur(plateau);
 					break;
 				}else{
@@ -52,7 +58,6 @@ public class Parser implements ConstanteParser{
 		}
 
 		private void parseJoueur(Plateau plateau) {
-			System.out.print("-------------------\n"+joueursJSON+"-------------------\n");
 			jsonArrayGeneral = joueursJSON.split("},\n");
 			for(int i = 0 ; i< jsonArrayGeneral.length;i++) {
 				plateau.getListJoueur().add(parseUnJoueur(jsonArrayGeneral[i]));
@@ -62,7 +67,6 @@ public class Parser implements ConstanteParser{
 		private Joueur parseUnJoueur(String joueurJson) {
 			jsonJoueurs = joueurJson.split("\n");
 			Joueur newJ = new Joueur();
-
 			for(int i = 0 ; i< jsonJoueurs.length;i++) {
 				if(jsonJoueurs[i].contains(jeux)) {
 					recupAllJeuPlayer(newJ,i,true);
@@ -75,9 +79,7 @@ public class Parser implements ConstanteParser{
 		}
 
 		private void recupAllJeuPlayer(Joueur newJ,int numLigne,boolean premier) {
-			if(!jsonJoueurs[numLigne].contains("}, {") || !jsonJoueurs[numLigne].contains("}")&& !premier) {
-				System.out.print("coucou");
-				System.out.print(jsonJoueurs[numLigne]);
+			if(!jsonJoueurs[numLigne].contains("}, {") && !premier) {
 				return;
 			}
 			newJ.getJeux().add(parseJeu(numLigne,jsonJoueurs,size_jeu_croupier+1));
@@ -189,7 +191,6 @@ public class Parser implements ConstanteParser{
 		//------------MESSAGE--------------
 		//---------------------------------
 		private String parseMessage(String ligne) {
-			System.out.println(ligne);
 			if(ligne.contains(taille)) {
 				ligneReplace = ligne.replaceAll("[a-zA-Z-:{}_,\" \t ]", "");
 				ligneReplace = ligneReplace.replaceAll("\"", "");
