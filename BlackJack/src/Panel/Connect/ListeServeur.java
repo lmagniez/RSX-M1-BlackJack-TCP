@@ -58,7 +58,7 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 	}
 	
 	private void addServer() {
-		this.remove(this.getComponentCount()-1);
+		if(listeServer.size() ==1)this.remove(this.getComponentCount()-1);
 		int i = listeServer.size()-1;
 		list.add(new labelServer(listeServer.get(i),list.getComponentCount(),jeu));
 		list.setPreferredSize(new Dimension(350, (list.getComponentCount()+1)*75));

@@ -15,11 +15,12 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import Constante.Constante;
+import Constante.ConstanteParser;
 import Constante.ConstanteResau;
 import Jeu.FrameJeu;
 import Model.Plateau;
 
-public class BlackJackClient implements Constante, ConstanteResau {
+public class BlackJackClient implements Constante, ConstanteResau,ConstanteParser {
 
 	private FrameJeu fenetreclient;
 	private static final String LO_ADDR = "127.0.0.1";
@@ -67,9 +68,11 @@ public class BlackJackClient implements Constante, ConstanteResau {
 					setMessage(GeneratorEntete.share.generationEnteteGet(connect), socketWriter);
 					fenetreclient = new FrameJeu(BlackJackClient.this);
 					try {
-						String plateauJson = readPlateau();
-						Plateau p = Parser.share.parseJsonData(plateauJson);
-						fenetreclient.setPlateau(p);
+						while(true){
+							String message = message();
+							message = message.replace("\0", "");
+							readPlateau(Integer.parseInt(message));
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -80,19 +83,27 @@ public class BlackJackClient implements Constante, ConstanteResau {
 		}
 	}
 
-	public String readPlateau() throws IOException {
+	public String message() throws IOException {
 			String s = socketReader.readLine();
-			System.out.println(s);
+			System.out.print("****>"+s);
 			String size = Parser.share.parseJsonMessage(s);
-			StringBuilder msg = new StringBuilder();
-			int sizeRead = 0;
-			while(msg.toString().length() <= Integer.parseInt(size)-2) {
-				s= "";
-				s = socketReader.readLine();
-				sizeRead += s.length();
-				msg.append(s+"\n");
-			}
-			return msg.toString();
+			return size;
+	}
+	
+	public void readPlateau(int size) throws IOException{
+
+		String s;
+		StringBuilder msg = new StringBuilder();
+		int sizeRead = 0;
+		while(msg.toString().length() < size-3) {
+			s= "";
+			s = socketReader.readLine();
+			sizeRead += s.length();
+			msg.append(s+"\n");	
+		}
+		System.out.println(msg.toString());
+		Plateau p = Parser.share.parseJsonData(msg.toString());
+		fenetreclient.setPlateau(p);
 	}
 
 	public BufferedReader getSocketReader() {

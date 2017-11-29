@@ -8,7 +8,7 @@ import Model.Plateau;
 public class ModelJeu {
 
 	private Jeu jeu;
-	private Plateau plateau;
+	private Plateau plateau = new Plateau();
 	
 	public void addObserverGrille(Jeu j) {
 		jeu = j;
@@ -32,7 +32,16 @@ public class ModelJeu {
 
 	public void setPlateau(Plateau p) {
 		jeu.reset();
-		plateau = p;
+				
+		plateau.setId_joueur(p.getId_joueur());
+		plateau.setDialogue(p.getDialogue());
+		plateau.setNb_joueur(p.getNb_joueur());
+		plateau.setTour_id_jeu(p.getTour_id_jeu());
+		plateau.setTour_id_joueur(p.getTour_id_joueur());
+		plateau.setTour_started(p.getTour_started());
+		plateau.setJeu_croupier(p.getJeu_croupier());
+		plateau.setListJoueur(p.getListJoueur());
+		
 		majNom();
 		miseAjourInterface();
 		gestionBouton();
@@ -40,6 +49,7 @@ public class ModelJeu {
 	}
 
 	private void gestionBouton() {
+		System.out.print(plateau.toString());
 		for(int i = 0;i<plateau.getListJoueur().size();i++) {
 			if(plateau.getListJoueur().get(i).getid() == plateau.getId_joueur()) {
 				Joueur j = plateau.getListJoueur().get(i);

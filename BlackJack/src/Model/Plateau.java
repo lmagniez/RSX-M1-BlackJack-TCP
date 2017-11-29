@@ -91,6 +91,15 @@ public class Plateau {
 	public void setDialogue(String dialogue) {
 		this.dialogue = dialogue;
 	}
+
+	@Override
+	public String toString() {
+		return "Plateau [id_joueur=" + id_joueur + ", dialogue=" + dialogue
+				+ ", nb_joueur=" + nb_joueur + ", tour_id_joueur="
+				+ tour_id_joueur + ", tour_id_jeu=" + tour_id_jeu
+				+ ", tour_started=" + tour_started + ", jeu_croupier="
+				+ jeu_croupier + ", listJoueur=" + listJoueur + "]";
+	}
 	
 	
 	
