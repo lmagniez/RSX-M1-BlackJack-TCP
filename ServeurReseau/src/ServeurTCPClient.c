@@ -50,7 +50,7 @@ char * generationMsg(char * msg){
 }
 
 //Envoyer un message sur le socket
-void sendMsg(int ecoute, int id_joueur, char *msg){
+void sendMsg(int ecoute, char *msg){
 
 	char * json = generationMsg(msg);
 	char * tailleJson = generationTaille(json);
@@ -81,6 +81,23 @@ void sendPlateau(int ecoute, int id_joueur, char *msg){
 
 }
 
+void sendMsgAll(char *msg){
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(p.joueurs[i].e != OFF){
+			sendMsg(p.joueurs[i].num_socket, msg);
+		}
+	}
+}
+
+void sendPlateauAll(int id_joueur, char *msg){
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(p.joueurs[i].e != OFF){
+			sendPlateau(p.joueurs[i].num_socket, id_joueur, msg);
+		}
+	}
+}
+
+
 //thread d'un client
 void * threadServeurTCPClient(void * arg){
 	int ecoute = socketGeneral;
@@ -91,7 +108,7 @@ void * threadServeurTCPClient(void * arg){
 	//Connection
 	char * msg = receive_data_TCP(ecoute);
 	
-	char *res = parseur_REST(msg, &p, &nb);
+	char *res = parseur_REST(msg, &p, &nb, ecoute);
 	if (strstr(res,"CONNECT OK")==NULL){
 		printf("pb co\n");
 		//créé json
@@ -101,7 +118,8 @@ void * threadServeurTCPClient(void * arg){
 	char c = res[strlen("CONNECT OK ")];
 	id_joueur = c - '0';
 	free(res);
-	sendPlateau(ecoute, id_joueur, "Le joueur vient de se connecter");
+	sendPlateauAll(id_joueur, "Le joueur vient de se connecter");
+	//sendPlateau(ecoute, id_joueur, "Le joueur vient de se connecter");
 
 	while(receiveTCPClient){
 		char * msg = receive_data_TCP(ecoute);
@@ -114,17 +132,19 @@ void * threadServeurTCPClient(void * arg){
 
 		int reinit = 0;
 		//reinit détecte si tous les joueurs ont fini de jouer
-		char *res_joueur = parseur_REST(msg, &p, &reinit);
+		char *res_joueur = parseur_REST(msg, &p, &reinit, ecoute);
 		//si fin de tour
 		if(reinit == 1){
 			tour_croupier(&p);
 			//on envoie le plateau avec que le croupier ai joué
-			sendPlateau(ecoute, id_joueur, res_joueur);
+			sendPlateauAll(id_joueur, res_joueur);
+			//sendPlateau(ecoute, id_joueur, res_joueur);
 			sleep(2);
 			//récupère les lignes à renvoyer et réinitialise le jeu
 			char *res_croupier = get_results(&p);
 			//on envoie les étapes du croupier (sans mettre à jour le plateau)
-			sendMsg(ecoute, id_joueur, res_croupier);
+			//sendMsg(ecoute, res_croupier);
+			sendMsgAll(res_croupier);
 			//attend que les joueurs voient le résultat avant de réinitialiser
 			sleep(2);
 			strcpy(res_joueur, "Réinitialisation des jeux");
@@ -135,13 +155,15 @@ void * threadServeurTCPClient(void * arg){
 			continue;
 		}else if (strstr("SPLIT KO", res_joueur)){
 			printf("split\n");
-			sendMsg(ecoute, id_joueur, "Vous ne pouvez pas splitter votre jeu!");
+			//sendMsg(ecoute, "Vous ne pouvez pas splitter votre jeu!");
+			sendMsgAll("Vous ne pouvez pas splitter votre jeu!");
 			continue;
 		}
 
 		//ENVOIE A TOUT LE MONDE
 		//met à jour le plateau
-		sendPlateau(ecoute, id_joueur, res_joueur);
+		sendPlateauAll(id_joueur, res_joueur);
+		//sendPlateau(ecoute, id_joueur, res_joueur);
 
 		free(msg);
 		free(res);

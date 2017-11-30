@@ -63,14 +63,14 @@ void afficher_plateau(plateau *p){
 
 //id si le joueur peut rejoindre
 //-1 si plein
-int rejoindre_partie(plateau *p, int credit, char *adresse){
+int rejoindre_partie(plateau *p, int credit, char *adresse, int num_socket){
 	if(p->nb_joueur == NB_JOUEUR_MAX){
 		return -1;
 	}
 	else {
 		for(int i=0; i<NB_JOUEUR_MAX; i++){
 			if(p->joueurs[i].e==OFF){
-				start_joueur(&(p->joueurs[i]),credit, adresse, p->tour_started);
+				start_joueur(&(p->joueurs[i]),credit, adresse, p->tour_started, num_socket);
 				p->nb_joueur++;
 				/*if(p->nb_joueur==1){
 					p->tour_id_joueur = i;
@@ -496,7 +496,6 @@ char * plateau_to_json(plateau *p, int id_joueur, char *msg){
 
 	char *buf = malloc(sizeof(char)*MAX_BUF_PLATEAU);
 	char *str = malloc(sizeof(char)*MAX_MSG+1);
-	int cur_size = 0;
 	/*buf[cur_size++] = '{';
 	buf[cur_size++] = '\n';*/
 	buf[0] = '\0';

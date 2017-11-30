@@ -61,10 +61,11 @@ void destroy_joueur(joueur *j){
 	free(j->jeux);
 }
 
-void start_joueur(joueur *j, int credit, char *adresse, int tour_started){
+void start_joueur(joueur *j, int credit, char *adresse, int tour_started, int num_socket){
 	j->credit = credit;
 	j->mise_actuelle = 0;
 	j->mise_totale = 0;
+	j->num_socket = num_socket;
 	if(tour_started)
 		j->e = WAITING;
 	else

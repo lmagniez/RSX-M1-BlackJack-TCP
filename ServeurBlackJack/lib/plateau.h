@@ -28,7 +28,7 @@ void destroy_plateau(plateau *p);
 void distribuer_carte(plateau *p, jeu *j);
 void afficher_plateau(plateau *p);
 
-int rejoindre_partie(plateau *p, int credit, char *adresse);
+int rejoindre_partie(plateau *p, int credit, char *adresse, int num_socket);
 int quitter_partie(plateau *p, int id_joueur);
 
 int peut_commencer_tour(plateau *p);

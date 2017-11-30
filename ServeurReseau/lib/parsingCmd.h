@@ -23,7 +23,7 @@
 #define DIALOGUE_SIZE 500
 #define CMD_SIZE 100
 
-char* parseur_REST(char *cmd, plateau *p, int *reinit);
+char* parseur_REST(char *cmd, plateau *p, int *reinit, int num_socket);
 
 
 

@@ -26,7 +26,7 @@ host:
 	char* connect = "action/connect";
 	*/
 
-	char *parseur_REST(char *cmd, plateau *p, int *reinit){
+	char *parseur_REST(char *cmd, plateau *p, int *reinit, int num_socket){
 		char adr[15];
 		int is_post = 0;
 		int is_get = 0;
@@ -132,11 +132,11 @@ host:
 		if(is_connect){
 			printf("connect!\n");
 //>>>>>>VOIR THREAD
-			id_joueur = rejoindre_partie(p, CREDIT, adr);
+			id_joueur = rejoindre_partie(p, CREDIT, adr, num_socket);
 			printf("connecté en tant que joueur %d!\n",id_joueur);
 
 			char *str=malloc(sizeof(char)*15);
-			sprintf(str, "CONNECT OK %d\0", id_joueur);
+			sprintf(str, "CONNECT OK %d", id_joueur);
 			return str;
 		}
 

@@ -25,7 +25,6 @@ typedef struct{
 	int id_joueur;
 	jeu *jeux;
 	char *adresse;
-	pthread_t thread_joueur;
 	int num_socket;
 	int nb_jeux;
 	int credit;
@@ -37,7 +36,7 @@ typedef struct{
 void afficher_joueur(joueur *j);
 void generer_joueur(joueur *j, int id_joueur);
 void destroy_joueur(joueur *j);
-void start_joueur(joueur *j, int credit, char *adresse, int tour_started);
+void start_joueur(joueur *j, int credit, char *adresse, int tour_started, int num_socket);
 void stop_joueur(joueur *j);
 
 int proposer_mise(joueur *j, int mise);
