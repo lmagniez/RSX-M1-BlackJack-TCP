@@ -20,9 +20,10 @@
 #define GET "GET"
 
 #define CREDIT 10000
+#define DIALOGUE_SIZE 500
 #define CMD_SIZE 100
 
-char* parseur_REST(char *cmd, plateau *p);
+char* parseur_REST(char *cmd, plateau *p, int *reinit);
 
 
 

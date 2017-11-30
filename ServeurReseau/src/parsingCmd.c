@@ -26,7 +26,7 @@ host:
 	char* connect = "action/connect";
 	*/
 
-	char *parseur_REST(char *cmd, plateau *p){
+	char *parseur_REST(char *cmd, plateau *p, int *reinit){
 		char adr[15];
 		int is_post = 0;
 		int is_get = 0;
@@ -181,12 +181,23 @@ host:
 				perror("erreur! Tirer doit etre GET!\n");
 				return NULL;
 			}
-			if(demander_tirer(p, id_joueur) == -1){
+			int fin_tour = demander_tirer(p, id_joueur);
+			if(fin_tour == -1){
 				printf("Ne peux pas tirer\n");
 				return NULL;
 			}
+			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a tiré une carte\n", id_joueur);
+			//strcpy(dialogue, res);
+			if(fin_tour == 1){
+				/*char *result_tour = tour_croupier(p);
+				strcat(dialogue,result_tour);
+				free(result_tour);*/
+				*reinit = 1;
+			}
+			//free(res);
+			//return dialogue;
 			return res;
 		}
 
@@ -213,12 +224,23 @@ host:
 				perror("erreur! Leave doit etre GET!\n");
 				return NULL;
 			}
-			if(demander_abandon(p, id_joueur) == -1){
+			int fin_tour = demander_abandon(p, id_joueur);
+			if(fin_tour == -1){
 				printf("Ne peux pas leave\n");
 				return NULL;
 			}
+			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a abandonné son jeu courant\n", id_joueur);
+			//strcpy(dialogue, res);
+			if(fin_tour == 1){
+				/*char *result_tour = tour_croupier(p);
+				strcat(dialogue,result_tour);
+				free(result_tour);*/
+				*reinit = 1;
+			}
+			//free(res);
+			//return dialogue;
 			return res;
 		}
 
@@ -229,13 +251,25 @@ host:
 				perror("erreur! Doubler doit etre GET!\n");
 				return NULL;
 			}
-			if(demander_double(p, id_joueur) == -1){
+			int fin_tour = demander_double(p, id_joueur);
+			if(fin_tour == -1){
 				printf("Ne peux pas doubler\n");
 				return NULL;
 			}
+			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a doublé sa mise et tire une carte\n", id_joueur);
+			//strcpy(dialogue, res);
+			if(fin_tour == 1){
+				/*char *result_tour = tour_croupier(p);
+				strcat(dialogue,result_tour);
+				free(result_tour);*/
+				*reinit = 1;
+			}
+			//free(res);
+			//return dialogue;
 			return res;
+			
 		}
 
 		//rester jeu (GET)
@@ -245,13 +279,26 @@ host:
 				perror("erreur! Rester doit etre GET!\n");
 				return NULL;
 			}
-			if(demander_rester(p, id_joueur) == -1){
+			int fin_tour = demander_rester(p, id_joueur);
+			if(fin_tour == -1){
 				printf("Ne peux pas rester\n");
 				return NULL;
 			}
+			
+			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d est satisfait de son jeu courant\n", id_joueur);
+			//strcpy(dialogue, res);
+			if(fin_tour == 1){
+				/*char *result_tour = tour_croupier(p);
+				strcat(dialogue,result_tour);
+				free(result_tour);*/
+				*reinit = 1;
+			}
+			//free(res);
+			//return dialogue;
 			return res;
+			
 		}
 		return NULL;
 

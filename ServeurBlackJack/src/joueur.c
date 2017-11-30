@@ -142,10 +142,13 @@ int modifier_credit(joueur *j, int credit){
 char * joueur_to_json(joueur *j){
 
 	char *buf = malloc(sizeof(char)*MAX_BUF_JOUEUR);
-	char str[12];
-	int cur_size = 0;
+	char str[50];
+	/*int cur_size = 0;
 	buf[cur_size++] = '{';
-	buf[cur_size++] = '\n';
+	buf[cur_size++] = '\0';*/
+	buf[0] = '\0';
+	strcat(buf,"{\n");
+
 	strcat(buf,"\"id_joueur\": ");
 	sprintf(str, "\"%d\",\n", j->id_joueur);
 	strcat(buf,str);
@@ -166,7 +169,9 @@ char * joueur_to_json(joueur *j){
 		if(i>0){
 			strcat(buf, ",\n");
 		}
-		strcat(buf, jeu_to_json(&(j->jeux[i])));
+		char *jeu = jeu_to_json(&(j->jeux[i]));
+		strcat(buf, jeu);
+		free(jeu);
 
 	}
 	strcat(buf,"\n]\n");

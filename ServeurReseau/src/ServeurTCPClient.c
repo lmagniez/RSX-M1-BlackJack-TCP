@@ -1,7 +1,6 @@
 #include "../lib/ServeurTCPClient.h"
 #include "../../ServeurBlackJack/lib/plateau.h"
 #define MAX_LENGTH 1024
-#define MAX_MSG 100
 #define BUFF_SIZE 20
 #define MAX_BACKLOG 9
 
@@ -38,11 +37,8 @@ char * generationTaille(char * json){
 }
 
 char * generationMsg(char * msg){
-	int size = strlen(msg)+1;
 	char * buf = malloc(sizeof(char)*SIZE_MSG);
 	
-	printf("strlen !! %d \n",strlen(msg));
-
 	strcpy(buf,"{ \"message\" : ");
 	strcat(buf,msg);
 	strcat(buf,"}\n");
@@ -94,7 +90,8 @@ void * threadServeurTCPClient(void * arg){
 
 	// if !co
 	// pthread_exit(NULL);
-	char *res = parseur_REST(msg, &p);
+	int nb;
+	char *res = parseur_REST(msg, &p, &nb);
 	printf("res >>%s\n",res);
 	if (strstr(res,"CONNECT OK")==NULL){
 		printf("pb co\n");
@@ -116,18 +113,37 @@ void * threadServeurTCPClient(void * arg){
 			continue;
 		}
 
-		char *res = parseur_REST(msg, &p);
+		int reinit = 0;
+		//reinit détecte si tous les joueurs ont fini de jouer
+		char *res_joueur = parseur_REST(msg, &p, &reinit);
+		char *res_croupier;
+		//si fin de tour
+		if(reinit == 1){
+			tour_croupier(&p);
+			//on envoie le plateau avec que le croupier ai joué
+			sendPlateau(ecoute, id_joueur, res_joueur);
+			sleep(2);
+			//récupère les lignes à renvoyer et réinitialise le jeu
+			res_croupier = get_results(&p);
+			//on envoie les étapes du croupier (sans mettre à jour le plateau)
+			sendMsg(ecoute, id_joueur, msg);
+			//attend que les joueurs voient le résultat avant de réinitialiser
+			sleep(2);
+			strcpy(res_joueur, "Réinitialisation des jeux");
+			
+		}
 		
 		if(res == NULL){
 			continue;
-		}else if (strstr("SPLIT KO", res)){
+		}else if (strstr("SPLIT KO", res_joueur)){
 			printf("split\n");
 			sendMsg(ecoute, id_joueur, "Vous ne pouvez pas splitter votre jeu!");
 			continue;
 		}
 
 		//ENVOIE A TOUT LE MONDE
-		sendPlateau(ecoute, id_joueur, res);
+		//met à jour le plateau
+		sendPlateau(ecoute, id_joueur, res_joueur);
 
 		free(msg);
 		free(res);

@@ -173,21 +173,21 @@ int change_tour(plateau *p){
 			printf("PLUS DE JOUEURS !!! \n");
 			p->tour_id_joueur = -1;
 			p->tour_id_jeu = -1;
-			tour_croupier(p);
-			return 0;
+			//tour_croupier(p);
+			return 1;
 		}
 		p->tour_id_joueur= (p->tour_id_joueur+1)%NB_JOUEUR_MAX;
 	}
 	p->tour_id_jeu = 0;
 	//nouveau tour
-	if(p->tour_id_joueur<=old_tour_id_joueur){
+	/*if(p->tour_id_joueur<=old_tour_id_joueur){
 		//action_croupier(p);
 		for(int i=0; i<NB_JOUEUR_MAX; i++){
 			if(p->joueurs[i].e==WAITING)
 				p->joueurs[i].e=BETTING;
 		}
 		return 1;
-	}
+	}*/
 
 	return 0;
 }
@@ -224,8 +224,9 @@ void tour_croupier(plateau *p){
 		p->jeu_croupier.e_jeu=SATISFAIT;
 	}
 
-	char * res = get_results(p);
-	printf(">>>> %s <<<<\n",res);
+	/*char * res = get_results(p);
+	return res;*/
+	//printf(">>>> %s <<<<\n",res);
 
 }
 
@@ -326,8 +327,9 @@ int demander_split(plateau *p, int id_joueur){
 		int id_jeu;
 		if((id_jeu=splitter_jeu(&(p->joueurs[id_joueur])))!=-1){;
 			printf("JOUEUR %d SPLITTE SON JEU %d\n",id_joueur, p->tour_id_jeu);
-			change_tour(p);
-			return 0;
+			int fin_tour = change_tour(p);
+			//if(fin_tour)tour_croupier(p);			
+			return fin_tour;
 		}
 	}
 	return -1;
@@ -348,8 +350,10 @@ int demander_tirer(plateau *p, int id_joueur){
 			p->joueurs[id_joueur].mise_actuelle = p->joueurs[id_joueur].mise_actuelle
 				- montant_perdu;
 		}
-		change_tour(p);
-		return c.face;
+		int fin_tour = change_tour(p);
+		//if(fin_tour)tour_croupier(p);			
+		return fin_tour;
+		//return c.face;
 	}
 
 
@@ -365,7 +369,8 @@ int demander_rester(plateau *p, int id_joueur){
 		printf("JOUEUR %d EST SATISFAIT DE SON JEU %d\n",id_joueur, p->tour_id_jeu);
 		check_joueur_actif(p, id_joueur);
 
-		change_tour(p);
+		int fin_tour = change_tour(p);
+		//if(fin_tour)tour_croupier(p);
 		return 1;
 	}
 	return -1;
@@ -399,8 +404,13 @@ int demander_double(plateau *p, int id_joueur){
 
 			check_joueur_actif(p, id_joueur);
 
+			int fin_tour = change_tour(p);
+			//if(fin_tour)tour_croupier(p);			
+			return fin_tour;			
+			/*			
 			change_tour(p);
-			return c.face;
+			return c.);
+			*/
 
 		}
 	}
@@ -424,9 +434,14 @@ int demander_abandon(plateau *p, int id_joueur){
 		//le joueur ne perd que la moitié de la somme
 		p->joueurs[id_joueur].credit += montant_perdu / 2;
 
-		change_tour(p);
 
+		int fin_tour = change_tour(p);
+		//if(fin_tour)tour_croupier(p);			
+		return fin_tour;
+		/*
+		change_tour(p);
 		return 0;
+		*/
 
 	}
 	return -1;
@@ -484,6 +499,7 @@ char * plateau_to_json(plateau *p, int id_joueur, char *msg){
 	int cur_size = 0;
 	/*buf[cur_size++] = '{';
 	buf[cur_size++] = '\n';*/
+	buf[0] = '\0';
 	strcat(buf,"{\n");
 
 	strcat(buf,"\"id_joueur_plateau\": ");
@@ -519,6 +535,7 @@ char * plateau_to_json(plateau *p, int id_joueur, char *msg){
 			}
 			char * joueur = joueur_to_json(&(p->joueurs[i]));
 			strcat(buf, joueur);
+			free(joueur);
 			cpt++;
 		}
 	}

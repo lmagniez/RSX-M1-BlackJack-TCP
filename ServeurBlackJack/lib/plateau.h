@@ -9,7 +9,7 @@
 
 
 #define NB_JOUEUR_MAX 7
-#define MAX_BUF_PLATEAU 4000
+#define MAX_BUF_PLATEAU 6000
 #define MAX_MSG 2000
 
 
