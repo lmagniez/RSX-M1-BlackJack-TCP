@@ -40,13 +40,11 @@ char * generationTaille(char * json){
 char * generationMsg(char * msg){
 	int size = strlen(msg)+1;
 	char * buf = malloc(sizeof(char)*SIZE_MSG);
-	char str[12];
 	
 	printf("strlen !! %d \n",strlen(msg));
 
 	strcpy(buf,"{ \"message\" : ");
-	sprintf(str, "\"%s\"", msg);
-	strcat(buf,str);
+	strcat(buf,msg);
 	strcat(buf,"}\n");
 
 
@@ -111,7 +109,6 @@ void * threadServeurTCPClient(void * arg){
 
 	while(receiveTCPClient){
 		char * msg = receive_data_TCP(ecoute);
-		printf("------>\n %s \n -------\n",msg );
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
 		if(strcmp(msg,"")==0 || strcmp(msg,"@")==0){
