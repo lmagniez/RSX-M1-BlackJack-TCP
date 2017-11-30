@@ -14,7 +14,7 @@
 #include "./Network_Toolbox.h"
 #include "./parsingCmd.h"
 
-#define SIZE_MSG 200
+#define SIZE_MSG 500
 
 void * threadServeurTCPClient(void * arg);
 pthread_t startServeurTCPClient(int socket);

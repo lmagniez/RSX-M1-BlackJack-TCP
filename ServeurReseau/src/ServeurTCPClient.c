@@ -49,6 +49,7 @@ char * generationMsg(char * msg){
 	strcat(buf,str);
 	strcat(buf,"}\n");
 
+
 	return buf;
 }
 
@@ -102,34 +103,33 @@ void * threadServeurTCPClient(void * arg){
 		//créé json
 		pthread_exit(NULL);
 	}
-	printf(">> ok\n");
+
 	char c = res[strlen("CONNECT OK ")];
 	id_joueur = c - '0';
-	
 	free(res);
-	printf(">> ok2\n");
-	
-	//rejoindre_partie(&p, MISE_VALUE, "127.000.1.1");
-	sendPlateau(ecoute, id_joueur, "Le joueur vient de se connecter\n");
-
-	printf(">> ok3\n");
+	sendPlateau(ecoute, id_joueur, "Le joueur vient de se connecter");
 
 	while(receiveTCPClient){
 		char * msg = receive_data_TCP(ecoute);
-		printf("%s\n",msg );
-
-		//ICI ON PARSE POUR VOIR CREATION DU TRHEAD DEDIE AU CLIENT
-		//EN FONCTION RESULTAT, ENVOIE A TOUT LE MONDE
-		if (strstr("SPLIT KO", res)){
-			sendMsg(ecoute, id_joueur, "Vous ne pouvez pas splitter votre jeu!\n");
-		}
+		printf("------>\n %s \n -------\n",msg );
 
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
 		if(strcmp(msg,"")==0 || strcmp(msg,"@")==0){
 			free(msg);
 			continue;
 		}
+
 		char *res = parseur_REST(msg, &p);
+		
+		if(res == NULL){
+			continue;
+		}else if (strstr("SPLIT KO", res)){
+			printf("split\n");
+			sendMsg(ecoute, id_joueur, "Vous ne pouvez pas splitter votre jeu!");
+			continue;
+		}
+
+		//ENVOIE A TOUT LE MONDE
 		sendPlateau(ecoute, id_joueur, res);
 
 		free(msg);
