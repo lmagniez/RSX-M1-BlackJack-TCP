@@ -9,7 +9,9 @@
 
 
 #define NB_JOUEUR_MAX 7
-#define MAX_BUF_PLATEAU 2500
+#define MAX_BUF_PLATEAU 4000
+#define MAX_MSG 2000
+
 
 typedef struct{
 	tas pioche;
@@ -33,6 +35,7 @@ int peut_commencer_tour(plateau *p);
 int action_croupier(plateau *p);
 
 void tour_croupier(plateau *p);
+char* get_results(plateau *p);
 
 int demander_mise(plateau *p, int id_joueur, int mise);
 int demander_split(plateau *p, int id_joueur);

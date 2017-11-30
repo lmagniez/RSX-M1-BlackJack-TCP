@@ -134,7 +134,9 @@ host:
 			id_joueur = rejoindre_partie(p, CREDIT, adr);
 			printf("connecté en tant que joueur %d!\n",id_joueur);
 
-			return "CONNECT OK";
+			char *str=malloc(sizeof(char)*15);
+			sprintf(str, "CONNECT OK %d\0", id_joueur);
+			return str;
 		}
 
 		//get id_joueur
@@ -151,6 +153,7 @@ host:
 		//mise d'un joueur (POST)
 		if(is_mise){
 			printf("mise!\n");
+			
 			if(!is_post){
 				perror("erreur! Mise doit etre POST!\n");
 				return NULL;
@@ -164,9 +167,11 @@ host:
 				printf("Ne peux pas miser!\n");
 				return NULL;
 			}
-
-			printf("mise -> %d\n",mise);
-			return NULL;
+			
+			char *res = malloc(sizeof(char)*CMD_SIZE);
+			sprintf(res, "Le joueur %d a misé %d crédits\n", id_joueur, mise);
+			//printf("mise -> %d\n",mise);
+			return res;
 		}
 
 		//tirage d'une carte (GET)
@@ -180,6 +185,9 @@ host:
 				printf("Ne peux pas tirer\n");
 				return NULL;
 			}
+			char *res = malloc(sizeof(char)*CMD_SIZE);
+			sprintf(res, "Le joueur %d a tiré une carte\n", id_joueur);
+			return res;
 		}
 
 		//split jeu (GET)
@@ -193,6 +201,9 @@ host:
 				printf("Ne peux pas split\n");
 				return "SPLIT KO";
 			}
+			char *res = malloc(sizeof(char)*CMD_SIZE);
+			sprintf(res, "Le joueur %d a split son jeu\n", id_joueur);
+			return res;
 		}
 
 		//leave jeu (GET)
@@ -206,6 +217,9 @@ host:
 				printf("Ne peux pas leave\n");
 				return NULL;
 			}
+			char *res = malloc(sizeof(char)*CMD_SIZE);
+			sprintf(res, "Le joueur %d a abandonné son jeu courant\n", id_joueur);
+			return res;
 		}
 
 		//doubler jeu (GET)
@@ -219,6 +233,9 @@ host:
 				printf("Ne peux pas doubler\n");
 				return NULL;
 			}
+			char *res = malloc(sizeof(char)*CMD_SIZE);
+			sprintf(res, "Le joueur %d a doublé sa mise et tire une carte\n", id_joueur);
+			return res;
 		}
 
 		//rester jeu (GET)
@@ -232,6 +249,9 @@ host:
 				printf("Ne peux pas rester\n");
 				return NULL;
 			}
+			char *res = malloc(sizeof(char)*CMD_SIZE);
+			sprintf(res, "Le joueur %d est satisfait de son jeu courant\n", id_joueur);
+			return res;
 		}
 		return NULL;
 

@@ -212,11 +212,31 @@ void tour_croupier(plateau *p){
 		add_carte_croupier(&(p->jeu_croupier), c);
 	}
 	if(p->jeu_croupier.valeur>21){
+		printf("LE CROUPIER PERD LE JEU\n");
 		p->jeu_croupier.e_jeu=PERDU;
 	}
-	else{
+	else if(p->jeu_croupier.valeur == 21){
+		printf("LE CROUPIER A UN BLACKJACK!\n");
 		p->jeu_croupier.e_jeu=SATISFAIT;
 	}
+	else{
+		printf("LE CROUPIER EST SATISFAIT DE SON JEU\n");
+		p->jeu_croupier.e_jeu=SATISFAIT;
+	}
+
+	char * res = get_results(p);
+	printf(">>>> %s <<<<\n",res);
+
+}
+
+char* get_results(plateau *p){
+	
+	if(p->jeu_croupier.e_jeu!=PERDU&&p->jeu_croupier.e_jeu!=SATISFAIT){
+		perror("LE CROUPIER N'A PAS FINI DE JOUER!\n");
+		return NULL;
+	}	
+	char *msg = malloc(sizeof(char)*MAX_MSG);
+	strcpy(msg,"--Fin du tour--\n");
 
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 
@@ -227,47 +247,76 @@ void tour_croupier(plateau *p){
 				//joueur gagne: Gagne la mise *1.5 (Blackjack: 2)
 				if(p->joueurs[i].jeux[j].e_jeu==SATISFAIT&&p->jeu_croupier.e_jeu==PERDU){
 					if(has_blackjack(&(p->joueurs[i].jeux[j]))){
+						char str[100];
+						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, mise_par_jeu*2);
+						strcat(msg,str);
 						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, mise_par_jeu*2);
 						p->joueurs[i].credit += mise_par_jeu * 2;
 					}
 					else{
+						char str[100];
+						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, mise_par_jeu*1.5);
+						strcat(msg,str);
 						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, mise_par_jeu*1.5);
 						p->joueurs[i].credit += mise_par_jeu * 1.5;
 					}
 				}
 				//test qui a la plus petite valeur + Blackjack
 				if(p->joueurs[i].jeux[j].e_jeu==SATISFAIT&&p->jeu_croupier.e_jeu==SATISFAIT){
+					printf("SATISFAITFAIT\n");
 					if(has_blackjack(&(p->jeu_croupier))){
+						char str[100];
+						sprintf(str,"BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+						strcat(msg,str);
 						printf("BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
 					}
 					else if(has_blackjack(&(p->joueurs[i].jeux[j]))){
+						char str[100];
+						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, (mise_par_jeu*2));
+						strcat(msg,str);
 						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, (mise_par_jeu*2));
 						p->joueurs[i].credit += mise_par_jeu * 2;
 					}
 					else if(p->joueurs[i].jeux[j].valeur > p->jeu_croupier.valeur){
+						char str[100];
+						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, (mise_par_jeu*1.5));
+						strcat(msg,str);
 						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, (mise_par_jeu*1.5));
 						p->joueurs[i].credit += mise_par_jeu * 1.5;
 					}
 					else{
+						char str[100];
+						sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+						strcat(msg,str);
 						printf("VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
 					}
 
 				}
+				if(p->joueurs[i].jeux[j].e_jeu==PERDU&&p->jeu_croupier.e_jeu==SATISFAIT){
+					char str[100];
+					sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+					strcat(msg,str);
+						
+				}
 				reinit_jeu(&(p->joueurs[i].jeux[j]));
-				init_tour(p);
+				//init_tour(p);
 			}
+			reinit_jeu(&(p->jeu_croupier));
 			p->joueurs[i].mise_actuelle = 0;
 			p->joueurs[i].mise_totale = 0;
 			if(p->joueurs[i].credit <= 0){
-				printf("JOUEUR %d N'A PLUS DE CREDIT! HORS-JEU \n",i);
+				char str[50];
+				sprintf(str,"JOUEUR %d N'A PLUS DE CREDIT! HORS-JEU \n",i);
+				strcat(msg,str);
+				//printf("JOUEUR %d N'A PLUS DE CREDIT! HORS-JEU \n",i);
 				p->joueurs[i].e = LOSE;
 			}
 			else{
-				p->joueurs[i].e = PLAYING;
+				p->joueurs[i].e = BETTING;
 			}
 		}
 	}
-
+	return msg;
 }
 
 // Le joueur doit avoir deux paires pour splitter
@@ -428,8 +477,10 @@ int get_id_from_adresse(plateau *p, char *adresse){
 
 char * plateau_to_json(plateau *p, int id_joueur, char *msg){
 
+	printf("id >>> %d\n", id_joueur);
+
 	char *buf = malloc(sizeof(char)*MAX_BUF_PLATEAU);
-	char *str = malloc(sizeof(char)*12);
+	char *str = malloc(sizeof(char)*100);
 	int cur_size = 0;
 	/*buf[cur_size++] = '{';
 	buf[cur_size++] = '\n';*/
