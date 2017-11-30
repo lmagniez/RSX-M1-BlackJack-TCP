@@ -480,7 +480,7 @@ char * plateau_to_json(plateau *p, int id_joueur, char *msg){
 	printf("id >>> %d\n", id_joueur);
 
 	char *buf = malloc(sizeof(char)*MAX_BUF_PLATEAU);
-	char *str = malloc(sizeof(char)*100);
+	char *str = malloc(sizeof(char)*MAX_MSG+1);
 	int cur_size = 0;
 	/*buf[cur_size++] = '{';
 	buf[cur_size++] = '\n';*/
