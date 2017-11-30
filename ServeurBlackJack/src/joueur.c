@@ -47,6 +47,7 @@ void generer_joueur(joueur *j, int id_joueur){
 	j->nb_jeux = -1;
 	j->adresse = malloc(sizeof(char)*(3*4+3+1));
 	j->jeux = malloc(sizeof(jeu)*MAX_JEUX);
+
 	for(int i=0; i<MAX_JEUX; i++){
 		generer_jeu(&(j->jeux[i]));
 	}

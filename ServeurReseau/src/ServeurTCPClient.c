@@ -16,13 +16,14 @@ void init_plateau_test(){
 	demander_mise(&p, 0, 10);
 }
 */
+
+//Retourne le json du plateau avec l'id du joueur actuel et le message associé
 char * get_json(int id_joueur, char *msg){
-	
 	char * json = plateau_to_json(&p, id_joueur, msg);
-	
 	return json;
 }
 
+//Générer un JSON contenant la taille d'un autre JSON
 char * generationTaille(char * json){
 	int size = strlen(json)+1;
 	char * buf = malloc(sizeof(char)*SIZE_MSG);
@@ -36,6 +37,7 @@ char * generationTaille(char * json){
 	return buf;
 }
 
+//Générer un JSON contenant un message
 char * generationMsg(char * msg){
 	char * buf = malloc(sizeof(char)*SIZE_MSG);
 	
@@ -47,6 +49,7 @@ char * generationMsg(char * msg){
 	return buf;
 }
 
+//Envoyer un message sur le socket
 void sendMsg(int ecoute, int id_joueur, char *msg){
 
 	char * json = generationMsg(msg);
@@ -57,6 +60,7 @@ void sendMsg(int ecoute, int id_joueur, char *msg){
 
 }
 
+//envoyer un plateau sur le socket
 void sendPlateau(int ecoute, int id_joueur, char *msg){
 
 	char * json = get_json(id_joueur, msg);
@@ -77,22 +81,17 @@ void sendPlateau(int ecoute, int id_joueur, char *msg){
 
 }
 
+//thread d'un client
 void * threadServeurTCPClient(void * arg){
 	int ecoute = socketGeneral;
 	int id_joueur; 
+	int nb;
 	printf("%d\n",ecoute);
 
-	//init_plateau_test();
 	//Connection
 	char * msg = receive_data_TCP(ecoute);
-	//remplace par parseur check co
-	printf("init : %s\n",msg );
-
-	// if !co
-	// pthread_exit(NULL);
-	int nb;
+	
 	char *res = parseur_REST(msg, &p, &nb);
-	printf("res >>%s\n",res);
 	if (strstr(res,"CONNECT OK")==NULL){
 		printf("pb co\n");
 		//créé json
@@ -116,7 +115,6 @@ void * threadServeurTCPClient(void * arg){
 		int reinit = 0;
 		//reinit détecte si tous les joueurs ont fini de jouer
 		char *res_joueur = parseur_REST(msg, &p, &reinit);
-		char *res_croupier;
 		//si fin de tour
 		if(reinit == 1){
 			tour_croupier(&p);
@@ -124,9 +122,9 @@ void * threadServeurTCPClient(void * arg){
 			sendPlateau(ecoute, id_joueur, res_joueur);
 			sleep(2);
 			//récupère les lignes à renvoyer et réinitialise le jeu
-			res_croupier = get_results(&p);
+			char *res_croupier = get_results(&p);
 			//on envoie les étapes du croupier (sans mettre à jour le plateau)
-			sendMsg(ecoute, id_joueur, msg);
+			sendMsg(ecoute, id_joueur, res_croupier);
 			//attend que les joueurs voient le résultat avant de réinitialiser
 			sleep(2);
 			strcpy(res_joueur, "Réinitialisation des jeux");

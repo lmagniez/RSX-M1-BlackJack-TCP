@@ -131,6 +131,7 @@ host:
 
 		if(is_connect){
 			printf("connect!\n");
+//>>>>>>VOIR THREAD
 			id_joueur = rejoindre_partie(p, CREDIT, adr);
 			printf("connecté en tant que joueur %d!\n",id_joueur);
 
