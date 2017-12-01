@@ -1,38 +1,6 @@
 
 #include "../lib/plateau.h"
 
-/*
-typedef struct{
-	tas pioche;
-	jeu jeu_croupier;
-	joueur joueurs*;
-	int nb_joueur;
-	int tour_id_joueur;
-	int tour_id_jeu;
-} plateau;
-
-typedef enum {OFF, WAITING, PLAYING, FINISHED, LOSE} etat;
-typedef enum {JOUE, SATISFAIT, PERDU} etat_jeu;
-
-
-typedef struct{
-	int id_joueur;
-	jeu *jeux;
-	int nb_jeux;
-	int credit;
-	int mise_actuelle;
-	etat e;
-} joueur;
-*/
-
-/*
-void generer_joueur(joueur *j, int id_joueur, int credit);
-int proposer_mise(joueur *j, int mise);
-int peut_splitter(joueur *j);
-int splitter_jeu(joueur *j);
-void modifier_credit(joueur *j, int credit);
-*/
-
 void init_plateau(plateau *p){
 	generer_tas(&(p->pioche));
 	generer_jeu(&(p->jeu_croupier));
@@ -237,7 +205,7 @@ char* get_results(plateau *p){
 		return NULL;
 	}	
 	char *msg = malloc(sizeof(char)*MAX_MSG);
-	strcpy(msg,"--Fin du tour--\n");
+	strcpy(msg,"Fin du tour;");
 
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 
@@ -249,16 +217,16 @@ char* get_results(plateau *p){
 				if(p->joueurs[i].jeux[j].e_jeu==SATISFAIT&&p->jeu_croupier.e_jeu==PERDU){
 					if(has_blackjack(&(p->joueurs[i].jeux[j]))){
 						char str[100];
-						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, mise_par_jeu*2);
+						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, mise_par_jeu*2);
 						strcat(msg,str);
-						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, mise_par_jeu*2);
+						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, mise_par_jeu*2);
 						p->joueurs[i].credit += mise_par_jeu * 2;
 					}
 					else{
 						char str[100];
-						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, mise_par_jeu*1.5);
+						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, mise_par_jeu*1.5);
 						strcat(msg,str);
-						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, mise_par_jeu*1.5);
+						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, mise_par_jeu*1.5);
 						p->joueurs[i].credit += mise_par_jeu * 1.5;
 					}
 				}
@@ -267,35 +235,35 @@ char* get_results(plateau *p){
 					printf("SATISFAITFAIT\n");
 					if(has_blackjack(&(p->jeu_croupier))){
 						char str[100];
-						sprintf(str,"BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+						sprintf(str,"BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
 						strcat(msg,str);
-						printf("BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+						printf("BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
 					}
 					else if(has_blackjack(&(p->joueurs[i].jeux[j]))){
 						char str[100];
-						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, (mise_par_jeu*2));
+						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, (mise_par_jeu*2));
 						strcat(msg,str);
-						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d \n", i, j, (mise_par_jeu*2));
+						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, (mise_par_jeu*2));
 						p->joueurs[i].credit += mise_par_jeu * 2;
 					}
 					else if(p->joueurs[i].jeux[j].valeur > p->jeu_croupier.valeur){
 						char str[100];
-						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, (mise_par_jeu*1.5));
+						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, (mise_par_jeu*1.5));
 						strcat(msg,str);
-						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f \n", i, j, (mise_par_jeu*1.5));
+						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, (mise_par_jeu*1.5));
 						p->joueurs[i].credit += mise_par_jeu * 1.5;
 					}
 					else{
 						char str[100];
-						sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+						sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
 						strcat(msg,str);
-						printf("VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+						printf("VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
 					}
 
 				}
 				if(p->joueurs[i].jeux[j].e_jeu==PERDU&&p->jeu_croupier.e_jeu==SATISFAIT){
 					char str[100];
-					sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS)\n", i, j, mise_par_jeu);
+					sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
 					strcat(msg,str);
 						
 				}
@@ -307,7 +275,7 @@ char* get_results(plateau *p){
 			p->joueurs[i].mise_totale = 0;
 			if(p->joueurs[i].credit <= 0){
 				char str[50];
-				sprintf(str,"JOUEUR %d N'A PLUS DE CREDIT! HORS-JEU \n",i);
+				sprintf(str,"JOUEUR %d N'A PLUS DE CREDIT! HORS-JEU;",i);
 				strcat(msg,str);
 				//printf("JOUEUR %d N'A PLUS DE CREDIT! HORS-JEU \n",i);
 				p->joueurs[i].e = LOSE;
@@ -326,7 +294,7 @@ int demander_split(plateau *p, int id_joueur){
 		p->joueurs[id_joueur].e==PLAYING){
 		int id_jeu;
 		if((id_jeu=splitter_jeu(&(p->joueurs[id_joueur])))!=-1){;
-			printf("JOUEUR %d SPLITTE SON JEU %d\n",id_joueur, p->tour_id_jeu);
+			printf("JOUEUR %d SPLITTE SON JEU %d \n",id_joueur, p->tour_id_jeu);
 			int fin_tour = change_tour(p);
 			//if(fin_tour)tour_croupier(p);			
 			return fin_tour;
@@ -343,7 +311,7 @@ int demander_tirer(plateau *p, int id_joueur){
 		carte c = get_next_carte(&(p->pioche));
 		if(add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c)==PERDU){
 
-			printf("JOUEUR %d PERD SON JEU %d\n",id_joueur, p->tour_id_jeu);
+			printf("JOUEUR %d PERD SON JEU %d \n",id_joueur, p->tour_id_jeu);
 			check_joueur_actif(p, id_joueur);
 
 			int montant_perdu = (p->joueurs[id_joueur].mise_totale/p->joueurs[id_joueur].nb_jeux);
@@ -366,7 +334,7 @@ int demander_rester(plateau *p, int id_joueur){
 		&&p->joueurs[id_joueur].e==PLAYING){
 		p->joueurs[id_joueur].jeux[p->tour_id_jeu].e_jeu=SATISFAIT;
 
-		printf("JOUEUR %d EST SATISFAIT DE SON JEU %d\n",id_joueur, p->tour_id_jeu);
+		printf("JOUEUR %d EST SATISFAIT DE SON JEU %d \n",id_joueur, p->tour_id_jeu);
 		check_joueur_actif(p, id_joueur);
 
 		int fin_tour = change_tour(p);
@@ -388,11 +356,11 @@ int demander_double(plateau *p, int id_joueur){
 			p->joueurs[id_joueur].credit += -mise;
 			carte c = get_next_carte(&(p->pioche));
 
-			printf("JOUEUR %d EST SATISFAIT DE SON JEU ET DOUBLE %d\n",id_joueur, p->tour_id_jeu);
+			printf("JOUEUR %d EST SATISFAIT DE SON JEU ET DOUBLE %d \n",id_joueur, p->tour_id_jeu);
 			//add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c);
 			if(add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c)==PERDU){
 
-				printf("MAIS JOUEUR %d PERD SON JEU %d\n",id_joueur, p->tour_id_jeu);
+				printf("MAIS JOUEUR %d PERD SON JEU %d \n",id_joueur, p->tour_id_jeu);
 
 				int montant_perdu = (p->joueurs[id_joueur].mise_totale/p->joueurs[id_joueur].nb_jeux);
 				p->joueurs[id_joueur].mise_actuelle = p->joueurs[id_joueur].mise_actuelle
@@ -423,7 +391,7 @@ int demander_abandon(plateau *p, int id_joueur){
 	if(p->tour_id_joueur==id_joueur){
 		int num_jeu = p->tour_id_jeu;
 
-		printf("JOUEUR %d ABANDONNE SON JEU %d\n",id_joueur, p->tour_id_jeu);
+		printf("JOUEUR %d ABANDONNE SON JEU %d \n",id_joueur, p->tour_id_jeu);
 		p->joueurs[id_joueur].jeux[num_jeu].e_jeu = PERDU;
 		check_joueur_actif(p, id_joueur);
 

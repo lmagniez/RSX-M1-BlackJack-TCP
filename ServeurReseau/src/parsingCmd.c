@@ -170,7 +170,7 @@ host:
 			}
 			
 			char *res = malloc(sizeof(char)*CMD_SIZE);
-			sprintf(res, "Le joueur %d a misé %d crédits\n", id_joueur, mise);
+			sprintf(res, "Le joueur %d a misé %d crédits ", id_joueur, mise);
 			//printf("mise -> %d\n",mise);
 			return res;
 		}
@@ -189,7 +189,7 @@ host:
 			}
 			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
-			sprintf(res, "Le joueur %d a tiré une carte\n", id_joueur);
+			sprintf(res, "Le joueur %d a tiré une carte ", id_joueur);
 			//strcpy(dialogue, res);
 			if(fin_tour == 1){
 				/*char *result_tour = tour_croupier(p);
@@ -214,7 +214,7 @@ host:
 				return "SPLIT KO";
 			}
 			char *res = malloc(sizeof(char)*CMD_SIZE);
-			sprintf(res, "Le joueur %d a split son jeu\n", id_joueur);
+			sprintf(res, "Le joueur %d a split son jeu ", id_joueur);
 			return res;
 		}
 
@@ -232,7 +232,7 @@ host:
 			}
 			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
-			sprintf(res, "Le joueur %d a abandonné son jeu courant\n", id_joueur);
+			sprintf(res, "Le joueur %d a abandonné son jeu courant ", id_joueur);
 			//strcpy(dialogue, res);
 			if(fin_tour == 1){
 				/*char *result_tour = tour_croupier(p);
@@ -259,7 +259,7 @@ host:
 			}
 			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
-			sprintf(res, "Le joueur %d a doublé sa mise et tire une carte\n", id_joueur);
+			sprintf(res, "Le joueur %d a doublé sa mise et tire une carte ", id_joueur);
 			//strcpy(dialogue, res);
 			if(fin_tour == 1){
 				/*char *result_tour = tour_croupier(p);
@@ -288,7 +288,7 @@ host:
 			
 			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
-			sprintf(res, "Le joueur %d est satisfait de son jeu courant\n", id_joueur);
+			sprintf(res, "Le joueur %d est satisfait de son jeu courant ", id_joueur);
 			//strcpy(dialogue, res);
 			if(fin_tour == 1){
 				/*char *result_tour = tour_croupier(p);

@@ -187,7 +187,7 @@ char * receive_data_TCP(int sock){
 			close(sock);
 			printf("nb_lu null\n");
 			timeout.tv_sec = 0;
-			return msg;
+			return "DECONNECT";
 		}
 	}
 	return msg;
