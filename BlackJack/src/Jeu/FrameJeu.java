@@ -4,10 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Model.Plateau;
+import Panel.Erreur.PanelErreurBig;
 import Reseau.BlackJackClient;
 
 public class FrameJeu extends JFrame{
 
+	private PanelErreurBig erreurBig = new PanelErreurBig("");
 	private Jeu j;
 	private ModelJeu modelJeux;
 	private ControllerJeu controllerJeu;
@@ -48,11 +50,15 @@ public class FrameJeu extends JFrame{
 		validate();
 	}
 
-	public void ecranFin(String string) {
-		// TODO Auto-generated method stub
-	}
-
 	public void setPlateau(Plateau p) {
 		modelJeux.setPlateau(p);
+	}
+
+	public void addDialogue(String message) {
+		modelJeux.afficheErreurMessage(message);
+	}
+
+	public void showErreurScreen() {
+		swapEcran(erreurBig);
 	}
 }

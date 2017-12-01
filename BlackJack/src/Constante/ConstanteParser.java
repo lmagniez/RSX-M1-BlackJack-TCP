@@ -39,5 +39,5 @@ public interface ConstanteParser {
 	
 	//INFORMATION
 	public String taille = "taille";
-	
+	public String message = "message";
 }

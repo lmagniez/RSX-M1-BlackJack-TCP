@@ -47,7 +47,6 @@ public class Parser implements ConstanteParser{
 					for(int a=i ; a< jsonArrayGeneral.length;a++) {
 						joueursJSON += jsonArrayGeneral[a]+"\n";
 					}
-					System.out.println(joueursJSON);
 					parseJoueur(plateau);
 					break;
 				}else{
@@ -65,8 +64,12 @@ public class Parser implements ConstanteParser{
 		}
 
 		private Joueur parseUnJoueur(String joueurJson) {
+			System.out.println("================");
+			System.out.println(joueurJson);
+			System.out.println("================");
 			jsonJoueurs = joueurJson.split("\n");
 			Joueur newJ = new Joueur();
+			
 			for(int i = 0 ; i< jsonJoueurs.length;i++) {
 				if(jsonJoueurs[i].contains(jeux)) {
 					recupAllJeuPlayer(newJ,i,true);
@@ -79,10 +82,10 @@ public class Parser implements ConstanteParser{
 		}
 
 		private void recupAllJeuPlayer(Joueur newJ,int numLigne,boolean premier) {
-			if(!jsonJoueurs[numLigne].contains("}, {") && !premier) {
+			if(!jsonJoueurs[numLigne].contains("},") && !premier) {
 				return;
 			}
-			newJ.getJeux().add(parseJeu(numLigne,jsonJoueurs,size_jeu_croupier+1));
+			newJ.getJeux().add(parseJeu(numLigne,jsonJoueurs,size_jeu_croupier+2));
 			recupAllJeuPlayer(newJ,numLigne+size_jeu_croupier+1,false);
 		}
 
@@ -112,7 +115,10 @@ public class Parser implements ConstanteParser{
 				return;
 			}
 			else if(ligne.contains(dialogue)) {
-				plateau.setDialogue(ligneReplace);
+				String [] tabString = ligne.split(":");
+				tabString[1] = tabString[1].replaceAll("\"", "");
+				tabString[1] = tabString[1].replaceAll(",", "");
+				plateau.setDialogue(tabString[1]);
 				return;
 			}
 			
@@ -196,7 +202,12 @@ public class Parser implements ConstanteParser{
 				ligneReplace = ligneReplace.replaceAll("\"", "");
 				return ligneReplace;
 			}
-			
+			if(ligne.contains(message)) {
+				jsonArrayGeneral = ligne.split(":");
+				String message = jsonArrayGeneral[1].replaceAll("\"", "");
+				message = jsonArrayGeneral[1].replaceAll("}", "");
+				return message;
+			}
 			return "";
 		}
 		

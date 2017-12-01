@@ -49,7 +49,7 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 			w.write(s);
 			w.flush();
 		} catch (IOException e) {
-			fenetreclient.ecranFin("Erreur du Serveur");
+			fenetreclient.showErreurScreen();
 			game = false;
 		}
 	}
@@ -61,7 +61,6 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 
 		socketWriter = new BufferedWriter(new OutputStreamWriter(socketSend.getOutputStream()));
 		socketReader = new BufferedReader(new InputStreamReader(socketSend.getInputStream()));
-
 		try {
 			new Thread() {
 				public void run() {
@@ -70,24 +69,39 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 					try {
 						while(true){
 							String message = message();
+							if(message==null)break;
 							message = message.replace("\0", "");
-							if(!message.isEmpty())
-								readPlateau(Integer.parseInt(message));
+							if(!message.isEmpty()) {
+								if(isDigit(message)) {
+									readPlateau(Integer.parseInt(message));
+								}else if(message.contains(";")){
+									String[] dialogue = message.split(";");
+									for(int i = 0 ; i < dialogue.length;i++) {
+										fenetreclient.addDialogue(dialogue[i]);
+									}
+								}else {
+									fenetreclient.addDialogue(message);
+								}
+							}
 						}
 					} catch (IOException e) {
-						e.printStackTrace();
+						fenetreclient.showErreurScreen();
 					}
 				}
 			}.start();
 		} catch (Exception e) {
-			e.printStackTrace();
+			fenetreclient.showErreurScreen();
 		}
 	}
 
 	public String message() throws IOException {
-			String s = socketReader.readLine();
-			String size = Parser.share.parseJsonMessage(s);
-			return size;
+		String s = socketReader.readLine();
+		if(s==null) {
+			fenetreclient.showErreurScreen();
+			return null;
+		}
+		String message = Parser.share.parseJsonMessage(s);
+		return message;
 	}
 	
 	public void readPlateau(int size) throws IOException{
@@ -135,6 +149,15 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 			e1.printStackTrace();
 		}
 		return "";
+	}
+	
+	private boolean isDigit(String message) {
+		try {
+			Integer.parseInt(message);
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		return true;
 	}
 
 }

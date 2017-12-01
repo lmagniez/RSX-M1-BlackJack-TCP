@@ -23,6 +23,7 @@ public class ModelJeu {
 	}
 
 	public void afficheErreurMessage(String msg) {
+		if(msg.contains("pas splitter"))jeu.activeBouton();
 		jeu.afficheErreur(msg);
 	}
 
@@ -58,11 +59,10 @@ public class ModelJeu {
 					jeu.desactiveAllBouton();
 					break;
 				case PLAYING:
-					if(plateau.getTour_id_joueur() != plateau.getId_joueur()) {
+					if(plateau.getTour_id_joueur() == plateau.getId_joueur()) {
 						jeu.activeBouton();
 						return;
 					}
-					jeu.activeBouton();
 					break;
 				case BETTING :
 					jeu.activeMise();
