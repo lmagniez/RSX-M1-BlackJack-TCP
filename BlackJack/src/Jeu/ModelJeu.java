@@ -2,6 +2,7 @@ package Jeu;
 
 import java.util.ArrayList;
 
+import Model.EtatJoueur;
 import Model.Joueur;
 import Model.Plateau;
 
@@ -42,10 +43,25 @@ public class ModelJeu {
 		plateau.setJeu_croupier(p.getJeu_croupier());
 		plateau.setListJoueur(p.getListJoueur());
 		
+		jeu.reinitBoutonInformation();
 		majNom();
 		miseAjourInterface();
 		gestionBouton();
 		afficheErreurMessage(plateau.getDialogue());
+		gestionLoader();
+	}
+
+	private void gestionLoader() {
+		if(plateau.getListJoueur().get(plateau.getId_joueur()).getEtat() == EtatJoueur.BETTING) {
+			jeu.eneleverLoader();
+		}
+		else if(plateau.getListJoueur().get(plateau.getId_joueur()).getEtat() != EtatJoueur.BETTING) {
+			if(plateau.getTour_id_joueur() == plateau.getId_joueur())
+				jeu.eneleverLoader();
+			else {
+				jeu.afficherLoader();
+			}
+		}
 	}
 
 	private void gestionBouton() {

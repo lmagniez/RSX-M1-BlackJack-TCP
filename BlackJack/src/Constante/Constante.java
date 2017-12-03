@@ -15,6 +15,7 @@ public interface Constante {
 	public Image fondListe=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond_liste.png");
 	
 	public ImageIcon loading = new ImageIcon( "./src/Ressource/Image/loading.gif" );
+	public ImageIcon loader = new ImageIcon( "./src/Ressource/Image/loader.gif" );
 	
 	public ImageIcon jetonIcon = new ImageIcon(new ImageIcon("./src/Ressource/Image/jetons.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
 	public ImageIcon jeuxIcon = new ImageIcon(new ImageIcon("./src/Ressource/Image/cartesPacket.png").getImage().getScaledInstance(40, 30, Image.SCALE_DEFAULT));
