@@ -169,7 +169,7 @@ char * joueur_to_json(joueur *j){
 	strcat(buf,"\"jeux\": \n[\n");
 	for(int i=0; i< j->nb_jeux; i++){
 		if(i>0){
-			strcat(buf, ",\n");
+			strcat(buf, ",");
 		}
 		char *jeu = jeu_to_json(&(j->jeux[i]));
 		strcat(buf, jeu);

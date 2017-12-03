@@ -1,3 +1,4 @@
+#include <semaphore.h>
 #include "../lib/ServeurTCPClient.h"
 #include "../../ServeurBlackJack/lib/plateau.h"
 #define MAX_LENGTH 1024
@@ -6,6 +7,9 @@
 
 int receiveTCPClient = 1;
 int socketGeneral;
+
+sem_t mutexConnection;
+sem_t mutexReseau;
 
 plateau p;
 
@@ -110,31 +114,39 @@ void * threadServeurTCPClient(void * arg){
 	int ecoute = socketGeneral;
 	int id_joueur; 
 	int nb;
+	int reception = 1;
 
 	//Connection
 	char * msg = receive_data_TCP(ecoute);
+	sem_wait(&mutexConnection);
 	
 	char *res = parseur_REST(msg, &p, &nb, ecoute);
 	if (strstr(res,"CONNECT OK")==NULL){
-		printf("pb co\n");
-		//créé json
+		sendMsgSimple(ecoute, "CONNECT KO");
 		pthread_exit(NULL);
 	}
 
 	char c = res[strlen("CONNECT OK ")];
 	id_joueur = c - '0';
 	free(res);
+	sem_wait(&mutexReseau);
+	
 	sendPlateauAll(id_joueur, "Le joueur vient de se connecter");
-
-	while(receiveTCPClient){
+	
+	sem_post(&mutexReseau);
+	sem_post(&mutexConnection);
+	
+	while(reception){
 		char * msg = receive_data_TCP(ecoute);
-
+		sem_wait(&mutexReseau);
 		// EN CAS DE DECONNECTION DU CLIENT le socket est close cote recv et le message est vide
-		if(strcmp(msg,"")==0){
-			free(msg);
+		if(strcmp(msg,"DECO")==0){
+			reception = 0;	
 			continue;
-		}else if(strcmp(msg,"DECONNECT") == 0){
-			break;
+		}else if(strcmp(msg,"")==0){
+			free(msg);
+			sem_post(&mutexReseau);	
+			continue;
 		}
 
 		int reinit = 0;
@@ -147,7 +159,7 @@ void * threadServeurTCPClient(void * arg){
 			//on envoie le plateau avec que le croupier ai joué
 			sendPlateauAll(id_joueur, res_joueur);
 
-			sleep(5);
+			sleep(3);
 
 
 			//récupère les lignes à renvoyer et réinitialise le jeu
@@ -158,32 +170,37 @@ void * threadServeurTCPClient(void * arg){
 			sendMsgAllLessSize(res_croupier);
 
 			//attend que les joueurs voient le résultat avant de réinitialiser
-			sleep(5);
+			sleep(3);
 			strcpy(res_joueur, "Réinitialisation des jeux");
 			sendPlateauAll(id_joueur, res_joueur);
+			sem_post(&mutexReseau);	
 			continue;		
 		}
 		
 		if(res_joueur == NULL){
+			sem_post(&mutexReseau);	
 			continue;
 		}else if (strstr("SPLIT KO", res_joueur)){
 			printf("split\n");
 			//sendMsg(ecoute, "Vous ne pouvez pas splitter votre jeu!");
 			sendMsgSimple(ecoute, "Vous ne pouvez pas splitter votre jeu!");
+			sem_post(&mutexReseau);	
 			continue;
 		}
 
 		//ENVOIE A TOUT LE MONDE
 		//met à jour le plateau
 		sendPlateauAll(id_joueur, res_joueur);
-		//sendPlateau(ecoute, id_joueur, res_joueur);
+		sem_post(&mutexReseau);
 
 		free(msg);
 		free(res);
 	}
 	quitter_partie(&p, id_joueur);
 	sendPlateauAll(id_joueur, "Un joueur c'est deconnecté");
+	sem_post(&mutexReseau);
 	(void) arg;
+	printf("Joueur %d deconnecte\n",id_joueur);
     	pthread_exit(NULL);
 }
 

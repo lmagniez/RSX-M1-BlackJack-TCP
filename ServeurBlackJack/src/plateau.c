@@ -71,7 +71,7 @@ void init_tour(plateau *p){
 			//demander_tirer(p, i);
 			carte c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
-			c = get_next_carte(&(p->pioche));
+			//c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
 		} 
 	}
@@ -217,16 +217,16 @@ char* get_results(plateau *p){
 				if(p->joueurs[i].jeux[j].e_jeu==SATISFAIT&&p->jeu_croupier.e_jeu==PERDU){
 					if(has_blackjack(&(p->joueurs[i].jeux[j]))){
 						char str[100];
-						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, mise_par_jeu*2);
+						sprintf(str,"BLACKJACK au joueur %d! Gain -> %d;", i, mise_par_jeu*2);
 						strcat(msg,str);
-						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, mise_par_jeu*2);
+						printf("BLACKJACK au joueur %d! Gain -> %d;", i, mise_par_jeu*2);
 						p->joueurs[i].credit += mise_par_jeu * 2;
 					}
 					else{
 						char str[100];
-						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, mise_par_jeu*1.5);
+						sprintf(str,"Victoire du joueur %d! Gain -> %f;", i, mise_par_jeu*1.5);
 						strcat(msg,str);
-						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, mise_par_jeu*1.5);
+						printf("Victoire du joueur %d! Gain -> %f;", i, mise_par_jeu*1.5);
 						p->joueurs[i].credit += mise_par_jeu * 1.5;
 					}
 				}
@@ -235,35 +235,35 @@ char* get_results(plateau *p){
 					printf("SATISFAITFAIT\n");
 					if(has_blackjack(&(p->jeu_croupier))){
 						char str[100];
-						sprintf(str,"BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
+						sprintf(str,"BLACKJACK du croupier! Perte pour le joueur %d (%d$);", i, mise_par_jeu);
 						strcat(msg,str);
-						printf("BLACKJACK AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
+						printf("BLACKJACK du croupier! Perte pour le joueur %d (%d$);", i, mise_par_jeu);
 					}
 					else if(has_blackjack(&(p->joueurs[i].jeux[j]))){
 						char str[100];
-						sprintf(str,"BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, (mise_par_jeu*2));
+						sprintf(str,"BLACKJACK du joueur %d (jeu %d)! Gain -> %d$;", i, j, (mise_par_jeu*2));
 						strcat(msg,str);
-						printf("BLACKJACK AU JOUEUR %d POUR LE JEU %d! GAIN: %d;", i, j, (mise_par_jeu*2));
+						printf("BLACKJACK du joueur %d (jeu %d)! Gain -> %d$;", i, j, (mise_par_jeu*2));
 						p->joueurs[i].credit += mise_par_jeu * 2;
 					}
 					else if(p->joueurs[i].jeux[j].valeur > p->jeu_croupier.valeur){
 						char str[100];
-						sprintf(str,"VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, (mise_par_jeu*1.5));
+						sprintf(str,"Victoire du joueur %d (jeu %d)! Gain -> %f$;", i, j, (mise_par_jeu*1.5));
 						strcat(msg,str);
-						printf("VICTOIRE AU JOUEUR %d POUR LE JEU %d! GAIN: %f;", i, j, (mise_par_jeu*1.5));
+						printf("Victoire du joueur %d (jeu %d)! Gain -> %f$;", i, j, (mise_par_jeu*1.5));
 						p->joueurs[i].credit += mise_par_jeu * 1.5;
 					}
 					else{
 						char str[100];
-						sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
+						sprintf(str,"Victoire du croupier! Perte pour le joueur %d (%d$);", i, mise_par_jeu);
 						strcat(msg,str);
-						printf("VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
+						printf("Victoire du croupier! Perte pour le joueur %d (%d$);", i, mise_par_jeu);
 					}
 
 				}
 				if(p->joueurs[i].jeux[j].e_jeu==PERDU&&p->jeu_croupier.e_jeu==SATISFAIT){
 					char str[100];
-					sprintf(str,"VICTOIRE AU CROUPIER! PERTE DES GAINS POUR LE JOUEUR %d (JEU %d) (%d CREDITS);", i, j, mise_par_jeu);
+					sprintf(str,"Victoire du croupier! Perte pour le joueur  %d (%d$);", i, mise_par_jeu);
 					strcat(msg,str);
 						
 				}
