@@ -58,7 +58,8 @@ public class FrameJeu extends JFrame{
 		modelJeux.afficheErreurMessage(message);
 	}
 
-	public void showErreurScreen() {
+	public void showErreurScreen(String s) {
+		erreurBig.setErreur(s);
 		swapEcran(erreurBig);
 	}
 }

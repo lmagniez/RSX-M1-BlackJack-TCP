@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Constante.Constante;
@@ -32,6 +33,8 @@ public class Jeu extends JPanel implements Constante {
 
 	public Information info = new Information(this);
 	
+	private JLabel loaderLabel = new JLabel(loader) ;
+	
 	public Jeu(FrameJeu frameJeu, ControllerJeu controllerJeu) {
 		this.frameJeu = frameJeu;
 		this.controllerJeu = controllerJeu;
@@ -49,6 +52,17 @@ public class Jeu extends JPanel implements Constante {
 		this.add(dialogue);
 		this.add(listeJoueur);
 		this.add(info);
+		
+	}
+	
+	public void afficherLoader() {
+		loaderLabel.setBounds(500, 370, 200, 200);
+		this.add(loaderLabel);
+	}
+	
+	public void eneleverLoader() {
+		if(this.getComponentCount()>4) 
+			this.remove(this.getComponentCount()-1);
 	}
 
 	public void afficheErreur(String msg) {
@@ -86,6 +100,7 @@ public class Jeu extends JPanel implements Constante {
 				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
 					Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
 					for(int c = 0 ; c < jeu.getJeuCartes().size();c++) {
+						
 						g.drawImage(cartes[jeu.getJeuCouleurs().get(c).getValue()-1][jeu.getJeuCartes().get(c).getValue()-1],540 + 30*c, 340 - 60 * j, 40, 60, this);
 					}
 				}
@@ -241,6 +256,10 @@ public class Jeu extends JPanel implements Constante {
 
 	public void activeMise() {
 		plateau.activeeMise();
+	}
+
+	public void reinitBoutonInformation() {
+		info.removeAll();
 	}
 	
 	

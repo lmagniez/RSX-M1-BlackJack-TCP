@@ -115,7 +115,7 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 			
 			boutonConnect.setBounds(220,30,100,30);
 			
-			if(serv.getNbJoueur()>=7)this.boutonConnect.setEnabled(false);
+			if(serv.getNbJoueur()>6)this.boutonConnect.setEnabled(false);
 			
 			this.add(boutonConnect);
 			
@@ -129,7 +129,7 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 
 			g.drawString("Adresse: "+serv.getAdr(), 10, 20);
 			g.drawString("Port: "+serv.getPort(), 10, 40);
-			g.drawString("Table: "+serv.getNbJoueur()+"/8", 10, 60);
+			g.drawString("Table: "+serv.getNbJoueur()+"/7", 10, 60);
 			g.drawRect(0, 0, 338, 70);
 		}
 		

@@ -49,7 +49,7 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 			w.write(s);
 			w.flush();
 		} catch (IOException e) {
-			fenetreclient.showErreurScreen();
+			fenetreclient.showErreurScreen(null);
 			game = false;
 		}
 	}
@@ -85,19 +85,19 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 							}
 						}
 					} catch (IOException e) {
-						fenetreclient.showErreurScreen();
+						fenetreclient.showErreurScreen(null);
 					}
 				}
 			}.start();
 		} catch (Exception e) {
-			fenetreclient.showErreurScreen();
+			fenetreclient.showErreurScreen(null);
 		}
 	}
 
 	public String message() throws IOException {
 		String s = socketReader.readLine();
-		if(s==null) {
-			fenetreclient.showErreurScreen();
+		if(s==null || s.contains("CONNECT KO")) {
+			fenetreclient.showErreurScreen(s);
 			return null;
 		}
 		String message = Parser.share.parseJsonMessage(s);
