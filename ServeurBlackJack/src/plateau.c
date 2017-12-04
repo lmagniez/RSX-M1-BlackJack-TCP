@@ -73,11 +73,11 @@ void init_tour(plateau *p){
 			add_carte(&(p->joueurs[i].jeux[0]),c);
 			//c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
-		} 
+		}
 	}
 	carte c = get_next_carte(&(p->pioche));
 	add_carte(&(p->jeu_croupier),c);
-	
+
 	p->tour_started = 1;
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 		if(p->joueurs[i].e==PLAYING){
@@ -86,7 +86,7 @@ void init_tour(plateau *p){
 			return;
 		}
 	}
-	
+
 }
 
 
@@ -102,7 +102,7 @@ int tour_est_demarre(plateau *p){
 	return 1;
 }
 
-//nouveau tour: passe les joueurs en attente 
+//nouveau tour: passe les joueurs en attente
 /*
 void demarre_tour(plateau *p){
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
@@ -199,11 +199,11 @@ void tour_croupier(plateau *p){
 }
 
 char* get_results(plateau *p){
-	
+
 	if(p->jeu_croupier.e_jeu!=PERDU&&p->jeu_croupier.e_jeu!=SATISFAIT){
 		perror("LE CROUPIER N'A PAS FINI DE JOUER!\n");
 		return NULL;
-	}	
+	}
 	char *msg = malloc(sizeof(char)*MAX_MSG);
 	strcpy(msg,"Fin du tour;");
 
@@ -265,12 +265,13 @@ char* get_results(plateau *p){
 					char str[100];
 					sprintf(str,"Victoire du croupier! Perte pour le joueur  %d (%d$);", i, mise_par_jeu);
 					strcat(msg,str);
-						
+
 				}
 				reinit_jeu(&(p->joueurs[i].jeux[j]));
 				//init_tour(p);
 			}
 			reinit_jeu(&(p->jeu_croupier));
+
 			p->joueurs[i].mise_actuelle = 0;
 			p->joueurs[i].mise_totale = 0;
 			if(p->joueurs[i].credit <= 0){
@@ -283,6 +284,7 @@ char* get_results(plateau *p){
 			else{
 				p->joueurs[i].e = BETTING;
 			}
+			p->joueurs[i].nb_jeux = 1;
 		}
 	}
 	return msg;
@@ -296,7 +298,7 @@ int demander_split(plateau *p, int id_joueur){
 		if((id_jeu=splitter_jeu(&(p->joueurs[id_joueur])))!=-1){;
 			printf("JOUEUR %d SPLITTE SON JEU %d \n",id_joueur, p->tour_id_jeu);
 			int fin_tour = change_tour(p);
-			//if(fin_tour)tour_croupier(p);			
+			//if(fin_tour)tour_croupier(p);
 			return fin_tour;
 		}
 	}
@@ -319,7 +321,7 @@ int demander_tirer(plateau *p, int id_joueur){
 				- montant_perdu;
 		}
 		int fin_tour = change_tour(p);
-		//if(fin_tour)tour_croupier(p);			
+		//if(fin_tour)tour_croupier(p);
 		return fin_tour;
 		//return c.face;
 	}
@@ -339,7 +341,11 @@ int demander_rester(plateau *p, int id_joueur){
 
 		int fin_tour = change_tour(p);
 		//if(fin_tour)tour_croupier(p);
-		return 1;
+		if(fin_tour)
+			return 1;
+		else{
+			return 0;
+		}
 	}
 	return -1;
 }
@@ -373,9 +379,9 @@ int demander_double(plateau *p, int id_joueur){
 			check_joueur_actif(p, id_joueur);
 
 			int fin_tour = change_tour(p);
-			//if(fin_tour)tour_croupier(p);			
-			return fin_tour;			
-			/*			
+			//if(fin_tour)tour_croupier(p);
+			return fin_tour;
+			/*
 			change_tour(p);
 			return c.);
 			*/
@@ -404,7 +410,7 @@ int demander_abandon(plateau *p, int id_joueur){
 
 
 		int fin_tour = change_tour(p);
-		//if(fin_tour)tour_croupier(p);			
+		//if(fin_tour)tour_croupier(p);
 		return fin_tour;
 		/*
 		change_tour(p);
@@ -424,7 +430,7 @@ int demander_mise(plateau *p, int id_joueur, int mise){
 		p->joueurs[id_joueur].mise_totale = mise;
 		p->joueurs[id_joueur].credit += -mise;
 		printf("JOUEUR %d mise %d\n", id_joueur, mise);
-		
+
 		if(tour_est_demarre(p)){
 			printf("TOUS LES JOUEURS ONT MISES, DEBUT PARTIE\n");
 			init_tour(p);
@@ -474,7 +480,7 @@ char * plateau_to_json(plateau *p, int id_joueur, char *msg){
 	strcat(buf,str);
 	strcat(buf,"\"dialogue\": ");
 	sprintf(str, "\"%s\",\n", msg);
-	strcat(buf,str);	
+	strcat(buf,str);
 
 	strcat(buf,"\"nb_joueur\": ");
 	sprintf(str, "\"%d\",\n", p->nb_joueur);

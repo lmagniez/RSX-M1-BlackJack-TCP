@@ -59,13 +59,13 @@ etat_jeu add_carte(jeu *j, carte new){
 		j->e_jeu = PERDU;
 	}
 	return j->e_jeu;
-	
+
 }
 
 void add_carte_croupier(jeu *j, carte new){
 	j->cartes[j->nb_carte++]=new;
 	update_valeur_totale(j);
-	
+
 }
 
 carte remove_carte(jeu *j){
@@ -74,7 +74,7 @@ carte remove_carte(jeu *j){
 		update_valeur_totale(j);
 		return j->cartes[j->nb_carte];
 	}
-	else{ 
+	else{
 		carte c;
 		c.face=-1;
 		return c;
@@ -94,7 +94,7 @@ void update_valeur_totale(jeu *j){
 	//ajuste si il y a des as
 	while(j->valeur>21&&nb_as>0){
 		j->valeur += -10;
-		nb_as--; 
+		nb_as--;
 	}
 }
 
@@ -118,11 +118,11 @@ void afficher_jeu(jeu *j){
 		printf("carte %d-> %s val: %d\n", i, title, val);
 		*/
 		afficher_carte(&(j->cartes[i]));
-		
+
 	}
 	printf("Etat: %s Score total: %d\n",str_from_etat_jeu(j->e_jeu), j->valeur);
 	//printf("JSON: \n%s \n", jeu_to_json(j));
-	
+
 }
 
 char * jeu_to_json(jeu *j){
@@ -152,8 +152,8 @@ char * jeu_to_json(jeu *j){
 		strcat(buf, "\"");
 	}
 	strcat(buf,"],\n");
-	
-	
+
+
 	strcat(buf,"\"etat_jeu\": \"");
 	strcat(buf,str_from_etat_jeu(j->e_jeu));
 	strcat(buf,"\",\n");
@@ -161,9 +161,9 @@ char * jeu_to_json(jeu *j){
 	sprintf(str, "%d", j->valeur);
 	strcat(buf, str);
 	strcat(buf,"\"\n}");
-	
+
 	return buf;
-	
+
 }
 
 
