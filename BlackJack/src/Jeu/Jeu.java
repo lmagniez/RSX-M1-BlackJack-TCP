@@ -116,7 +116,7 @@ public class Jeu extends JPanel implements Constante {
 					g.setFont(new Font("verdana", Font.BOLD, 10));
 					g.drawString("NBJeux: "+listeJoueur.getListeJoueur().get(i).getJeux().size(), positionJeu[0], positionJeu[1]);
 					
-					if(listeJoueur.getListeJoueur().get(i).getJeux().get(j).getEtat() == EtatJeu.JOUE) {
+					if(listeJoueur.getListeJoueur().get(i).getJeux().get(j).getEtat() != EtatJeu.PERDU) {
 						Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
 						
 						int [] positionCarte = positionXYCarte(posJoueur);

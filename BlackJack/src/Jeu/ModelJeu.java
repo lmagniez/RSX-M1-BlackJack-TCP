@@ -45,6 +45,7 @@ public class ModelJeu {
 		
 		jeu.voidRenitPos();
 		jeu.reinitBoutonInformation();
+		
 		majNom();
 		miseAjourInterface();
 		gestionBouton();
@@ -60,6 +61,7 @@ public class ModelJeu {
 			if(plateau.getTour_id_joueur() == plateau.getId_joueur())
 				jeu.eneleverLoader();
 			else {
+				jeu.desactiveAllBouton();
 				jeu.afficherLoader();
 			}
 		}

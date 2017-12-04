@@ -103,7 +103,8 @@ void sendMsgAllLessSize(char *msg){
 void sendPlateauAll(int id_joueur, char *msg){
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 		if(p.joueurs[i].e != OFF){
-			sendPlateau(p.joueurs[i].num_socket, id_joueur, msg);
+			//sendPlateau(p.joueurs[i].num_socket, id_joueur, msg);
+			sendPlateau(p.joueurs[i].num_socket, p.joueurs[i].id_joueur, msg);
 		}
 	}
 }
@@ -197,6 +198,7 @@ void * threadServeurTCPClient(void * arg){
 		//free(res);
 	}
 	quitter_partie(&p, id_joueur);
+	
 	sendPlateauAll(id_joueur, "Un joueur c'est deconnecté");
 	sem_post(&mutexReseau);
 	(void) arg;

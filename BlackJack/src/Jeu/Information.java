@@ -40,7 +40,7 @@ public class Information extends JPanel implements Constante{
 
 	public void addBoutonJeuDisplay(Joueur joueur, int num) {
 		if(!joueur.isJoueurPrincipal() && joueur.getJeux().size()>1) {
-			int[] pos = positionXYBoutonJeu(num-1);
+			int[] pos = positionXYBoutonJeu(numJoueurJeu);
 			
 			JButtonJoueur Jbouton = new JButtonJoueur(joueur,false);
 			JButton bouton = Jbouton.getButton();
