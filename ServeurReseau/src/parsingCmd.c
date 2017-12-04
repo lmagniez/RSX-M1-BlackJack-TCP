@@ -1,30 +1,6 @@
 #include "../lib/parsingCmd.h"
 #include "../../ServeurBlackJack/lib/plateau.h"
 
-/*
-GET action/connect
-host:
-
-POST /action/mise
-host:
-200
-*/
-	/*
-	public String get = "GET ";
-	public String post = "POST ";
-	*/
-
-	/*
-	char* mise = "/action/mise";
-	char* tirer = "/action/tirer";
-	char* split = "/action/split";
-
-	char* leave = "/action/leave";
-	char* doubler = "/action/doubler";
-	char* rester = "/action/rester";
-
-	char* connect = "action/connect";
-	*/
 
 	char *parseur_REST(char *cmd, plateau *p, int *reinit, int num_socket, int id_joueur){
 		char adr[15];
@@ -61,8 +37,6 @@ host:
 			printf("erreur parsing POST GET!!\n");
 			return NULL;
 		}
-
-		//printf("cmd a partir de maintenant \n -> %s\n", cmd);
 
 		//MISE, TIRER, SPLIT, DOUBLER, RESTER, CONNECT
 		cmd_tmp = strstr(cmd, MISE);
@@ -131,7 +105,6 @@ host:
 
 		if(is_connect){
 			printf("connect!\n");
-//>>>>>>VOIR THREAD
 			id_co = rejoindre_partie(p, CREDIT, adr, num_socket);
 			printf("connecté en tant que joueur %d!\n",id_co);
 
@@ -140,15 +113,7 @@ host:
 			return str;
 		}
 
-		/*//get id_joueur
-		id_joueur = get_id_from_adresse(p, adr);
-		if(id_joueur < 0){
-			perror("l'adresse ne correspond pas au joueur!\n");
-			return NULL;
-		}*/
-
 		cmd = cmd + cpt;
-
 
 		//mise d'un joueur (POST)
 		if(is_mise){
@@ -170,7 +135,6 @@ host:
 
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a misé %d crédits ", id_joueur, mise);
-			//printf("mise -> %d\n",mise);
 			return res;
 		}
 
@@ -186,18 +150,11 @@ host:
 				printf("Ne peux pas tirer\n");
 				return NULL;
 			}
-			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a tiré une carte ", id_joueur);
-			//strcpy(dialogue, res);
 			if(fin_tour == 1){
-				/*char *result_tour = tour_croupier(p);
-				strcat(dialogue,result_tour);
-				free(result_tour);*/
 				*reinit = 1;
 			}
-			//free(res);
-			//return dialogue;
 			return res;
 		}
 
@@ -229,18 +186,11 @@ host:
 				printf("Ne peux pas leave\n");
 				return NULL;
 			}
-			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a abandonné son jeu courant ", id_joueur);
-			//strcpy(dialogue, res);
 			if(fin_tour == 1){
-				/*char *result_tour = tour_croupier(p);
-				strcat(dialogue,result_tour);
-				free(result_tour);*/
 				*reinit = 1;
 			}
-			//free(res);
-			//return dialogue;
 			return res;
 		}
 
@@ -256,18 +206,11 @@ host:
 				printf("Ne peux pas doubler\n");
 				return NULL;
 			}
-			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a doublé sa mise et tire une carte ", id_joueur);
-			//strcpy(dialogue, res);
 			if(fin_tour == 1){
-				/*char *result_tour = tour_croupier(p);
-				strcat(dialogue,result_tour);
-				free(result_tour);*/
 				*reinit = 1;
 			}
-			//free(res);
-			//return dialogue;
 			return res;
 
 		}

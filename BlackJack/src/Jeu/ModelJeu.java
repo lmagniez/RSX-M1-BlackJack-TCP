@@ -53,11 +53,19 @@ public class ModelJeu {
 		gestionLoader();
 	}
 
+	private int recupPositionArrayList() {
+		for(int i = 0;i<plateau.getListJoueur().size();i++) {
+			if(plateau.getListJoueur().get(i).getId_joueur() == plateau.getId_joueur() )
+				return i;
+		}
+		return -1;
+	}
+	
 	private void gestionLoader() {
-		if(plateau.getListJoueur().get(plateau.getId_joueur()).getEtat() == EtatJoueur.BETTING) {
+		if(plateau.getListJoueur().get(recupPositionArrayList()).getEtat() == EtatJoueur.BETTING) {
 			jeu.eneleverLoader();
 		}
-		else if(plateau.getListJoueur().get(plateau.getId_joueur()).getEtat() != EtatJoueur.BETTING) {
+		else if(plateau.getListJoueur().get(recupPositionArrayList()).getEtat() != EtatJoueur.BETTING) {
 			if(plateau.getTour_id_joueur() == plateau.getId_joueur())
 				jeu.eneleverLoader();
 			else {

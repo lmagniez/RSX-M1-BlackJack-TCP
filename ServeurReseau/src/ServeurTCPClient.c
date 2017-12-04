@@ -129,7 +129,6 @@ void * threadServeurTCPClient(void * arg){
 
 	char c = res[strlen("CONNECT OK ")];
 	id_joueur = c - '0';
-	//free(res);
 	sem_wait(&mutexReseau);
 	
 	printf("ID JOUEUR CONNECTE : %d\n", id_joueur);
@@ -167,7 +166,6 @@ void * threadServeurTCPClient(void * arg){
 			char *res_croupier = get_results(&p);
 
 			//on envoie les étapes du croupier (sans mettre à jour le plateau)
-			//sendMsg(ecoute, res_croupier);
 			sendMsgAllLessSize(res_croupier);
 
 			//attend que les joueurs voient le résultat avant de réinitialiser
@@ -183,7 +181,6 @@ void * threadServeurTCPClient(void * arg){
 			continue;
 		}else if (strstr("SPLIT KO", res_joueur)){
 			printf("split\n");
-			//sendMsg(ecoute, "Vous ne pouvez pas splitter votre jeu!");
 			sendMsgSimple(ecoute, "Vous ne pouvez pas splitter votre jeu!");
 			sem_post(&mutexReseau);	
 			continue;
@@ -194,8 +191,6 @@ void * threadServeurTCPClient(void * arg){
 		sendPlateauAll(id_joueur, res_joueur);
 		sem_post(&mutexReseau);
 
-		//free(msg);
-		//free(res);
 	}
 	quitter_partie(&p, id_joueur);
 	
