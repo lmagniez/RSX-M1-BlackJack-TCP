@@ -16,7 +16,7 @@ public class JButtonJoueur implements Constante{
 	
 	public JButtonJoueur(Joueur joueur,boolean mise) {
 		
-		button = new JButton(mise ? jetonIcon : jeuxIcon);
+		button = new JButton(mise ? getIconMise(joueur.getMise_actuelle()) : jeuxIcon);
 
 		button.setBorderPainted(false); 
 		button.setContentAreaFilled(false); 
@@ -27,12 +27,32 @@ public class JButtonJoueur implements Constante{
 		else {
 			String texte = "<html>"+ "<p style=\"text-align: center;\">"+ joueur.getNom()+"</p> <br>";
 			for(int i = 0 ; i < joueur.getJeux().size();i++) {
-				texte += "coucou \n";
+				
 			}
 			texte += "</html>";
 			button.setToolTipText(texte);
 		}
 		j = joueur;
+	}
+
+	private ImageIcon getIconMise(int mise) {
+		switch(mise) {
+			case 5:
+				return jeton5;
+			case 10:
+				return jeton10;
+			case 25:
+				return jeton25;
+			case 50:
+				return jeton50;
+			case 100:
+				return jeton100;
+			case 500:
+				return jeton500;
+			case 1000:
+				return jeton1000;
+		}
+		return null;
 	}
 
 	public JButton getButton() {

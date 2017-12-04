@@ -85,7 +85,7 @@ public class ListeJoueur extends JPanel implements Constante{
 			}
 			g.setFont(new Font("verdana", Font.BOLD, 20));
 			g.setColor(or);
-			g.drawString(String.valueOf(somme)+"$", 10, 125);
+			g.drawString(String.valueOf(somme)+" $", 10, 125);
 			
 			g.drawImage(avatar,40,45, 50,50, this);
 			

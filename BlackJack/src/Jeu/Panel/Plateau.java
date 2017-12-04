@@ -27,7 +27,7 @@ public class Plateau extends JPanel implements ActionListener, Constante{
 	private BoutonPlateau abandonner = new BoutonPlateau(this, "Leave");
 
 	private String errorMsg = "";
-	private String[] miseStrings = {"50000","10000", "5000","1000","500","100","50","10"};
+	private String[] miseStrings = {"1000","500","100","50","25","10","5"};
 	private JComboBox miseList = new JComboBox(miseStrings);
 	
 	public Plateau(Jeu jeu) {

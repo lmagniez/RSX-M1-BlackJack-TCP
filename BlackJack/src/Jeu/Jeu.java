@@ -116,7 +116,7 @@ public class Jeu extends JPanel implements Constante {
 					
 					if(tourJoueurPrincipal && idJeu == j) {
 						g.setFont(new Font("verdana", Font.BOLD, 20));
-						g.drawString("-->", 500, 380 - 60 * j);
+						g.drawString("⇨", 520, 380 - 60 * j);
 						g.setFont(new Font("verdana", Font.BOLD, 10));
 					}
 					

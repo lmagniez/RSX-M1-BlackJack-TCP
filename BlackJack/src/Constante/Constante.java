@@ -17,7 +17,6 @@ public interface Constante {
 	public ImageIcon loading = new ImageIcon( "./src/Ressource/Image/loading.gif" );
 	public ImageIcon loader = new ImageIcon( "./src/Ressource/Image/loader.gif" );
 	
-	public ImageIcon jetonIcon = new ImageIcon(new ImageIcon("./src/Ressource/Image/jetons.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
 	public ImageIcon jeuxIcon = new ImageIcon(new ImageIcon("./src/Ressource/Image/cartesPacket.png").getImage().getScaledInstance(40, 30, Image.SCALE_DEFAULT));
 	
 	public Image cadre = Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/cadre.png");
@@ -91,4 +90,13 @@ public interface Constante {
 	};
 	
 	public Image carteRecto =  Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/jeu/face.png");
+	
+	public ImageIcon jeton5 = new ImageIcon(new ImageIcon("./src/Ressource/Jeton/jeton_5.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	public ImageIcon jeton10 = new ImageIcon(new ImageIcon("./src/Ressource/Jeton/jeton_10.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	public ImageIcon jeton25 = new ImageIcon(new ImageIcon("./src/Ressource/Jeton/jeton_25.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	public ImageIcon jeton50 = new ImageIcon(new ImageIcon("./src/Ressource/Jeton/jeton_50.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	public ImageIcon jeton100 = new ImageIcon(new ImageIcon("./src/Ressource/Jeton/jeton_100.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	public ImageIcon jeton500 = new ImageIcon(new ImageIcon("./src/Ressource/Jeton/jeton_500.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	public ImageIcon jeton1000 = new ImageIcon(new ImageIcon("./src/Ressource/Jeton/jeton_1000.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	
 }
