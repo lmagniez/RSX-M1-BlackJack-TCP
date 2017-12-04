@@ -73,6 +73,10 @@ public class Jeu extends JPanel implements Constante {
 		plateau.afficheBoutonAction();
 	}
 
+	public void voidRenitPos() {
+		info.reinitPosJoueur();
+	}
+	
 	public void addJoueur(Joueur joueur) {
 		listeJoueur.addJoueur(joueur);
 		info.addBoutonMiseDisplay(joueur,listeJoueur.getListeJoueur().size());

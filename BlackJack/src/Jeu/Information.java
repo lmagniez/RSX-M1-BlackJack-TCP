@@ -11,6 +11,8 @@ import Model.Joueur;
 public class Information extends JPanel implements Constante{
 
 	Jeu jeu;
+	int numJoueurMise = 1;
+	int numJoueurJeu = 1;
 	
 	public Information(Jeu jeu) {
 		jeu = jeu;
@@ -20,12 +22,13 @@ public class Information extends JPanel implements Constante{
 
 	public void addBoutonMiseDisplay(Joueur joueur, int num) {
 		if(!joueur.isJoueurPrincipal() && joueur.getMise_actuelle() != 0) {
-			int[] pos = positionXYBoutonMise(num-1);
+			int[] pos = positionXYBoutonMise(numJoueurMise);
 			JButtonJoueur Jbouton = new JButtonJoueur(joueur,true);
 			JButton bouton = Jbouton.getButton();
 			bouton.setBounds(pos[0],pos[1],60,30);
 			this.add(bouton);
 			repaint();
+			numJoueurMise++;
 		}else if(joueur.getMise_actuelle() != 0){
 			JButtonJoueur Jbouton = new JButtonJoueur(joueur,true);
 			JButton bouton = Jbouton.getButton();
@@ -45,6 +48,7 @@ public class Information extends JPanel implements Constante{
 			bouton.setBounds(pos[0],pos[1],60,30);
 			this.add(bouton);
 			repaint();
+			numJoueurJeu++;
 		}
 	}
 
@@ -102,6 +106,11 @@ public class Information extends JPanel implements Constante{
 			return tab;
 		}
 		return null;
+	}
+
+	public void reinitPosJoueur() {
+		numJoueurMise = 1;
+		numJoueurJeu = 1;
 	}
 	
 	
