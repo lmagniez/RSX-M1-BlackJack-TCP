@@ -148,13 +148,12 @@ host:
 		}
 
 		cmd = cmd + cpt;
-		//printf("cmd a partir de maintenant \n -> %s\n", cmd);
 
 
 		//mise d'un joueur (POST)
 		if(is_mise){
 			printf("mise!\n");
-			
+
 			if(!is_post){
 				perror("erreur! Mise doit etre POST!\n");
 				return NULL;
@@ -168,7 +167,7 @@ host:
 				printf("Ne peux pas miser!\n");
 				return NULL;
 			}
-			
+
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a misé %d crédits ", id_joueur, mise);
 			//printf("mise -> %d\n",mise);
@@ -270,7 +269,7 @@ host:
 			//free(res);
 			//return dialogue;
 			return res;
-			
+
 		}
 
 		//rester jeu (GET)
@@ -285,7 +284,7 @@ host:
 				printf("Ne peux pas rester\n");
 				return NULL;
 			}
-			
+
 			//char *dialogue = malloc(sizeof(char)*DIALOGUE_SIZE);
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d est satisfait de son jeu courant ", id_joueur);
@@ -299,7 +298,7 @@ host:
 			//free(res);
 			//return dialogue;
 			return res;
-			
+
 		}
 		return NULL;
 

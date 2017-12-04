@@ -128,7 +128,7 @@ void * threadServeurTCPClient(void * arg){
 
 	char c = res[strlen("CONNECT OK ")];
 	id_joueur = c - '0';
-	free(res);
+	//free(res);
 	sem_wait(&mutexReseau);
 	
 	sendPlateauAll(id_joueur, "Le joueur vient de se connecter");
@@ -144,7 +144,7 @@ void * threadServeurTCPClient(void * arg){
 			reception = 0;	
 			continue;
 		}else if(strcmp(msg,"")==0){
-			free(msg);
+			//free(msg);
 			sem_post(&mutexReseau);	
 			continue;
 		}
@@ -160,7 +160,6 @@ void * threadServeurTCPClient(void * arg){
 			sendPlateauAll(id_joueur, res_joueur);
 
 			sleep(3);
-
 
 			//récupère les lignes à renvoyer et réinitialise le jeu
 			char *res_croupier = get_results(&p);
@@ -193,8 +192,8 @@ void * threadServeurTCPClient(void * arg){
 		sendPlateauAll(id_joueur, res_joueur);
 		sem_post(&mutexReseau);
 
-		free(msg);
-		free(res);
+		//free(msg);
+		//free(res);
 	}
 	quitter_partie(&p, id_joueur);
 	sendPlateauAll(id_joueur, "Un joueur c'est deconnecté");
