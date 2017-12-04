@@ -199,7 +199,7 @@ void * threadServeurTCPClient(void * arg){
 	}
 	quitter_partie(&p, id_joueur);
 	
-	sendPlateauAll(id_joueur, "Un joueur c'est deconnecté");
+	sendPlateauAll(id_joueur, "Un joueur s'est deconnecté");
 	sem_post(&mutexReseau);
 	(void) arg;
 	printf("Joueur %d deconnecte\n",id_joueur);

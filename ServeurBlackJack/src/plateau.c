@@ -14,6 +14,13 @@ void init_plateau(plateau *p){
 	p->tour_started = 0;
 }
 
+void reinit_plateau(plateau *p){
+	p->nb_joueur = 0;
+	p->tour_id_joueur = -1;
+	p->tour_id_jeu = -1;
+	p->tour_started = 0;
+}
+
 
 void afficher_plateau(plateau *p){
 	printf("===Plateau:===\n");
@@ -60,10 +67,22 @@ int quitter_partie(plateau *p, int id_joueur){
 	}
 	stop_joueur(&(p->joueurs[id_joueur]));
 	p->nb_joueur--;
-	/*
+	
+	
+	int i = id_joueur;
 	if(p->nb_joueur==0){
-		
-	}*/
+		reinit_plateau(p);
+	}
+	else{
+		if(p->tour_id_joueur==id_joueur){
+			printf("change tour !! \n");
+			while(p->joueurs[i].e==OFF){
+				i=(i+1)%(NB_JOUEUR_MAX-1);
+			}
+			p->tour_id_joueur = i;
+			p->tour_id_jeu = 0;
+		}
+	}
 
 	return 1;
 }
@@ -75,7 +94,7 @@ void init_tour(plateau *p){
 			//demander_tirer(p, i);
 			carte c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
-			//c = get_next_carte(&(p->pioche));
+			c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
 		}
 	}
@@ -213,10 +232,12 @@ char* get_results(plateau *p){
 
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 
+		printf("joueur %d\n",i);
 		//que les joueurs qui ont joués
 		if(p->joueurs[i].e==FINISHED){
 			int mise_par_jeu = p->joueurs[i].mise_totale/p->joueurs[i].nb_jeux;
 			for(int j=0; j<p->joueurs[i].nb_jeux; j++){
+				printf("jeu %d\n",j);
 				//joueur gagne: Gagne la mise *1.5 (Blackjack: 2)
 				if(p->joueurs[i].jeux[j].e_jeu==SATISFAIT&&p->jeu_croupier.e_jeu==PERDU){
 					if(has_blackjack(&(p->joueurs[i].jeux[j]))){
@@ -274,8 +295,7 @@ char* get_results(plateau *p){
 				reinit_jeu(&(p->joueurs[i].jeux[j]));
 				//init_tour(p);
 			}
-			reinit_jeu(&(p->jeu_croupier));
-
+		
 			p->joueurs[i].mise_actuelle = 0;
 			p->joueurs[i].mise_totale = 0;
 			if(p->joueurs[i].credit <= 0){
@@ -291,6 +311,13 @@ char* get_results(plateau *p){
 			p->joueurs[i].nb_jeux = 1;
 		}
 	}
+	reinit_jeu(&(p->jeu_croupier));
+	for(int i=0; i<NB_JOUEUR_MAX; i++){
+		if(p->joueurs[i].e == WAITING){
+			p->joueurs[i].e = BETTING;
+		}
+	}
+	
 	return msg;
 }
 
