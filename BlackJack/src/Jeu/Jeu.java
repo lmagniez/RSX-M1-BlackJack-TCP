@@ -21,6 +21,9 @@ import Model.Joueur;
 
 public class Jeu extends JPanel implements Constante {
 
+	private int idJeu = 0;
+	private boolean tourJoueurPrincipal = false;
+
 	private FrameJeu frameJeu;
 	
 	private Model.Jeu jeuCroupier;
@@ -102,22 +105,33 @@ public class Jeu extends JPanel implements Constante {
 
 	int posJoueur = 1;
 	
-	private void dessinerCarteJoueur(Graphics g) {
+	private void dessinerCarteJoueur(Graphics g) {	
 		posJoueur=1;
+		g.setColor(or);
+		g.setFont(new Font("verdana", Font.BOLD, 10));
 		for (int i = 0; i < listeJoueur.getListeJoueur().size(); i++) {
 			if (listeJoueur.getListeJoueur().get(i).isJoueurPrincipal()) {
 				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
 					Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
+					
+					if(tourJoueurPrincipal && idJeu == j) {
+						g.setFont(new Font("verdana", Font.BOLD, 20));
+						g.drawString("-->", 500, 380 - 60 * j);
+						g.setFont(new Font("verdana", Font.BOLD, 10));
+					}
+					
 					for(int c = 0 ; c < jeu.getJeuCartes().size();c++) {
 						g.drawImage(cartes[jeu.getJeuCouleurs().get(c).getValue()-1][jeu.getJeuCartes().get(c).getValue()-1],540 + 30*c, 340 - 60 * j, 40, 60, this);
 					}
 				}
+				g.drawString("Value: "+getValueJeux(i), 560, 470);
+				
 			}else {
 				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
 					int [] positionJeu = positionXYJeu(posJoueur);
-					g.setColor(or);
-					g.setFont(new Font("verdana", Font.BOLD, 10));
+					
 					g.drawString("NBJeux: "+listeJoueur.getListeJoueur().get(i).getJeux().size(), positionJeu[0], positionJeu[1]);
+					g.drawString("Value:"+getValueJeux(i), positionJeu[0], positionJeu[1]+30);
 					
 					if(listeJoueur.getListeJoueur().get(i).getJeux().get(j).getEtat() != EtatJeu.PERDU) {
 						Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
@@ -139,6 +153,16 @@ public class Jeu extends JPanel implements Constante {
 			for (int j = 0; j < jeuCroupier.getJeuCouleurs().size(); j++)
 				g.drawImage(cartes[jeuCroupier.getJeuCouleurs().get(j).getValue()-1][jeuCroupier.getJeuCartes().get(j).getValue()-1],480 + 60*j, 83, 40, 60, this);
 		}
+	}
+
+	private String getValueJeux(int numJoueur) {
+		String value ="";
+		for (int j = 0; j < listeJoueur.getListeJoueur().get(numJoueur).getJeux().size(); j++) {
+			value += listeJoueur.getListeJoueur().get(numJoueur).getJeux().get(j).getValue();
+			if(j+1 != listeJoueur.getListeJoueur().get(numJoueur).getJeux().size() )
+				value+=" - ";
+		}
+		return value;
 	}
 
 	private void dessinerConnectionVert(Graphics g) {
@@ -272,6 +296,13 @@ public class Jeu extends JPanel implements Constante {
 
 	public void reinitBoutonInformation() {
 		info.removeAll();
+	}
+
+	
+	public void tourAndIDJeu(int tour_id_jeu, boolean b) {
+		idJeu = tour_id_jeu;
+		tourJoueurPrincipal = b;
+		repaint();
 	}
 	
 	

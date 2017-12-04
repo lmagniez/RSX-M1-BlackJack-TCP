@@ -45,6 +45,8 @@ public class ModelJeu {
 		
 		jeu.voidRenitPos();
 		jeu.reinitBoutonInformation();
+
+		jeu.tourAndIDJeu(plateau.getTour_id_jeu(),plateau.getId_joueur()==plateau.getTour_id_joueur());
 		
 		majNom();
 		miseAjourInterface();
