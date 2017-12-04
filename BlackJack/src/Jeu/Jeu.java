@@ -93,21 +93,21 @@ public class Jeu extends JPanel implements Constante {
 		dessinerConnectionVert(g);
 	}
 
+	int posJoueur = 1;
 	
 	private void dessinerCarteJoueur(Graphics g) {
+		posJoueur=1;
 		for (int i = 0; i < listeJoueur.getListeJoueur().size(); i++) {
 			if (listeJoueur.getListeJoueur().get(i).isJoueurPrincipal()) {
 				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
 					Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
-				
 					for(int c = 0 ; c < jeu.getJeuCartes().size();c++) {
 						g.drawImage(cartes[jeu.getJeuCouleurs().get(c).getValue()-1][jeu.getJeuCartes().get(c).getValue()-1],540 + 30*c, 340 - 60 * j, 40, 60, this);
 					}
 				}
 			}else {
 				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
-					int [] positionJeu = positionXYJeu(i+1);
-					System.out.println(positionJeu[0]+"   "+positionJeu[1]);
+					int [] positionJeu = positionXYJeu(posJoueur);
 					g.setColor(or);
 					g.setFont(new Font("verdana", Font.BOLD, 10));
 					g.drawString("NBJeux: "+listeJoueur.getListeJoueur().get(i).getJeux().size(), positionJeu[0], positionJeu[1]);
@@ -115,12 +115,13 @@ public class Jeu extends JPanel implements Constante {
 					if(listeJoueur.getListeJoueur().get(i).getJeux().get(j).getEtat() == EtatJeu.JOUE) {
 						Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
 						
-						int [] positionCarte = positionXYCarte(i);
+						int [] positionCarte = positionXYCarte(posJoueur);
 						for(int c = 0 ; c < jeu.getJeuCartes().size();c++) {
 							g.drawImage(cartes[jeu.getJeuCouleurs().get(c).getValue()-1][jeu.getJeuCartes().get(c).getValue()-1],positionCarte[0] + 30*c, positionCarte[1] - 60 * j, 40, 60, this);
 						}
 					}
-				}	
+				}
+				 posJoueur++;
 			}
 		}
 		
@@ -136,11 +137,14 @@ public class Jeu extends JPanel implements Constante {
 	private void dessinerConnectionVert(Graphics g) {
 		g.setColor(Color.GREEN);
 		g.fillOval(620, 440, 20, 20);
-        
+
+		posJoueur = 1;
+		
 		for (int i = 0; i < listeJoueur.getListeJoueur().size(); i++) {
 			if (!listeJoueur.getListeJoueur().get(i).isJoueurPrincipal()) {
-				int [] tab = positionXYCercle(i+1);
+				int [] tab = positionXYCercle(posJoueur);
 				g.fillOval(tab[0], tab[1], 20, 20);
+				posJoueur++;
 			}
 		}
 	}

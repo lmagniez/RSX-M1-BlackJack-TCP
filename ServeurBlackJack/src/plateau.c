@@ -424,6 +424,7 @@ int demander_abandon(plateau *p, int id_joueur){
 //en debut de tour
 //place la mise
 int demander_mise(plateau *p, int id_joueur, int mise){
+	printf("demande mise idj: %d mise: %d \n", id_joueur, mise);
 	if(p->joueurs[id_joueur].e==BETTING && p->joueurs[id_joueur].credit >= mise){
 		p->joueurs[id_joueur].e = PLAYING;
 		p->joueurs[id_joueur].mise_actuelle = mise;

@@ -26,7 +26,7 @@ host:
 	char* connect = "action/connect";
 	*/
 
-	char *parseur_REST(char *cmd, plateau *p, int *reinit, int num_socket){
+	char *parseur_REST(char *cmd, plateau *p, int *reinit, int num_socket, int id_joueur){
 		char adr[15];
 		int is_post = 0;
 		int is_get = 0;
@@ -39,7 +39,7 @@ host:
 		int is_connect = 0;
 		int cpt_cmd = 0;
 
-		int id_joueur = -1;
+		int id_co = -1;
 		int mise = 0;
 
 		printf("\nCMD -> %s\n",cmd);
@@ -132,20 +132,20 @@ host:
 		if(is_connect){
 			printf("connect!\n");
 //>>>>>>VOIR THREAD
-			id_joueur = rejoindre_partie(p, CREDIT, adr, num_socket);
-			printf("connecté en tant que joueur %d!\n",id_joueur);
+			id_co = rejoindre_partie(p, CREDIT, adr, num_socket);
+			printf("connecté en tant que joueur %d!\n",id_co);
 
 			char *str=malloc(sizeof(char)*15);
-			sprintf(str, "CONNECT OK %d", id_joueur);
+			sprintf(str, "CONNECT OK %d", id_co);
 			return str;
 		}
 
-		//get id_joueur
+		/*//get id_joueur
 		id_joueur = get_id_from_adresse(p, adr);
 		if(id_joueur < 0){
 			perror("l'adresse ne correspond pas au joueur!\n");
 			return NULL;
-		}
+		}*/
 
 		cmd = cmd + cpt;
 

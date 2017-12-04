@@ -43,6 +43,7 @@ public class ModelJeu {
 		plateau.setJeu_croupier(p.getJeu_croupier());
 		plateau.setListJoueur(p.getListJoueur());
 		
+		System.out.println(plateau);
 		jeu.reinitBoutonInformation();
 		majNom();
 		miseAjourInterface();

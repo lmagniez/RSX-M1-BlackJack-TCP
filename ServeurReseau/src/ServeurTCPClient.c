@@ -120,7 +120,7 @@ void * threadServeurTCPClient(void * arg){
 	char * msg = receive_data_TCP(ecoute);
 	sem_wait(&mutexConnection);
 	
-	char *res = parseur_REST(msg, &p, &nb, ecoute);
+	char *res = parseur_REST(msg, &p, &nb, ecoute, id_joueur);
 	if (strstr(res,"CONNECT OK")==NULL){
 		sendMsgSimple(ecoute, "CONNECT KO");
 		pthread_exit(NULL);
@@ -131,6 +131,7 @@ void * threadServeurTCPClient(void * arg){
 	//free(res);
 	sem_wait(&mutexReseau);
 	
+	printf("ID JOUEUR CONNECTE : %d\n", id_joueur);
 	sendPlateauAll(id_joueur, "Le joueur vient de se connecter");
 	
 	sem_post(&mutexReseau);
@@ -151,7 +152,7 @@ void * threadServeurTCPClient(void * arg){
 
 		int reinit = 0;
 
-		char *res_joueur = parseur_REST(msg, &p, &reinit, ecoute);
+		char *res_joueur = parseur_REST(msg, &p, &reinit, ecoute, id_joueur);
 
 		//si fin de tour
 		if(reinit == 1){
