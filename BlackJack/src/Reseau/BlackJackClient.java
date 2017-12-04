@@ -72,14 +72,14 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 							if(message==null)break;
 							message = message.replace("\0", "");
 							if(!message.isEmpty()) {
-								if(isDigit(message)) {
+								if(isDigit(message) && message != null) {
 									readPlateau(Integer.parseInt(message));
 								}else if(message.contains(";")){
 									String[] dialogue = message.split(";");
 									for(int i = 0 ; i < dialogue.length;i++) {
 										fenetreclient.addDialogue(dialogue[i]);
 									}
-								}else {
+								}else if(!message.isEmpty()){
 									fenetreclient.addDialogue(message);
 								}
 							}

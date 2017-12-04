@@ -20,10 +20,10 @@ public class PanelErreurBig extends JPanel implements Constante {
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(fond, 0, -100, 1224,1000, this);
+		g.drawImage(fond, 0, -100, 1224,1224, this);
 		g.setColor(or);
 		g.setFont(new Font("verdana", Font.BOLD, 60));
-		g.drawString(erreur, 180, 500);
+		g.drawString(erreur, 180, 600);
 	}
 
 	public void setErreur(String s) {

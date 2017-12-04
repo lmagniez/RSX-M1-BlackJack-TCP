@@ -53,7 +53,6 @@ public class Parser implements ConstanteParser{
 					parseSimpleChampPlateau(plateau,jsonArrayGeneral[i]);
 				}
 			}
-			System.out.println(plateau);
 			return plateau;
 		}
 
@@ -81,7 +80,6 @@ public class Parser implements ConstanteParser{
 
 		private void recupAllJeuPlayer(Joueur newJ,int numLigne,boolean premier) {
 			if(!jsonJoueurs[numLigne+1].contains("},{") && !premier) {
-				System.out.println(jsonJoueurs[numLigne]);
 				return;
 			}
 			newJ.getJeux().add(parseJeu(numLigne,jsonJoueurs,size_jeu_croupier+1));

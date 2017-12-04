@@ -99,8 +99,8 @@ public class Jeu extends JPanel implements Constante {
 			if (listeJoueur.getListeJoueur().get(i).isJoueurPrincipal()) {
 				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
 					Model.Jeu jeu = listeJoueur.getListeJoueur().get(i).getJeux().get(j);
+				
 					for(int c = 0 ; c < jeu.getJeuCartes().size();c++) {
-						
 						g.drawImage(cartes[jeu.getJeuCouleurs().get(c).getValue()-1][jeu.getJeuCartes().get(c).getValue()-1],540 + 30*c, 340 - 60 * j, 40, 60, this);
 					}
 				}
