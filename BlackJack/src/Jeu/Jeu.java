@@ -58,11 +58,14 @@ public class Jeu extends JPanel implements Constante {
 	public void afficherLoader() {
 		loaderLabel.setBounds(500, 370, 200, 200);
 		this.add(loaderLabel);
+		this.repaint();
 	}
 	
 	public void eneleverLoader() {
-		if(this.getComponentCount()>4) 
+		if(this.getComponentCount()>4) {
 			this.remove(this.getComponentCount()-1);
+			this.repaint();
+		}
 	}
 
 	public void afficheErreur(String msg) {
