@@ -106,7 +106,8 @@ public class Jeu extends JPanel implements Constante {
 				}
 			}else {
 				for (int j = 0; j < listeJoueur.getListeJoueur().get(i).getJeux().size(); j++) {
-					int [] positionJeu = positionXYJeu(i);
+					int [] positionJeu = positionXYJeu(i+1);
+					System.out.println(positionJeu[0]+"   "+positionJeu[1]);
 					g.setColor(or);
 					g.setFont(new Font("verdana", Font.BOLD, 10));
 					g.drawString("NBJeux: "+listeJoueur.getListeJoueur().get(i).getJeux().size(), positionJeu[0], positionJeu[1]);
@@ -138,7 +139,7 @@ public class Jeu extends JPanel implements Constante {
         
 		for (int i = 0; i < listeJoueur.getListeJoueur().size(); i++) {
 			if (!listeJoueur.getListeJoueur().get(i).isJoueurPrincipal()) {
-				int [] tab = positionXYCercle(i);
+				int [] tab = positionXYCercle(i+1);
 				g.fillOval(tab[0], tab[1], 20, 20);
 			}
 		}
