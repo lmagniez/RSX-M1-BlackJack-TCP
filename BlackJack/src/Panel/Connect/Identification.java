@@ -40,15 +40,13 @@ public class Identification extends JPanel implements Constante {
 	 */
 	private void creerlayout() {
 		setLayout(null);
-		listeServeur.setBounds(25, 100, 350, 370);
+		listeServeur.setBounds(25, 120, 350, 370);
 		this.add(listeServeur);
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(fondListe, 0, -50, 400, 550, this);
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("verdana", Font.BOLD, 15));
+		g.drawImage(fondListe, 0, 0, 400, 500, this);
 	}
 
 	public ListeServeur getListeServeur() {

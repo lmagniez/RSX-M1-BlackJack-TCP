@@ -1,7 +1,11 @@
 package Panel.Menu;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,6 +29,7 @@ public class Menu extends JPanel implements ActionListener,Constante{
 		frame=j;
 		this.setPreferredSize(new Dimension(frame.getHeight(), frame.getWidth()));
 		creerlayout();
+	
 	}
 	
 	/**
@@ -32,8 +37,8 @@ public class Menu extends JPanel implements ActionListener,Constante{
 	 */
 	private void creerlayout() {
 		setLayout(null);
-		jouer.setBounds(50, 290, 300, 50);
-		quitter.setBounds(50, 370, 300, 50);
+		jouer.setBounds(50, 400, 120, 50);
+		quitter.setBounds(200, 400, 200, 50);
 		this.add(jouer);
 		this.add(quitter);
 	}

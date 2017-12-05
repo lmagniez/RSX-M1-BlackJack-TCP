@@ -17,12 +17,12 @@ public class Dialogue extends JPanel implements Constante{
 	private int nbentre=0;
 	
 	public Dialogue() {
-		this.setOpaque(false);
-
 		commande.setEditable(false);
 		commande.setFont(new Font("verdana", Font.BOLD, 12));
-		commande.setForeground(or);
+		commande.setForeground(Color.WHITE);
 		commande.setOpaque(false);
+		
+		this.setBackground(Color.black);
 		
 		creerLayout();
 	}

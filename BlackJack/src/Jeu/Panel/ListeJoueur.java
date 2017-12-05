@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,7 +26,7 @@ public class ListeJoueur extends JPanel implements Constante{
 	public ListeJoueur(Jeu jeu) {
 		this.jeu = jeu;
 		createVue();
-		this.setOpaque(false);
+		this.setBackground(Color.black);
 		this.setLayout(null);
 	}
 	
@@ -36,10 +37,9 @@ public class ListeJoueur extends JPanel implements Constante{
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		g.setColor(or);
-		g.setFont(new Font("verdana", Font.BOLD, 35));
-		g.drawString("Joueurs", 160, 40);
+		g.setColor(Color.white);
+		g.setFont(new Font("Bradley Hand",Font.BOLD,40));
+		g.drawString("Joueurs", 160, 30);
 	}
 	
 	public static JScrollPane scrollPaneHorizontal(JComponent component) {
@@ -75,16 +75,14 @@ public class ListeJoueur extends JPanel implements Constante{
 		}
 		
 		public void paintComponent(Graphics g) {
-			g.setFont(new Font("verdana", Font.BOLD, 20));
-			g.setColor(or);
+			g.setFont(new Font("Bradley Hand", Font.BOLD, 30));
+			g.setColor(Color.white);
 			
 			if(nom.contains("Joueur")) {
 				g.drawString(nom, 20, 30);
 			}else {
 				g.drawString(nom, 40, 30);
 			}
-			g.setFont(new Font("verdana", Font.BOLD, 20));
-			g.setColor(or);
 			g.drawString(String.valueOf(somme)+" $", 10, 125);
 			
 			g.drawImage(avatar,40,45, 50,50, this);

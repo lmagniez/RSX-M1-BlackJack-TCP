@@ -46,9 +46,10 @@ public class Jeu extends JPanel implements Constante {
 	public void init() {
 		setLayout(null);
 
+		
 		plateau.setBounds(135, 35, 940, 472);
 		listeJoueur.setBounds(130, 530, 480, 200);
-		dialogue.setBounds(630, 538, 480, 200);
+		dialogue.setBounds(630, 530, 450, 200);
 		info.setBounds(135, 35, 940, 472);
 		
 		this.add(plateau);
@@ -93,10 +94,10 @@ public class Jeu extends JPanel implements Constante {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(fondGeneral, 0, 0, 1224, 768, this);
-		g.drawImage(cadre, 100, 20, 1000, 500, this);
-		g.drawImage(cadre, 115, 530, 480, 200, this);
-		g.drawImage(cadre, 610, 530, 480, 200, this);
-		g.drawImage(fondPlateau, 135, 35, 940, 483, this);
+		//g.drawImage(cadre, 100, 20, 1000, 500, this);
+		//g.drawImage(cadre, 115, 530, 480, 200, this);
+		//g.drawImage(cadre, 610, 530, 480, 200, this);
+		g.drawImage(fondPlateau, 135, 35, 940, 610, this);
 		
 		dessinerCarteJoueur(g);
 		dessinerConnectionRouge(g);
@@ -107,7 +108,7 @@ public class Jeu extends JPanel implements Constante {
 	
 	private void dessinerCarteJoueur(Graphics g) {	
 		posJoueur=1;
-		g.setColor(or);
+		g.setColor(Color.WHITE);
 		g.setFont(new Font("verdana", Font.BOLD, 10));
 		for (int i = 0; i < listeJoueur.getListeJoueur().size(); i++) {
 			if (listeJoueur.getListeJoueur().get(i).isJoueurPrincipal()) {
@@ -148,10 +149,10 @@ public class Jeu extends JPanel implements Constante {
 		
 		if(jeuCroupier != null && jeuCroupier.getJeuCartes().isEmpty())
 			for (int j = 0; j < 5; j++)
-				g.drawImage(carteRecto,480 + 60*j, 83, 40, 60, this);
+				g.drawImage(carteRecto,480 + 60*j, 85, 40, 60, this);
 		else if(jeuCroupier != null){
 			for (int j = 0; j < jeuCroupier.getJeuCouleurs().size(); j++)
-				g.drawImage(cartes[jeuCroupier.getJeuCouleurs().get(j).getValue()-1][jeuCroupier.getJeuCartes().get(j).getValue()-1],480 + 60*j, 83, 40, 60, this);
+				g.drawImage(cartes[jeuCroupier.getJeuCouleurs().get(j).getValue()-1][jeuCroupier.getJeuCartes().get(j).getValue()-1],480 + 60*j, 85, 40, 60, this);
 		}
 	}
 

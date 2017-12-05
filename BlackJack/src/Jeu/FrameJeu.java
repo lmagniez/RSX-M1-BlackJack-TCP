@@ -55,6 +55,7 @@ public class FrameJeu extends JFrame{
 	}
 
 	public void addDialogue(String message) {
+		if(message.length()<4)return;
 		modelJeux.afficheErreurMessage(message);
 	}
 
