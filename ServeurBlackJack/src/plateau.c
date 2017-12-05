@@ -67,8 +67,8 @@ int quitter_partie(plateau *p, int id_joueur){
 	}
 	stop_joueur(&(p->joueurs[id_joueur]));
 	p->nb_joueur--;
-	
-	
+
+
 	int i = id_joueur;
 	if(p->nb_joueur==0){
 		reinit_plateau(p);
@@ -295,7 +295,7 @@ char* get_results(plateau *p){
 				reinit_jeu(&(p->joueurs[i].jeux[j]));
 				//init_tour(p);
 			}
-		
+
 			p->joueurs[i].mise_actuelle = 0;
 			p->joueurs[i].mise_totale = 0;
 			if(p->joueurs[i].credit <= 0){
@@ -317,7 +317,7 @@ char* get_results(plateau *p){
 			p->joueurs[i].e = BETTING;
 		}
 	}
-	
+
 	return msg;
 }
 
@@ -328,9 +328,9 @@ int demander_split(plateau *p, int id_joueur){
 		int id_jeu;
 		if((id_jeu=splitter_jeu(&(p->joueurs[id_joueur])))!=-1){;
 			printf("JOUEUR %d SPLITTE SON JEU %d \n",id_joueur, p->tour_id_jeu);
-			int fin_tour = change_tour(p);
-			//if(fin_tour)tour_croupier(p);
-			return fin_tour;
+			//int fin_tour = change_tour(p);
+			//return fin_tour;
+			return 0;
 		}
 	}
 	return -1;
@@ -351,10 +351,14 @@ int demander_tirer(plateau *p, int id_joueur){
 			p->joueurs[id_joueur].mise_actuelle = p->joueurs[id_joueur].mise_actuelle
 				- montant_perdu;
 		}
-		int fin_tour = change_tour(p);
-		//if(fin_tour)tour_croupier(p);
-		return fin_tour;
-		//return c.face;
+
+		if(p->joueurs[id_joueur].jeux[p->tour_id_jeu].e_jeu!=JOUE){
+			int fin_tour = change_tour(p);
+			//if(fin_tour)tour_croupier(p);
+			return fin_tour;
+
+		}
+		return 0;
 	}
 
 
