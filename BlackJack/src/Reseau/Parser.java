@@ -207,5 +207,11 @@ public class Parser implements ConstanteParser{
 			}
 			return "";
 		}
+
+		public boolean parserMotClef(String ligne) {
+			return ligne.contains(taille) || ligne.contains(message);
+		}
+		
+		
 		
 }

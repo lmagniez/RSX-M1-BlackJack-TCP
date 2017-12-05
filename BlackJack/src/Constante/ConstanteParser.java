@@ -38,6 +38,6 @@ public interface ConstanteParser {
 	
 	
 	//INFORMATION
-	public String taille = "taille";
+	public String taille = "Contente-Length";
 	public String message = "message";
 }

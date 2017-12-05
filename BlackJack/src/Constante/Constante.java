@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 public interface Constante {
 
 	public Image fond=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond.png");
-	public Image fondGeneral=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fondGeneral.jpg");
+	public Image fondGeneral=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/Casino.png");
 	
 	public Image fondListe=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond_liste.png");
 	
@@ -23,13 +23,12 @@ public interface Constante {
 	
 	public Image fondPlateau=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/table.png");
 	
-	public Image tapis=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/tapis.png");
-	
 	public Image avatar=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/avatar.png");
 	
 	public Color or = new Color(232, 179, 83);
+	public Color rouge = new Color(150, 19, 19);
 	
-	public Color transparent =new Color(1f,0f,0f,.5f );
+	public Color transparent =new Color(1f,0f,0f,.5f);
 	
 	public Image[][] cartes = { 
 			{   Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/jeu/coeur/1.png"),

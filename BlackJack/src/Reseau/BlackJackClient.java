@@ -68,19 +68,14 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 					fenetreclient = new FrameJeu(BlackJackClient.this);
 					try {
 						while(true){
-							String message = message();
+							String message = litEntete();
 							if(message==null)break;
 							message = message.replace("\0", "");
 							if(!message.isEmpty()) {
 								if(isDigit(message) && message != null) {
 									readPlateau(Integer.parseInt(message));
-								}else if(message.contains(";")){
-									String[] dialogue = message.split(";");
-									for(int i = 0 ; i < dialogue.length;i++) {
-										fenetreclient.addDialogue(dialogue[i]);
-									}
-								}else if(!message.isEmpty()){
-									fenetreclient.addDialogue(message);
+								}else {
+									dialogue(message);
 								}
 							}
 						}
@@ -94,27 +89,50 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 		}
 	}
 
-	public String message() throws IOException {
-		String s = socketReader.readLine();
-		if(s==null || s.contains("CONNECT KO")) {
-			fenetreclient.showErreurScreen(s);
+	public void dialogue(String message) {
+		if(message.contains(";")){
+			String[] dialogue = message.split(";");
+			for(int i = 0 ; i < dialogue.length;i++) {
+				fenetreclient.addDialogue(dialogue[i]);
+			}
+		}else if(!message.isEmpty()){
+			fenetreclient.addDialogue(message);
+		}
+	}
+
+	public String litEntete() throws IOException {
+		String ligne = socketReader.readLine();
+		if(ligne==null) {
+			fenetreclient.showErreurScreen(ligne);
 			return null;
 		}
-		String message = Parser.share.parseJsonMessage(s);
+		String ligne2 = socketReader.readLine();
+		
+		while(!ligne2.contains(taille)) {
+			 ligne2 = socketReader.readLine();
+		}
+		String message = Parser.share.parseJsonMessage(ligne2);
 		return message;
 	}
 	
 	public void readPlateau(int size) throws IOException{
-
 		String s;
 		StringBuilder msg = new StringBuilder();
 		int sizeRead = 0;
+		
 		while(msg.toString().length() < size-3) {
 			s= "";
 			s = socketReader.readLine();
 			sizeRead += s.length();
 			msg.append(s+"\n");	
 		}
+		
+		if(Parser.share.parserMotClef(msg.toString())) {
+			msg.setLength(msg.length()-1);
+			dialogue(Parser.share.parseJsonMessage(msg.toString()));
+			return;
+		}
+		
 		Plateau p = Parser.share.parseJsonData(msg.toString());
 		fenetreclient.setPlateau(p);
 	}

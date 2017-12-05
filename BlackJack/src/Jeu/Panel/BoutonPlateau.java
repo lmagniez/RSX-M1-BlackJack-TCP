@@ -5,13 +5,16 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import Constante.Constante;
 
-public class BoutonPlateau extends JButton{
+
+public class BoutonPlateau extends JButton implements Constante{
 	
 	/**
 	 * Constructeur d'un Bouton
@@ -21,12 +24,15 @@ public class BoutonPlateau extends JButton{
 	public BoutonPlateau(JPanel j, String Commande) {
 		setBorderPainted(false);
 		setOpaque(true);
+		
 		this.setBorder(BorderFactory.createEmptyBorder());
-		this.setOpaque(true);
-		this.setFont(new Font("verdana",Font.BOLD,15));
+		this.setOpaque(false);
+		this.setFont(new Font("Bradley Hand",Font.BOLD,40));
 		this.setText(Commande);
-		this.setBackground(new Color(136,36,33));
-		this.setForeground(new Color(240,183,74));
+		
+		this.setBackground(transparent);
+		this.setForeground(Color.white);
+		
 		this.setActionCommand(Commande);
 		this.addActionListener((ActionListener) j);
 		this.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -34,7 +40,7 @@ public class BoutonPlateau extends JButton{
 	
 	public BoutonPlateau(JPanel j, String commande,Color c) {
 		this(j,commande);
-		this.setBackground(c);
+		this.setForeground(c);
 	}
 	
 	public void paintComponent(Graphics g) {

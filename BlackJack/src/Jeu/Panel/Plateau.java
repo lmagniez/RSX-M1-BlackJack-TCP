@@ -24,7 +24,7 @@ public class Plateau extends JPanel implements ActionListener, Constante{
 	private BoutonPlateau rester = new BoutonPlateau(this, "Rester");
 	private BoutonPlateau doubler = new BoutonPlateau(this, "Doubler");
 	private BoutonPlateau splitter = new BoutonPlateau(this, "Split");
-	private BoutonPlateau abandonner = new BoutonPlateau(this, "Leave");
+	private BoutonPlateau abandonner = new BoutonPlateau(this, "Stop");
 
 	private String errorMsg = "";
 	private String[] miseStrings = {"1000","500","100","50","25","10","5"};
@@ -54,15 +54,17 @@ public class Plateau extends JPanel implements ActionListener, Constante{
 		this.add(abandonner);
 		this.add(miseList);
 		
-		miseList.setBounds(10, 440, 100, 30);
+		miseList.setBounds(10, 420, 100, 30);
 		
-		mise.setBounds(100+20, 440, 90, 25);
+		mise.setBounds(100+20, 420, 90, 25);
 		
-		tirer.setBounds(840, 405, 90, 30);
-		rester.setBounds(840, 440, 90, 30);
-		doubler.setBounds(840 - 90 - 10 , 440, 90, 30);
-		splitter.setBounds(840 - 90*2 - 10*2, 440, 90, 30);
-		abandonner.setBounds(840 - 90*3 - 10*3, 440, 90, 30);
+		tirer.setBounds(570, 380, 100, 30);
+		splitter.setBounds(550, 420, 150, 30);
+		
+		doubler.setBounds(680, 380, 150, 30);
+		rester.setBounds(700, 420, 120, 30);
+		
+		abandonner.setBounds(820, 420, 120, 30);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -80,7 +82,7 @@ public class Plateau extends JPanel implements ActionListener, Constante{
 			jeu.controllerJeu.demandeDouble();
 		}else if(e.getActionCommand().equals("Split")) {
 			jeu.controllerJeu.demandeSplit();
-		}else if(e.getActionCommand().equals("Leave")) {
+		}else if(e.getActionCommand().equals("Stop")) {
 			jeu.controllerJeu.demandeQuitter();
 		}
 	}

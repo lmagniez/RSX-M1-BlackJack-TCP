@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -102,7 +103,7 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 	
 	class labelServer extends JPanel implements ActionListener{
 		private Server serv;
-		private BoutonPlateau boutonConnect= new BoutonPlateau(this,"Join");
+		private BoutonPlateau boutonConnect= new BoutonPlateau(this,"Join",rouge);
 		private FrameJeuMenu frameJeuMenu;
 		
 		private labelServer(Server serv,int incrementY,FrameJeuMenu frameJeuMenu) {
@@ -110,10 +111,10 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 			this.serv = serv;
 			
 			this.setPreferredSize(new Dimension(340, 75));
-			this.setBounds( 0 , 10*incrementY , 300, 75);
+			this.setBounds( 0 , 10*incrementY , 300, 50);
 
 			
-			boutonConnect.setBounds(220,30,100,30);
+			boutonConnect.setBounds(220,15,100,40);
 			
 			if(serv.getNbJoueur()>6)this.boutonConnect.setEnabled(false);
 			
@@ -125,11 +126,11 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 		
 		public void paintComponent(Graphics g) {
 			g.setFont(new Font("verdana", Font.BOLD, 15));
-			g.setColor(or);
+			g.setColor(Color.white);
 
-			g.drawString("Adresse: "+serv.getAdr(), 10, 20);
-			g.drawString("Port: "+serv.getPort(), 10, 40);
-			g.drawString("Table: "+serv.getNbJoueur()+"/7", 10, 60);
+			g.drawString(" Adresse: "+serv.getAdr(), 10, 20);
+			g.drawString(" Port: "+serv.getPort(), 10, 40);
+			g.drawString(" Table: "+serv.getNbJoueur()+"/7", 10, 60);
 			g.drawRect(0, 0, 338, 70);
 		}
 		
@@ -139,7 +140,10 @@ public class ListeServeur extends JPanel implements Constante,ConstanteResau{
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Join")) {
 				Connection.share.ferme();
-				
+				boutonConnect.setEnabled(false);
+				loadingLabel.setBounds(75, 80, 200, 200);
+				this.add(loadingLabel);
+				repaint();
 				String[] tab = { serv.getHostname(),serv.getAdr(), serv.getPort() };
 				creerclient(tab);
 				repaint();
