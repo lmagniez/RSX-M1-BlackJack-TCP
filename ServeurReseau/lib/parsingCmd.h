@@ -19,7 +19,7 @@
 #define POST "POST"
 #define GET "GET"
 
-#define CREDIT 10000
+#define CREDIT 500
 #define DIALOGUE_SIZE 500
 #define CMD_SIZE 100
 

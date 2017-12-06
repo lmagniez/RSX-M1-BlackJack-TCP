@@ -1,15 +1,11 @@
 #include "../lib/tas.h"
 
 void generer_tas(tas* t){
-	
-	/*
-	t->cartes = malloc(sizeof(face_carte)*NB_TOTAL_CARTE);
-	t->cartes = malloc(sizeof(couleur_carte)*NB_TOTAL_CARTE);
-	*/
+
 	t->cartes = malloc(sizeof(carte)*NB_TOTAL_CARTE);
 	t->nb_carte = NB_TOTAL_CARTE;
-	t->sommet_pile = 5; //brûle les 5 premières cartes 
-	
+	t->sommet_pile = 5; //brûle les 5 premières cartes
+
 	int cpt_carte=0;
 	for(int i=0; i<NB_JEUX; i++){
 		for(int j=0; j<NB_COULEURS; j++){
@@ -41,7 +37,7 @@ void melanger_tas(tas* t){
 		int elt_b = rand_a_b(0, NB_TOTAL_CARTE-1);
 		swap(t, elt_a, elt_b);
 	}
-	
+
 }
 
 void afficher_tas(tas* t){
@@ -54,7 +50,7 @@ void afficher_tas(tas* t){
 }
 
 carte get_next_carte(tas *t){
-	
+
 	if(t->sommet_pile<t->nb_carte){
 		t->sommet_pile++;
 		return t->cartes[t->sommet_pile-1];
