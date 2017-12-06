@@ -47,6 +47,17 @@ int rejoindre_partie(plateau *p, int credit, char *adresse, int num_socket){
 			if(p->joueurs[i].e==OFF){
 				start_joueur(&(p->joueurs[i]),credit, adresse, p->tour_started, num_socket);
 				p->nb_joueur++;
+				int found = 0;
+				for(int j=0; j<NB_JOUEUR_MAX; j++){
+					if(p->joueurs[j].e == BETTING){
+						found = 1;
+					}
+				}
+				if(!found){
+					p->joueurs[i].e = BETTING;
+				}
+
+
 				/*if(p->nb_joueur==1){
 					p->tour_id_joueur = i;
 					p->tour_id_jeu = 0;
@@ -72,10 +83,10 @@ int quitter_partie(plateau *p, int id_joueur){
 	int i = id_joueur;
 	if(p->nb_joueur==0){
 		reinit_plateau(p);
+		reinit_jeu(&(p->jeu_croupier));
 	}
 	else{
 		if(p->tour_id_joueur==id_joueur){
-			printf("change tour !! \n");
 			while(p->joueurs[i].e==OFF){
 				i=(i+1)%(NB_JOUEUR_MAX-1);
 			}
@@ -91,7 +102,6 @@ int quitter_partie(plateau *p, int id_joueur){
 void init_tour(plateau *p){
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 		if(p->joueurs[i].e == PLAYING){
-			//demander_tirer(p, i);
 			carte c = get_next_carte(&(p->pioche));
 			add_carte(&(p->joueurs[i].jeux[0]),c);
 			c = get_next_carte(&(p->pioche));
@@ -125,15 +135,6 @@ int tour_est_demarre(plateau *p){
 	return 1;
 }
 
-//nouveau tour: passe les joueurs en attente
-/*
-void demarre_tour(plateau *p){
-	for(int i=0; i<NB_JOUEUR_MAX; i++){
-		if(p->joueurs[i].e == WAITING)
-			p->joueurs[i].e = BETTING;
-	}
-	p->tour_started = 1;
-}*/
 
 //1 si nouveau tour (lancer le croupier)
 int change_tour(plateau *p){
@@ -170,15 +171,6 @@ int change_tour(plateau *p){
 		p->tour_id_joueur= (p->tour_id_joueur+1)%NB_JOUEUR_MAX;
 	}
 	p->tour_id_jeu = 0;
-	//nouveau tour
-	/*if(p->tour_id_joueur<=old_tour_id_joueur){
-		//action_croupier(p);
-		for(int i=0; i<NB_JOUEUR_MAX; i++){
-			if(p->joueurs[i].e==WAITING)
-				p->joueurs[i].e=BETTING;
-		}
-		return 1;
-	}*/
 
 	return 0;
 }
@@ -214,10 +206,6 @@ void tour_croupier(plateau *p){
 		printf("LE CROUPIER EST SATISFAIT DE SON JEU\n");
 		p->jeu_croupier.e_jeu=SATISFAIT;
 	}
-
-	/*char * res = get_results(p);
-	return res;*/
-	//printf(">>>> %s <<<<\n",res);
 
 }
 
@@ -354,7 +342,6 @@ int demander_tirer(plateau *p, int id_joueur){
 
 		if(p->joueurs[id_joueur].jeux[p->tour_id_jeu].e_jeu!=JOUE){
 			int fin_tour = change_tour(p);
-			//if(fin_tour)tour_croupier(p);
 			return fin_tour;
 
 		}
@@ -375,7 +362,6 @@ int demander_rester(plateau *p, int id_joueur){
 		check_joueur_actif(p, id_joueur);
 
 		int fin_tour = change_tour(p);
-		//if(fin_tour)tour_croupier(p);
 		if(fin_tour)
 			return 1;
 		else{
@@ -398,7 +384,6 @@ int demander_double(plateau *p, int id_joueur){
 			carte c = get_next_carte(&(p->pioche));
 
 			printf("JOUEUR %d EST SATISFAIT DE SON JEU ET DOUBLE %d \n",id_joueur, p->tour_id_jeu);
-			//add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c);
 			if(add_carte(&(p->joueurs[id_joueur].jeux[p->tour_id_jeu]),c)==PERDU){
 
 				printf("MAIS JOUEUR %d PERD SON JEU %d \n",id_joueur, p->tour_id_jeu);
@@ -414,12 +399,7 @@ int demander_double(plateau *p, int id_joueur){
 			check_joueur_actif(p, id_joueur);
 
 			int fin_tour = change_tour(p);
-			//if(fin_tour)tour_croupier(p);
 			return fin_tour;
-			/*
-			change_tour(p);
-			return c.);
-			*/
 
 		}
 	}
@@ -445,12 +425,7 @@ int demander_abandon(plateau *p, int id_joueur){
 
 
 		int fin_tour = change_tour(p);
-		//if(fin_tour)tour_croupier(p);
 		return fin_tour;
-		/*
-		change_tour(p);
-		return 0;
-		*/
 
 	}
 	return -1;
@@ -506,8 +481,6 @@ char * plateau_to_json(plateau *p, int id_joueur, char *msg){
 
 	char *buf = malloc(sizeof(char)*MAX_BUF_PLATEAU);
 	char *str = malloc(sizeof(char)*MAX_MSG+1);
-	/*buf[cur_size++] = '{';
-	buf[cur_size++] = '\n';*/
 	buf[0] = '\0';
 	strcat(buf,"{\n");
 

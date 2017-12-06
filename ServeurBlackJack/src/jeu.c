@@ -1,14 +1,5 @@
 #include "../lib/jeu.h"
 
-/*
-typedef struct{
-	carte *main;
-	int nb_carte;
-	int valeur;
-} jeu;
-*/
-
-
 char * str_from_etat_jeu(etat_jeu e){
 	switch(e){
 		case JOUE:
@@ -112,16 +103,10 @@ void destroy_jeu(jeu *j){
 
 void afficher_jeu(jeu *j){
 	for(int i=0; i<j->nb_carte; i++){
-		/*
-		int val = getValueFromCarte(j->cartes[i]);
-		char *title = getTextFromCarte(j->cartes[i]);
-		printf("carte %d-> %s val: %d\n", i, title, val);
-		*/
 		afficher_carte(&(j->cartes[i]));
 
 	}
 	printf("Etat: %s Score total: %d\n",str_from_etat_jeu(j->e_jeu), j->valeur);
-	//printf("JSON: \n%s \n", jeu_to_json(j));
 
 }
 

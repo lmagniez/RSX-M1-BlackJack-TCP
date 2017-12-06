@@ -1,19 +1,6 @@
 
 #include "../lib/joueur.h"
 
-/*
-typedef enum {WAITING, PLAYING, FINISHED, LOSE} etat;
-
-typedef struct{
-	int id_joueur;
-	jeu *jeux;
-	int nb_jeux;
-	int credit;
-	int mise_actuelle;
-	etat e;
-} joueur;
-*/
-
 char * str_from_etat(etat e){
 	switch(e){
 		case OFF:
@@ -91,7 +78,6 @@ void afficher_joueur(joueur *j){
 		printf("Jeu %d\n",i);
 		afficher_jeu(&(j->jeux[i]));
 	}
-	//printf("JSON: \n%s\n",joueur_to_json(j));
 }
 
 //si la mise est possible, passe le joueur en état PLAYING
@@ -145,9 +131,6 @@ char * joueur_to_json(joueur *j){
 
 	char *buf = malloc(sizeof(char)*MAX_BUF_JOUEUR);
 	char str[50];
-	/*int cur_size = 0;
-	buf[cur_size++] = '{';
-	buf[cur_size++] = '\0';*/
 	buf[0] = '\0';
 	strcat(buf,"{\n");
 
