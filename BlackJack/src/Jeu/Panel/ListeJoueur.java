@@ -75,11 +75,11 @@ public class ListeJoueur extends JPanel implements Constante{
 		}
 		
 		public void paintComponent(Graphics g) {
-			g.setFont(new Font("Purisa", Font.BOLD, 30));
+			g.setFont(new Font("Purisa", Font.BOLD, 20));
 			g.setColor(Color.white);
 			
 			if(nom.contains("Joueur")) {
-				g.drawString(nom, 20, 30);
+				g.drawString(nom, 10, 30);
 			}else {
 				g.drawString(nom, 40, 30);
 			}
