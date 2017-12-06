@@ -24,7 +24,7 @@ public class ModelJeu {
 	}
 
 	public void afficheErreurMessage(String msg) {
-		if(msg!=null && msg.contains("pas splitter"))jeu.activeBouton();
+		if(msg!=null && (msg.contains("pas splitter") || msg.contains("pas doubler")))jeu.activeBouton();
 		jeu.afficheErreur(msg);
 	}
 
