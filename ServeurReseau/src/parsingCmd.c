@@ -204,7 +204,7 @@
 			int fin_tour = demander_double(p, id_joueur);
 			if(fin_tour == -1){
 				printf("Ne peux pas doubler\n");
-				return NULL;
+				return "DOUBLER KO";
 			}
 			char *res = malloc(sizeof(char)*CMD_SIZE);
 			sprintf(res, "Le joueur %d a doublé sa mise et tire une carte ", id_joueur);

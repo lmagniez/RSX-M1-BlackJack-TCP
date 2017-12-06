@@ -157,6 +157,12 @@ void * threadServeurTCPClient(void * arg){
 			sem_post(&mutexReseau);	
 			continue;
 		}
+		else if (strstr("DOUBLER KO", res_joueur)){
+			printf("doubler\n");
+			sendMsg(ecoute, "Vous ne pouvez pas doubler votre jeu!");
+			sem_post(&mutexReseau);	
+			continue;
+		}
 
 		//ENVOIE A TOUT LE MONDE
 		//met à jour le plateau
