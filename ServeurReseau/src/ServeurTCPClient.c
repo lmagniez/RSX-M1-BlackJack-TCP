@@ -19,18 +19,15 @@ char * get_json(int id_joueur, char *msg){
 	return json;
 }
 
-//Générer un JSON contenant la taille d'un autre JSON
-char * generationTaille(char * json){
-	int size = strlen(json)+1;
-	char * buf = malloc(sizeof(char)*SIZE_MSG);
+char * add_enete_json(char * message){
 	char str[12];
-
-	strcpy(buf,"{ \"taille\" : ");
-	sprintf(str, "\"%d\"", size);
-	strcat(buf,str);
-	strcat(buf,"}\n");
-
-	return buf;
+	char * entete = malloc(sizeof(char)*strlen(message)+301);
+	strcpy(entete,"HTTP/1.1\n");
+	strcat(entete,"Contente-Length: ");
+	sprintf(str, "\"%d\"\n", strlen(message)+1);
+	strcat(entete,str);
+	strcat(entete,message);
+	return entete;
 }
 
 //Générer un JSON contenant un message
@@ -41,47 +38,21 @@ char * generationMsg(char * msg){
 	strcat(buf,msg);
 	strcat(buf,"}\n");
 
-
 	return buf;
-}
-
-void sendMsgSimple(int ecoute, char *msg){
-
-	char * json = generationMsg(msg);
-	send_data_TCP(ecoute,json);
-
 }
 
 //Envoyer un message sur le socket
 void sendMsg(int ecoute, char *msg){
-
 	char * json = generationMsg(msg);
-	char * tailleJson = generationTaille(json);
-
-	send_data_TCP(ecoute,tailleJson);
-	send_data_TCP(ecoute,json);
-
+	char * jsonEntete = add_enete_json(json);
+	send_data_TCP(ecoute,jsonEntete);
 }
 
 //envoyer un plateau sur le socket
 void sendPlateau(int ecoute, int id_joueur, char *msg){
-
 	char * json = get_json(id_joueur, msg);
-	//json variable externe
-	//recup plateau
-	char * tailleJson = generationTaille(json);
-
-	//idJoueur:"changeant"
-	//dialogue:"mess"
-	//quand créé joueur, renvoie id joueur
-	//dans thread une valeur id_joueur
-	//génération json associer message
-
-	//printf("%s\n",tailleJson);
-
-	send_data_TCP(ecoute,tailleJson);
-	send_data_TCP(ecoute,json);
-
+	char * jsonEntete = add_enete_json(json);
+	send_data_TCP(ecoute,jsonEntete);
 }
 
 void sendMsgAll(char *msg){
@@ -95,15 +66,15 @@ void sendMsgAll(char *msg){
 void sendMsgAllLessSize(char *msg){
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 		if(p.joueurs[i].e != OFF){
-			sendMsgSimple(p.joueurs[i].num_socket, msg);
+			sendMsg(p.joueurs[i].num_socket, msg);
 		}
 	}
 }
 
 void sendPlateauAll(int id_joueur, char *msg){
+	(void) id_joueur;
 	for(int i=0; i<NB_JOUEUR_MAX; i++){
 		if(p.joueurs[i].e != OFF){
-			//sendPlateau(p.joueurs[i].num_socket, id_joueur, msg);
 			sendPlateau(p.joueurs[i].num_socket, p.joueurs[i].id_joueur, msg);
 		}
 	}
@@ -122,8 +93,9 @@ void * threadServeurTCPClient(void * arg){
 	sem_wait(&mutexConnection);
 	
 	char *res = parseur_REST(msg, &p, &nb, ecoute, id_joueur);
+
 	if (strstr(res,"CONNECT OK")==NULL){
-		sendMsgSimple(ecoute, "CONNECT KO");
+		sendMsg(ecoute, "CONNECT KO");
 		pthread_exit(NULL);
 	}
 
@@ -181,7 +153,7 @@ void * threadServeurTCPClient(void * arg){
 			continue;
 		}else if (strstr("SPLIT KO", res_joueur)){
 			printf("split\n");
-			sendMsgSimple(ecoute, "Vous ne pouvez pas splitter votre jeu!");
+			sendMsg(ecoute, "Vous ne pouvez pas splitter votre jeu!");
 			sem_post(&mutexReseau);	
 			continue;
 		}
