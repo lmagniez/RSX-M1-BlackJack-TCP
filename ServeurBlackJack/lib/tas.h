@@ -16,8 +16,6 @@
 #define TAUX_MELANGE 1000
 
 typedef struct{
-	/*face_carte *cartes;
-	couleur_carte *couleurs;*/
 	carte* cartes;
 	int nb_carte;
 	int sommet_pile;
