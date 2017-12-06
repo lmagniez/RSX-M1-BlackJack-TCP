@@ -108,10 +108,20 @@ public class BlackJackClient implements Constante, ConstanteResau,ConstanteParse
 		}
 		String ligne2 = socketReader.readLine();
 		
+		if(ligne2 == null) {
+			fenetreclient.showErreurScreen(null);
+			return null;
+		}
+		
 		while(!ligne2.contains(taille)) {
-			 ligne2 = socketReader.readLine();
+			ligne2 = socketReader.readLine();
+			if(ligne2 == null) {
+				fenetreclient.showErreurScreen(null);
+				return null;
+			}
 		}
 		String message = Parser.share.parseJsonMessage(ligne2);
+		
 		return message;
 	}
 	

@@ -27,7 +27,7 @@ public class BoutonPlateau extends JButton implements Constante{
 		
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setOpaque(false);
-		this.setFont(new Font("Bradley Hand",Font.BOLD,40));
+		this.setFont(new Font("Purisa",Font.BOLD,30));
 		this.setText(Commande);
 		
 		this.setBackground(transparent);

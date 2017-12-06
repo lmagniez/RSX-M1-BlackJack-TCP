@@ -37,7 +37,7 @@ public class Menu extends JPanel implements ActionListener,Constante{
 	 */
 	private void creerlayout() {
 		setLayout(null);
-		jouer.setBounds(50, 400, 120, 50);
+		jouer.setBounds(30, 400, 140, 50);
 		quitter.setBounds(200, 400, 200, 50);
 		this.add(jouer);
 		this.add(quitter);

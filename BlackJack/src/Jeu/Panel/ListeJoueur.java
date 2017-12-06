@@ -38,8 +38,8 @@ public class ListeJoueur extends JPanel implements Constante{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.white);
-		g.setFont(new Font("Bradley Hand",Font.BOLD,40));
-		g.drawString("Joueurs", 160, 30);
+		g.setFont(new Font("Purisa",Font.BOLD,40));
+		g.drawString("Joueurs", 160, 40);
 	}
 	
 	public static JScrollPane scrollPaneHorizontal(JComponent component) {
@@ -75,7 +75,7 @@ public class ListeJoueur extends JPanel implements Constante{
 		}
 		
 		public void paintComponent(Graphics g) {
-			g.setFont(new Font("Bradley Hand", Font.BOLD, 30));
+			g.setFont(new Font("Purisa", Font.BOLD, 30));
 			g.setColor(Color.white);
 			
 			if(nom.contains("Joueur")) {
