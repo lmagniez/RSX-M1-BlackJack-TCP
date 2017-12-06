@@ -1,5 +1,6 @@
 package Panel.Erreur;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
@@ -20,9 +21,9 @@ public class PanelErreurBig extends JPanel implements Constante {
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(fond, 0, -100, 1224,1224, this);
-		g.setColor(or);
-		g.setFont(new Font("verdana", Font.BOLD, 60));
+		g.drawImage(fondDeco, 0, 0, 1224,768, this);
+		g.setColor(Color.white);
+		g.setFont(new Font("Bradley Hand", Font.BOLD, 60));
 		g.drawString(erreur, 180, 600);
 	}
 

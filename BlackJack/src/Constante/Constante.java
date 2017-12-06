@@ -9,8 +9,9 @@ import javax.swing.ImageIcon;
 
 public interface Constante {
 
-	public Image fond=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond.png");
-	public Image fondGeneral=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/Casino.png");
+	public Image fond = Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond.png");
+	public Image fondGeneral = Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/Casino.png");
+	public Image fondDeco = Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fondDeco.png");
 	
 	public Image fondListe=Toolkit.getDefaultToolkit().createImage("./src/Ressource/Image/fond_liste.png");
 	
